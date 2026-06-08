@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Aegis University ERP</title>
+  <meta name="description" content="Sign in to the Aegis University ERP — the next-generation campus management platform.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Auth Styles -->
+  <link rel="stylesheet" href="styles/auth.css">
+
+  <!-- Inline CSS variables (mirrors main.css :root for standalone use) -->
+  <style>
+    :root {
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-display: 'Space Grotesk', var(--font-sans);
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #121829;
+      --bg-tertiary: #1b233d;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.15);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-ruby: #f43f5e;
+      --accent-amber: #f59e0b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.4);
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  </style>
+</head>
+<body>
+  <div class="auth-container">
+
+    <!-- ============================================================
+         LEFT — Brand Panel
+         ============================================================ -->
+    <div class="auth-brand">
+      <!-- Animated gradient orbs -->
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <!-- Dot grid overlay -->
+      <div class="dot-grid"></div>
+
+      <div class="brand-content">
+        <!-- University logo -->
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+          </svg>
+        </div>
+
+        <h1 class="brand-title">AEGIS UNIVERSITY</h1>
+        <p class="brand-tagline">Next-Generation Campus Management Platform</p>
+
+        <!-- Feature highlights -->
+        <div class="brand-features">
+          <div class="brand-feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.21 15.89A10 10 0 1 1 8 2.83"/>
+                <path d="M22 12A10 10 0 0 0 12 2v10z"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Smart Analytics</strong>
+              <span>AI-powered insights for academic excellence</span>
+            </div>
+          </div>
+          <div class="brand-feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Secure Records</strong>
+              <span>Enterprise-grade data protection & encryption</span>
+            </div>
+          </div>
+          <div class="brand-feature">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+            </div>
+            <div class="feature-text">
+              <strong>Real-time Tracking</strong>
+              <span>Live attendance, grades & financial dashboards</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         RIGHT — Form Panel
+         ============================================================ -->
+    <div class="auth-form-panel">
+
+      <!-- Mobile-only mini brand -->
+      <div class="mobile-brand">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+            <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/>
+          </svg>
+        </div>
+        <h1 class="brand-title">AEGIS UNIVERSITY</h1>
+      </div>
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="signin" type="button">Sign In</button>
+        <button class="auth-tab" data-tab="signup" type="button">Sign Up</button>
+      </div>
+
+      <!-- ==================== SIGN IN ==================== -->
+      <div class="auth-form-container" id="signin-form">
+        <h2>Welcome Back</h2>
+        <p>Sign in to access your campus portal</p>
+
+        <form id="signin-form-el" novalidate autocomplete="on">
+          <!-- Email -->
+          <div class="auth-input-group">
+            <input type="email" id="signin-email" required placeholder=" " autocomplete="email">
+            <label for="signin-email">Email Address</label>
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+              <polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-input-group">
+            <input type="password" id="signin-password" required placeholder=" " autocomplete="current-password">
+            <label for="signin-password">Password</label>
+            <button type="button" class="password-toggle" data-target="signin-password" aria-label="Toggle password visibility">
+              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Options row -->
+          <div class="auth-options">
+            <label class="custom-checkbox">
+              <input type="checkbox" id="remember-me">
+              <span class="checkmark"></span>
+              Remember me
+            </label>
+            <a href="#" class="forgot-link" onclick="event.preventDefault(); alert('Password reset coming soon! For now, use the demo credentials below.')">Forgot Password?</a>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="auth-submit-btn" id="signin-btn">
+            <span>Sign In</span>
+            <div class="btn-loader"></div>
+          </button>
+
+          <!-- Error -->
+          <div class="auth-error" id="signin-error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span id="signin-error-text">Error message</span>
+          </div>
+        </form>
+
+        <!-- Divider -->
+        <div class="auth-divider"><span>or continue with</span></div>
+
+        <!-- Social buttons -->
+        <div class="social-buttons">
+          <button type="button" class="social-btn" onclick="alert('Google SSO coming soon!')">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18A10.96 10.96 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Google
+          </button>
+          <button type="button" class="social-btn" onclick="alert('Microsoft SSO coming soon!')">
+            <svg viewBox="0 0 24 24" width="20" height="20">
+              <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
+              <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
+              <rect x="1" y="13" width="10" height="10" fill="#00A4EF"/>
+              <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
+            </svg>
+            Microsoft
+          </button>
+        </div>
+
+        <!-- Demo credentials -->
+        <div class="auth-demo-info">
+          <p>Demo Credentials</p>
+          <div class="demo-cred" onclick="document.getElementById('signin-email').value='admin@aegis.edu';document.getElementById('signin-password').value='admin123';document.getElementById('signin-email').classList.add('has-value');document.getElementById('signin-password').classList.add('has-value');" title="Click to fill">
+            <span class="role-badge admin">Admin</span>
+            <code>admin@aegis.edu / admin123</code>
+          </div>
+          <div class="demo-cred" onclick="document.getElementById('signin-email').value='faculty@aegis.edu';document.getElementById('signin-password').value='faculty123';document.getElementById('signin-email').classList.add('has-value');document.getElementById('signin-password').classList.add('has-value');" title="Click to fill">
+            <span class="role-badge faculty">Faculty</span>
+            <code>faculty@aegis.edu / faculty123</code>
+          </div>
+          <div class="demo-cred" onclick="document.getElementById('signin-email').value='student@aegis.edu';document.getElementById('signin-password').value='student123';document.getElementById('signin-email').classList.add('has-value');document.getElementById('signin-password').classList.add('has-value');" title="Click to fill">
+            <span class="role-badge student">Student</span>
+            <code>student@aegis.edu / student123</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== SIGN UP ==================== -->
+      <div class="auth-form-container" id="signup-form" style="display:none">
+        <h2>Create Account</h2>
+        <p>Join the Aegis University portal</p>
+
+        <form id="signup-form-el" novalidate autocomplete="on">
+          <!-- Full Name -->
+          <div class="auth-input-group">
+            <input type="text" id="signup-name" required placeholder=" " autocomplete="name">
+            <label for="signup-name">Full Name</label>
+          </div>
+
+          <!-- Email -->
+          <div class="auth-input-group">
+            <input type="email" id="signup-email" required placeholder=" " autocomplete="email">
+            <label for="signup-email">Email Address</label>
+          </div>
+
+          <!-- Role selector -->
+          <div class="auth-input-group">
+            <select id="signup-role">
+              <option value="student">Student</option>
+              <option value="faculty">Faculty Member</option>
+              <option value="admin">Administrator</option>
+            </select>
+            <label class="select-label" for="signup-role">Account Role</label>
+            <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"/>
+            </svg>
+          </div>
+
+          <!-- Password -->
+          <div class="auth-input-group">
+            <input type="password" id="signup-password" required placeholder=" " autocomplete="new-password">
+            <label for="signup-password">Password</label>
+            <button type="button" class="password-toggle" data-target="signup-password" aria-label="Toggle password visibility">
+              <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                <line x1="1" y1="1" x2="23" y2="23"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Password Strength -->
+          <div class="password-strength">
+            <div class="strength-bar"><div class="strength-fill" id="strength-fill"></div></div>
+            <span class="strength-text" id="strength-text">Password Strength</span>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="auth-input-group">
+            <input type="password" id="signup-confirm" required placeholder=" " autocomplete="new-password">
+            <label for="signup-confirm">Confirm Password</label>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="auth-submit-btn" id="signup-btn">
+            <span>Create Account</span>
+            <div class="btn-loader"></div>
+          </button>
+
+          <!-- Error -->
+          <div class="auth-error" id="signup-error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <span id="signup-error-text">Error message</span>
+          </div>
+
+          <!-- Success -->
+          <div class="auth-success" id="signup-success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span id="signup-success-text">Account created successfully!</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div class="auth-footer">
+        <p>&copy; 2026 Aegis University. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Auth Module -->
+  <script type="module" src="js/auth.js"></script>
+
+  <!-- ============================================================
+       Inline Script — Wire Up All Event Listeners
+       ============================================================ -->
+  <script type="module">
+  (function() {
+    'use strict';
+
+    // ── If already logged in, go straight to dashboard ──
+    if (window.AuthSystem && window.AuthSystem.isLoggedIn()) {
+      window.location.href = 'index.html';
+      return;
+    }
+
+    // ── DOM refs ──
+    var signinForm   = document.getElementById('signin-form');
+    var signupForm   = document.getElementById('signup-form');
+    var signinFormEl  = document.getElementById('signin-form-el');
+    var signupFormEl  = document.getElementById('signup-form-el');
+    var signinError   = document.getElementById('signin-error');
+    var signinErrorTx = document.getElementById('signin-error-text');
+    var signupError   = document.getElementById('signup-error');
+    var signupErrorTx = document.getElementById('signup-error-text');
+    var signupSuccess = document.getElementById('signup-success');
+    var signupSuccTx  = document.getElementById('signup-success-text');
+    var signinBtn     = document.getElementById('signin-btn');
+    var signupBtn     = document.getElementById('signup-btn');
+    var strengthFill  = document.getElementById('strength-fill');
+    var strengthText  = document.getElementById('strength-text');
+    var tabs          = document.querySelectorAll('.auth-tab');
+
+    // ── Helpers ──
+    function showError(el, textEl, msg) {
+      textEl.textContent = msg;
+      el.classList.add('visible');
+      el.closest('.auth-form-container').classList.add('shake');
+      setTimeout(function() {
+        el.closest('.auth-form-container').classList.remove('shake');
+      }, 500);
+    }
+
+    function hideError(el) {
+      el.classList.remove('visible');
+    }
+
+    function showSuccess(el, textEl, msg) {
+      textEl.textContent = msg;
+      el.classList.add('visible');
+    }
+
+    function hideSuccess(el) {
+      el.classList.remove('visible');
+    }
+
+    function setLoading(btn, loading) {
+      if (loading) {
+        btn.classList.add('loading');
+      } else {
+        btn.classList.remove('loading');
+      }
+    }
+
+    // ── Tab Switching ──
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        var target = this.getAttribute('data-tab');
+
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        this.classList.add('active');
+
+        if (target === 'signin') {
+          signinForm.style.display = 'block';
+          signupForm.style.display = 'none';
+          signinForm.style.animation = 'none';
+          signinForm.offsetHeight; // trigger reflow
+          signinForm.style.animation = 'formSlideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1)';
+        } else {
+          signinForm.style.display = 'none';
+          signupForm.style.display = 'block';
+          signupForm.style.animation = 'none';
+          signupForm.offsetHeight;
+          signupForm.style.animation = 'formSlideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1)';
+        }
+
+        // Clear errors/success on switch
+        hideError(signinError);
+        hideError(signupError);
+        hideSuccess(signupSuccess);
+      });
+    });
+
+    // ── Password Toggle ──
+    document.querySelectorAll('.password-toggle').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var targetId = this.getAttribute('data-target');
+        var input    = document.getElementById(targetId);
+        var eyeOpen  = this.querySelector('.eye-open');
+        var eyeClosed = this.querySelector('.eye-closed');
+
+        if (input.type === 'password') {
+          input.type = 'text';
+          eyeOpen.style.display = 'none';
+          eyeClosed.style.display = 'block';
+        } else {
+          input.type = 'password';
+          eyeOpen.style.display = 'block';
+          eyeClosed.style.display = 'none';
+        }
+      });
+    });
+
+    // ── Password Strength (live) ──
+    var signupPasswordInput = document.getElementById('signup-password');
+    signupPasswordInput.addEventListener('input', function() {
+      var result = window.AuthSystem.checkPasswordStrength(this.value);
+
+      // Remove all classes
+      strengthFill.className = 'strength-fill';
+      strengthText.className = 'strength-text';
+
+      if (this.value.length === 0) {
+        strengthText.textContent = 'Password Strength';
+        return;
+      }
+
+      strengthFill.classList.add(result.level);
+      strengthText.classList.add(result.level);
+
+      var labels = { weak: 'Weak', medium: 'Medium', strong: 'Strong' };
+      strengthText.textContent = labels[result.level];
+    });
+
+    // ── SIGN IN submission ──
+    signinFormEl.addEventListener('submit', function(e) {
+      e.preventDefault();
+      hideError(signinError);
+
+      var email    = document.getElementById('signin-email').value;
+      var password = document.getElementById('signin-password').value;
+
+      // Basic client-side checks
+      if (!email || !password) {
+        showError(signinError, signinErrorTx, 'Please fill in all fields.');
+        return;
+      }
+
+      var emailCheck = window.AuthSystem.validateEmail(email);
+      if (!emailCheck.valid) {
+        showError(signinError, signinErrorTx, emailCheck.message);
+        return;
+      }
+
+      // Show loading
+      setLoading(signinBtn, true);
+
+      // Simulate network delay for polish
+      setTimeout(function() {
+        var result = window.AuthSystem.login(email, password);
+        setLoading(signinBtn, false);
+
+        if (result.success) {
+          // Redirect
+          window.location.href = 'index.html';
+        } else {
+          showError(signinError, signinErrorTx, result.message);
+        }
+      }, 800);
+    });
+
+    // ── SIGN UP submission ──
+    signupFormEl.addEventListener('submit', function(e) {
+      e.preventDefault();
+      hideError(signupError);
+      hideSuccess(signupSuccess);
+
+      var name     = document.getElementById('signup-name').value;
+      var email    = document.getElementById('signup-email').value;
+      var role     = document.getElementById('signup-role').value;
+      var password = document.getElementById('signup-password').value;
+      var confirm  = document.getElementById('signup-confirm').value;
+
+      // Validate fields
+      var nameCheck = window.AuthSystem.validateRequired(name, 'Full name');
+      if (!nameCheck.valid) {
+        showError(signupError, signupErrorTx, nameCheck.message);
+        return;
+      }
+
+      var emailCheck = window.AuthSystem.validateEmail(email);
+      if (!emailCheck.valid) {
+        showError(signupError, signupErrorTx, emailCheck.message);
+        return;
+      }
+
+      if (!password || password.length < 6) {
+        showError(signupError, signupErrorTx, 'Password must be at least 6 characters.');
+        return;
+      }
+
+      var matchCheck = window.AuthSystem.validatePasswordMatch(password, confirm);
+      if (!matchCheck.valid) {
+        showError(signupError, signupErrorTx, matchCheck.message);
+        return;
+      }
+
+      // Show loading
+      setLoading(signupBtn, true);
+
+      setTimeout(function() {
+        var result = window.AuthSystem.register(name, email, password, role);
+        setLoading(signupBtn, false);
+
+        if (result.success) {
+          showSuccess(signupSuccess, signupSuccTx, 'Account created successfully! Switching to Sign In...');
+          signupFormEl.reset();
+
+          // Reset strength bar
+          strengthFill.className = 'strength-fill';
+          strengthText.className = 'strength-text';
+          strengthText.textContent = 'Password Strength';
+
+          // Switch to sign-in after a moment
+          setTimeout(function() {
+            tabs[0].click();
+          }, 1800);
+        } else {
+          showError(signupError, signupErrorTx, result.message);
+        }
+      }, 800);
+    });
+
+    // ── Auto-float labels for pre-filled fields ──
+    document.querySelectorAll('.auth-input-group input').forEach(function(input) {
+      input.addEventListener('input', function() {
+        if (this.value) this.classList.add('has-value');
+        else this.classList.remove('has-value');
+      });
+      // Check initial state
+      if (input.value) input.classList.add('has-value');
+    });
+
+  })();
+  </script>
+</body>
+</html>
