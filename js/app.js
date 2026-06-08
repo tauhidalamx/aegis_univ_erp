@@ -36,9 +36,9 @@
       const navLinks = document.querySelectorAll('.nav-link');
       navLinks.forEach(link => {
         link.addEventListener('click', (e) => {
-          e.preventDefault();
           const targetView = link.getAttribute('data-view');
           if (targetView) {
+            e.preventDefault();
             this.loadView(targetView);
             navLinks.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
@@ -91,12 +91,31 @@
         });
       }
 
-      // Global Search input
+      // Global Search input & dropdown
       const searchInput = document.getElementById('global-search-input');
-      if (searchInput) {
+      const searchDropdown = document.getElementById('global-search-dropdown');
+      if (searchInput && searchDropdown) {
+        // Focus opens dropdown
+        searchInput.addEventListener('focus', () => {
+          this.renderSearchDropdown(searchInput.value);
+          searchDropdown.classList.remove('hidden');
+          searchDropdown.classList.add('flex');
+        });
+
+        // Click outside closes dropdown
+        document.addEventListener('click', (e) => {
+          if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+            searchDropdown.classList.add('hidden');
+            searchDropdown.classList.remove('flex');
+          }
+        });
+
+        // Input updates content
         searchInput.addEventListener('input', (e) => {
-          const val = e.target.value.toLowerCase().trim();
-          this.handleGlobalSearch(val);
+          const val = e.target.value;
+          this.renderSearchDropdown(val);
+          // Also run legacy filter if active view matches
+          this.handleGlobalSearch(val.toLowerCase().trim());
         });
       }
     },
@@ -124,9 +143,9 @@
               <p>System Preferences and System Configurations.</p>
             </div>
           </div>
-          <div class="card animate-fade-in" style="margin-top: 24px;">
-            <h3 style="margin-bottom: 16px;">System Configuration Panel</h3>
-            <p style="color: var(--text-muted); margin-bottom: 24px;">Manage application settings, custom credentials, user privileges, and system API configuration integrations.</p>
+          <div class="card animate-fade-in mt-6">
+            <h3 class="mb-4">System Configuration Panel</h3>
+            <p class="text-brand-text-muted mb-6">Manage application settings, custom credentials, user privileges, and system API configuration integrations.</p>
 
             <div class="grid-2">
               <div class="form-group">
@@ -153,7 +172,7 @@
                 </select>
               </div>
             </div>
-            <button class="btn btn-primary" style="margin-top: 16px;" onclick="alert('Configuration parameters persisted successfully!')">Save Preferences</button>
+            <button class="btn btn-primary mt-4" onclick="alert('Configuration parameters persisted successfully!')">Save Preferences</button>
           </div>
         `;
       }
@@ -185,37 +204,46 @@
     // ─── LOGOUT ────────────────────────────────────────────────────
     handleLogout: function() {
       if (confirm('Are you sure you want to sign out?')) {
-        if (typeof window.AuthSystem !== 'undefined') {
-          window.AuthSystem.logout();
-        } else {
-          window.location.href = 'auth.html';
-        }
+        sessionStorage.removeItem('aegis_erp_session');
+        window.location.href = 'auth.html';
       }
     },
 
     showQuickActions: function() {
       const bodyHTML = `
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-          <button class="btn btn-secondary" style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;" id="qa-add-student">
+        <div class="grid grid-cols-3 gap-4">
+          <button class="btn btn-secondary p-5 flex flex-col items-center gap-2.5 text-center" id="qa-add-student">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
-            <span>Add New Student</span>
+            <span>Add Student</span>
           </button>
-          <button class="btn btn-secondary" style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;" id="qa-add-announcement">
+          <button class="btn btn-secondary p-5 flex flex-col items-center gap-2.5 text-center" id="qa-add-announcement">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
             <span>Post Notice</span>
           </button>
-          <button class="btn btn-secondary" style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;" id="qa-record-fee">
+          <button class="btn btn-secondary p-5 flex flex-col items-center gap-2.5 text-center" id="qa-record-fee">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="12" y1="1" x2="12" y2="23"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-            <span>Record Fee Payment</span>
+            <span>Record Fee</span>
           </button>
-          <button class="btn btn-secondary" style="padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px;" id="qa-mark-attendance">
+          <button class="btn btn-secondary p-5 flex flex-col items-center gap-2.5 text-center" id="qa-mark-attendance">
             <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-            <span>Daily Attendance</span>
+            <span>Attendance</span>
+          </button>
+          <button class="btn btn-primary p-5 flex flex-col items-center gap-2.5 text-center" id="qa-open-connect">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>Aegis Connect</span>
+          </button>
+          <button class="btn btn-primary p-5 flex flex-col items-center gap-2.5 text-center" id="qa-mint-nft">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span>Mint NFT</span>
           </button>
         </div>
       `;
       this.showModal('Quick Action Hub', bodyHTML, '<button class="btn btn-secondary" onclick="window.App.closeModal()">Close</button>');
-
+ 
       document.getElementById('qa-add-student').addEventListener('click', () => {
         this.closeModal();
         this.loadView('students');
@@ -225,7 +253,7 @@
           }
         }, 100);
       });
-
+ 
       document.getElementById('qa-add-announcement').addEventListener('click', () => {
         this.closeModal();
         this.loadView('announcements');
@@ -235,7 +263,7 @@
           }
         }, 100);
       });
-
+ 
       document.getElementById('qa-record-fee').addEventListener('click', () => {
         this.closeModal();
         this.loadView('finance');
@@ -245,26 +273,41 @@
           }
         }, 100);
       });
-
+ 
       document.getElementById('qa-mark-attendance').addEventListener('click', () => {
         this.closeModal();
         this.loadView('attendance');
       });
+ 
+      document.getElementById('qa-open-connect').addEventListener('click', () => {
+        this.closeModal();
+        window.location.href = 'forum.html';
+      });
+ 
+      document.getElementById('qa-mint-nft').addEventListener('click', () => {
+        this.closeModal();
+        this.loadView('blockchain');
+        setTimeout(() => {
+          if (window.blockchainView && typeof window.blockchainView.openMintModal === 'function') {
+            window.blockchainView.openMintModal();
+          }
+        }, 100);
+      });
     },
-
+ 
     showNotifications: function() {
       const announcements = window.UniversityDB.getAnnouncements();
       let announcementsHtml = announcements.map(ann => `
-        <div style="padding: 12px; border-bottom: 1px solid var(--border); display: flex; gap: 12px;">
-          <div style="width: 8px; height: 8px; border-radius: 50%; background-color: ${ann.color || 'var(--primary)'}; margin-top: 6px; flex-shrink:0;"></div>
+        <div class="p-3 border-b border-brand-border flex gap-3">
+          <div class="w-2 h-2 rounded-full mt-1.5 shrink-0" style="background-color: ${ann.color || 'var(--color-brand-primary)'}"></div>
           <div>
-            <h5 style="margin: 0; font-weight: 600;">${ann.title}</h5>
-            <p style="margin: 4px 0 0; font-size: 0.8rem; color: var(--text-muted);">${ann.content.slice(0, 100)}...</p>
-            <span style="font-size: 0.7rem; color: var(--text-subtle); display: block; margin-top: 4px;">Posted: ${ann.date}</span>
+            <h5 class="m-0 font-semibold text-brand-text-main">${ann.title}</h5>
+            <p class="mt-1 text-[0.8rem] text-brand-text-muted">${ann.content.slice(0, 100)}...</p>
+            <span class="text-[0.7rem] text-brand-text-subtle block mt-1">Posted: ${ann.date}</span>
           </div>
         </div>
       `).join('');
-
+ 
       const bodyHTML = `
         <div style="max-height: 400px; overflow-y: auto;">
           <h4 style="margin-bottom: 12px; font-family: var(--font-display);">Recent Broadcasts & System Notices</h4>
@@ -294,6 +337,176 @@
           window.coursesView.applyFilters();
         }
       }
+    },
+
+    renderSearchDropdown: function(val) {
+      const dropdown = document.getElementById('global-search-dropdown');
+      if (!dropdown) return;
+
+      const query = val.toLowerCase().trim();
+
+      // Case 1: Empty input -> Show Database sync status + Quick actions shortcuts
+      if (!query) {
+        const students = window.UniversityDB.getStudents();
+        const faculty = window.UniversityDB.getFaculty();
+        
+        dropdown.innerHTML = `
+          <!-- Database Sync Status -->
+          <div class="p-3 bg-brand-bg-tertiary rounded-xl border border-brand-border">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-semibold text-brand-text-muted">SQLite Database Telemetry</span>
+              <span class="badge badge-success text-[0.65rem] py-0.5">✓ Connected</span>
+            </div>
+            <div class="flex flex-col gap-1 text-xs text-brand-text-main">
+              <div class="flex justify-between">
+                <span class="text-brand-text-subtle">Synced Students:</span>
+                <span class="font-bold font-mono">${students.length} accounts</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-brand-text-subtle">Synced Faculty:</span>
+                <span class="font-bold font-mono">${faculty.length} accounts</span>
+              </div>
+              <div class="flex justify-between border-t border-brand-border/40 mt-1.5 pt-1.5">
+                <span class="text-brand-text-subtle">Source Registry:</span>
+                <span class="text-brand-primary font-mono text-[0.65rem] font-bold">authentication.txt</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shortcuts -->
+          <div class="flex flex-col gap-1.5">
+            <span class="text-[0.65rem] font-semibold text-brand-text-subtle uppercase tracking-wider pl-1">System Shortcuts</span>
+            <div class="grid grid-cols-2 gap-2">
+              <button class="btn btn-secondary py-2 px-3 text-xs justify-start font-medium cursor-pointer" onclick="window.App.loadView('dashboard')">
+                <span>Dashboard</span>
+              </button>
+              <button class="btn btn-secondary py-2 px-3 text-xs justify-start font-medium cursor-pointer" onclick="window.App.loadView('students')">
+                <span>Students Registry</span>
+              </button>
+              <button class="btn btn-secondary py-2 px-3 text-xs justify-start font-medium cursor-pointer" onclick="window.App.loadView('finance')">
+                <span>Finance Ledger</span>
+              </button>
+              <button class="btn btn-secondary py-2 px-3 text-xs justify-start font-medium cursor-pointer" onclick="window.App.loadView('blockchain')">
+                <span>Blockchain Hub</span>
+              </button>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Case 2: Query contains input -> Search across students, faculty, and courses registries
+      const students = window.UniversityDB.getStudents();
+      const faculty = window.UniversityDB.getFaculty();
+      const courses = window.UniversityDB.getCourses();
+
+      // Search filters
+      const matchedStudents = students.filter(s => s.name.toLowerCase().includes(query) || s.id.toLowerCase().includes(query)).slice(0, 4);
+      const matchedFaculty = faculty.filter(f => f.name.toLowerCase().includes(query) || f.id.toLowerCase().includes(query)).slice(0, 4);
+      const matchedCourses = courses.filter(c => c.title.toLowerCase().includes(query) || c.code.toLowerCase().includes(query)).slice(0, 4);
+
+      const totalMatches = matchedStudents.length + matchedFaculty.length + matchedCourses.length;
+
+      if (totalMatches === 0) {
+        dropdown.innerHTML = `
+          <div class="text-center py-4 text-brand-text-muted text-xs">
+            No matching records found for "${val}"
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+
+      // Render matching students
+      if (matchedStudents.length > 0) {
+        html += `
+          <div class="flex flex-col gap-1">
+            <span class="text-[0.65rem] font-semibold text-brand-text-subtle uppercase tracking-wider pl-1">Students</span>
+            ${matchedStudents.map(s => `
+              <div class="flex items-center justify-between p-2 hover:bg-white/[0.03] rounded-lg cursor-pointer transition-all duration-150 hover:pl-3" onclick="window.App.selectSearchResult('students', '${s.id}')">
+                <div class="flex items-center gap-2 min-w-0">
+                  <img src="${s.avatar}" class="w-6 h-6 rounded-full object-cover border border-brand-border shrink-0">
+                  <span class="text-xs font-semibold truncate text-brand-text-main">${s.name}</span>
+                </div>
+                <code class="text-[0.65rem] text-brand-text-subtle font-mono">${s.id}</code>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Render matching faculty
+      if (matchedFaculty.length > 0) {
+        html += `
+          <div class="flex flex-col gap-1 ${matchedStudents.length > 0 ? 'border-t border-brand-border/40 pt-2' : ''}">
+            <span class="text-[0.65rem] font-semibold text-brand-text-subtle uppercase tracking-wider pl-1">Faculty</span>
+            ${matchedFaculty.map(f => `
+              <div class="flex items-center justify-between p-2 hover:bg-white/[0.03] rounded-lg cursor-pointer transition-all duration-150 hover:pl-3" onclick="window.App.selectSearchResult('faculty', '${f.id}')">
+                <div class="flex items-center gap-2 min-w-0">
+                  <img src="${f.avatar}" class="w-6 h-6 rounded-full object-cover border border-brand-border shrink-0">
+                  <span class="text-xs font-semibold truncate text-brand-text-main">${f.name}</span>
+                </div>
+                <code class="text-[0.65rem] text-brand-text-subtle font-mono">${f.id}</code>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Render matching courses
+      if (matchedCourses.length > 0) {
+        html += `
+          <div class="flex flex-col gap-1 ${matchedStudents.length > 0 || matchedFaculty.length > 0 ? 'border-t border-brand-border/40 pt-2' : ''}">
+            <span class="text-[0.65rem] font-semibold text-brand-text-subtle uppercase tracking-wider pl-1">Courses</span>
+            ${matchedCourses.map(c => `
+              <div class="flex items-center justify-between p-2 hover:bg-white/[0.03] rounded-lg cursor-pointer transition-all duration-150 hover:pl-3" onclick="window.App.selectSearchResult('courses', '${c.code}')">
+                <div class="min-w-0 flex flex-col">
+                  <span class="text-xs font-semibold truncate text-brand-text-main">${c.title}</span>
+                  <span class="text-[0.65rem] text-brand-text-muted truncate">${c.dept}</span>
+                </div>
+                <code class="text-[0.65rem] text-brand-primary font-mono font-bold">${c.code}</code>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      dropdown.innerHTML = html;
+    },
+
+    selectSearchResult: function(view, id) {
+      // Load target view
+      this.loadView(view);
+
+      // Highlight target nav item in sidebar
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-view') === view) {
+          link.classList.add('active');
+        }
+      });
+
+      // Clear search input and hide suggestions dropdown
+      const searchInput = document.getElementById('global-search-input');
+      const searchDropdown = document.getElementById('global-search-dropdown');
+      if (searchInput && searchDropdown) {
+        searchInput.value = '';
+        searchDropdown.classList.add('hidden');
+        searchDropdown.classList.remove('flex');
+      }
+
+      // Open target detail modal/panel if appropriate
+      setTimeout(() => {
+        if (view === 'students' && window.studentsView && typeof window.studentsView.openStudentDetailModal === 'function') {
+          window.studentsView.openStudentDetailModal(id);
+        } else if (view === 'faculty' && window.facultyView && typeof window.facultyView.openAssignClassModal === 'function') {
+          window.facultyView.openAssignClassModal(id);
+        } else if (view === 'courses' && window.coursesView && typeof window.coursesView.openSyllabusModal === 'function') {
+          window.coursesView.openSyllabusModal(id);
+        }
+      }, 150);
     }
   };
 

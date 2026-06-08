@@ -1,0 +1,4 @@
+[2026-06-08T17:32:30.193Z] [Local Stream - forum-events]: {"type":"image","post_id":"post_iik5vmhg0","user_id":"usr_001","timestamp":"2026-06-08T17:32:30.193Z"}
+[2026-06-08T17:32:30.245Z] [Kafka Event - forum-events]: {"type":"image","post_id":"post_iik5vmhg0","user_id":"usr_001","timestamp":"2026-06-08T17:32:30.193Z"}
+[2026-06-08T17:32:39.846Z] [Local Stream - forum-events]: {"type":"like-toggle","post_id":"post_iik5vmhg0","user_id":"usr_001","liked":true,"timestamp":"2026-06-08T17:32:39.846Z"}
+[2026-06-08T17:32:39.850Z] [Kafka Event - forum-events]: {"type":"like-toggle","post_id":"post_iik5vmhg0","user_id":"usr_001","liked":true,"timestamp":"2026-06-08T17:32:39.846Z"}

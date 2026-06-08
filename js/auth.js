@@ -796,6 +796,7 @@ window.AuthSystem = (function () {
     };
 
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
+    resetFailure();
 
     return { success: true, message: 'Login successful!', user: sessionData };
   }
@@ -836,20 +837,111 @@ window.AuthSystem = (function () {
     }
   }
 
+  // ── TensorFlow Anomaly Detection Logic ──
+  var failureCount = 0;
+  var tfModel = null;
+
+  async function initTfModel() {
+    if (typeof tf === 'undefined') return;
+    try {
+      tfModel = tf.sequential();
+      tfModel.add(tf.layers.dense({ units: 4, activation: 'relu', inputShape: [4] }));
+      tfModel.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+      tfModel.compile({
+        optimizer: tf.train.adam(0.1),
+        loss: 'binaryCrossentropy'
+      });
+    } catch (err) {
+      console.warn('TF.js init failed or was bypassed:', err);
+    }
+  }
+
+  async function trainAnomalyModel() {
+    if (typeof tf === 'undefined' || !tfModel) return;
+    try {
+      var hour = new Date().getHours();
+      // Mock inputs: [emailLen, passLen, failStreak, hourOfDay]
+      var trainX = tf.tensor2d([
+        [15/50, 10/50, 0, 10/24],
+        [18/50, 12/50, 0, 14/24],
+        [20/50, 8/50, 0, 16/24],
+        [5/50, 2/50, 3/5, 3/24],
+        [8/50, 3/50, 4/5, 1/24],
+        [10/50, 4/50, Math.min(failureCount/5, 1), hour/24]
+      ], [6, 4]);
+      var trainY = tf.tensor2d([
+        [0], [0], [0], [1], [1], [failureCount >= 2 ? 1 : 0]
+      ], [6, 1]);
+      await tfModel.fit(trainX, trainY, { epochs: 10, verbose: 0 });
+      trainX.dispose();
+      trainY.dispose();
+    } catch (err) {
+      console.error('TF Anomaly training failed:', err);
+    }
+  }
+
+  async function calculateLoginThreat(email, password) {
+    if (typeof tf === 'undefined') return 0.01;
+    try {
+      if (!tfModel) {
+        await initTfModel();
+      }
+      var emailLen = (email || '').length;
+      var passLen = (password || '').length;
+      var hour = new Date().getHours();
+
+      var inputTensor = tf.tensor2d([
+        [Math.min(emailLen / 50, 1), Math.min(passLen / 50, 1), Math.min(failureCount / 5, 1), hour / 24]
+      ], [1, 4]);
+
+      var output = tfModel.predict(inputTensor);
+      var prob = (await output.data())[0];
+      inputTensor.dispose();
+      output.dispose();
+      return prob;
+    } catch (err) {
+      return 0.01;
+    }
+  }
+
+  function recordFailure() {
+    failureCount++;
+    if (tfModel) {
+      trainAnomalyModel();
+    }
+  }
+
+  function resetFailure() {
+    failureCount = 0;
+  }
+
+  function getFailureCount() {
+    return failureCount;
+  }
+
   // ── Initialize on load ──
   _initDefaults();
+  setTimeout(initTfModel, 500);
 
   // ── Public API ──
   return {
     register: register,
-    login: login,
+    login: function(email, password) {
+      var res = login(email, password);
+      if (!res.success) {
+        recordFailure();
+      }
+      return res;
+    },
     logout: logout,
     isLoggedIn: isLoggedIn,
     getCurrentUser: getCurrentUser,
     checkPasswordStrength: checkPasswordStrength,
     validateEmail: validateEmail,
     validateRequired: validateRequired,
-    validatePasswordMatch: validatePasswordMatch
+    validatePasswordMatch: validatePasswordMatch,
+    calculateLoginThreat: calculateLoginThreat,
+    getFailureCount: getFailureCount
   };
 
 })();

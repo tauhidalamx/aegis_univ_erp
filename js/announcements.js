@@ -17,7 +17,7 @@ window.announcementsView = (function() {
       </div>
 
       <!-- Notices grid -->
-      <div class="grid-2 animate-fade-in delay-1" style="margin-top: 24px;" id="notices-grid-container">
+      <div class="grid-2 animate-fade-in delay-1 mt-6" id="notices-grid-container">
         <!-- Loaded dynamically -->
       </div>
     `;
@@ -32,7 +32,7 @@ window.announcementsView = (function() {
 
     if (list.length === 0) {
       container.innerHTML = `
-        <div class="card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 32px;">
+        <div class="card col-span-full text-center text-brand-text-muted p-8">
           No notices posted on notice board.
         </div>
       `;
@@ -40,16 +40,16 @@ window.announcementsView = (function() {
     }
 
     container.innerHTML = list.map(ann => `
-      <div class="card" style="border-left: 5px solid ${ann.color || 'var(--primary)'}; display:flex; flex-direction:column; gap:16px;">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span class="badge" style="background-color: var(--bg-tertiary); color: var(--text-main); font-weight:700;">${ann.tag}</span>
-          <span style="font-size:0.75rem; color:var(--text-subtle);">${ann.date}</span>
+      <div class="card flex flex-col gap-4" style="border-left: 5px solid ${ann.color || 'var(--color-brand-primary)'};">
+        <div class="flex justify-between items-center">
+          <span class="badge bg-brand-bg-tertiary text-brand-text-main font-bold">${ann.tag}</span>
+          <span class="text-xs text-brand-text-subtle">${ann.date}</span>
         </div>
         <div>
-          <h3 style="font-family: var(--font-display); font-size:1.15rem; margin:0 0 6px 0;">${ann.title}</h3>
-          <p style="color:var(--text-muted); font-size:0.9rem; line-height:1.5;">${ann.content}</p>
+          <h3 class="font-display text-lg mb-1.5 font-semibold">${ann.title}</h3>
+          <p class="text-brand-text-muted text-sm leading-relaxed">${ann.content}</p>
         </div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:auto; padding-top:10px; border-top:1px solid var(--border);">
+        <div class="flex justify-end gap-2 mt-auto pt-2.5 border-t border-brand-border">
           <button class="btn btn-secondary btn-sm edit-notice-btn" data-id="${ann.id}">Remove Notice</button>
         </div>
       </div>
@@ -82,10 +82,10 @@ window.announcementsView = (function() {
         <div class="form-group">
           <label class="form-label">Color Theme Accent</label>
           <select class="form-control" id="post-ann-color">
-            <option value="var(--primary)">Indigo (Academic)</option>
-            <option value="var(--accent-emerald)">Emerald (Event)</option>
-            <option value="var(--accent-ruby)">Ruby (Alerts)</option>
-            <option value="var(--accent-cyan)">Cyan (Tech)</option>
+            <option value="var(--color-brand-primary)">Indigo (Academic)</option>
+            <option value="var(--color-brand-accent-emerald)">Emerald (Event)</option>
+            <option value="var(--color-brand-accent-ruby)">Ruby (Alerts)</option>
+            <option value="var(--color-brand-accent-cyan)">Cyan (Tech)</option>
           </select>
         </div>
       </div>

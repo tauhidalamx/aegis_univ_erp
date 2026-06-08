@@ -15,13 +15,13 @@ window.coursesView = (function() {
       </div>
 
       <!-- Search Filters -->
-      <div class="card animate-fade-in delay-1" style="margin-top: 24px;">
-        <div class="grid-2" style="grid-template-columns: 2fr 1fr; align-items: end;">
-          <div class="form-group" style="margin-bottom:0;">
+      <div class="card animate-fade-in delay-1 mt-6">
+        <div class="grid grid-cols-[2fr_1fr] gap-4 items-end max-md:grid-cols-1">
+          <div class="form-group mb-0">
             <label class="form-label">Search Courses</label>
             <input type="text" class="form-control" placeholder="Search by course code, title, or instructor..." id="course-search">
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Department Stream</label>
             <select class="form-control" id="course-dept-filter">
               <option value="ALL">All Departments</option>
@@ -36,7 +36,7 @@ window.coursesView = (function() {
       </div>
 
       <!-- Course Cards Container -->
-      <div class="grid-3 animate-fade-in delay-2" style="margin-top: 24px;" id="courses-grid-body">
+      <div class="grid-3 animate-fade-in delay-2 mt-6" id="courses-grid-body">
         <!-- Loaded dynamically -->
       </div>
     `;
@@ -71,7 +71,7 @@ window.coursesView = (function() {
 
     if (data.length === 0) {
       container.innerHTML = `
-        <div class="card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 32px;">
+        <div class="card col-span-full text-center text-brand-text-muted p-8">
           No matching courses found in the current academic calendar catalog.
         </div>
       `;
@@ -83,35 +83,52 @@ window.coursesView = (function() {
       const instructorName = instructor ? instructor.name : 'Unassigned';
       const fillPercentage = Math.min((c.enrolledCount / c.maxEnrollment) * 100, 100);
       
-      let fillClass = 'bg-accent-emerald';
-      if (fillPercentage > 90) fillClass = 'text-accent-ruby';
-      else if (fillPercentage > 75) fillClass = 'text-accent-amber';
+      let fillClass = 'text-brand-accent-emerald';
+      if (fillPercentage > 90) fillClass = 'text-brand-accent-ruby';
+      else if (fillPercentage > 75) fillClass = 'text-brand-accent-amber';
+
+      // Dynamic course attendance calculation
+      const students = window.UniversityDB.getStudents();
+      let enrolled = students.filter(s => s.courses.includes(c.code));
+      if (enrolled.length === 0) enrolled = students.filter(s => s.dept === c.dept);
+      const avgAttend = enrolled.length > 0 ? Math.round(enrolled.reduce((a, b) => a + (b.attendance || 0), 0) / enrolled.length) : 90;
 
       return `
-        <div class="card" style="display:flex; flex-direction:column; gap:16px;">
-          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-            <code style="font-size: 1.1rem; color: var(--primary); font-weight:700;">${c.code}</code>
+        <div class="card flex flex-col gap-4">
+          <div class="flex justify-between items-start">
+            <code class="text-lg text-brand-primary font-bold">${c.code}</code>
             <span class="badge badge-info">${c.credits} Credits</span>
           </div>
           
           <div>
-            <h4 style="margin: 0 0 6px 0; font-family: var(--font-display); font-size:1.1rem;">${c.title}</h4>
-            <span style="font-size:0.75rem; color:var(--text-muted);">Instructor: <strong>${instructorName}</strong></span>
+            <h4 class="m-0 mb-1.5 font-display text-lg font-bold">${c.title}</h4>
+            <span class="text-[0.75rem] text-brand-text-muted">Instructor: <strong>${instructorName}</strong></span>
           </div>
 
           <!-- Enrollment stats progress -->
           <div>
-            <div style="display:flex; justify-content:space-between; font-size: 0.8rem; margin-bottom:4px;">
+            <div class="flex justify-between text-[0.8rem] mb-1">
               <span>Enrolled Seats</span>
               <strong class="${fillClass}">${c.enrolledCount} / ${c.maxEnrollment}</strong>
             </div>
-            <div style="height:6px; background-color: var(--bg-tertiary); border-radius:3px; overflow:hidden;">
-              <div style="width: ${fillPercentage}%; height:100%; background-color: var(--primary);"></div>
+            <div class="h-1.5 bg-brand-bg-tertiary rounded-full overflow-hidden">
+              <div class="h-full bg-brand-primary" style="width: ${fillPercentage}%;"></div>
             </div>
           </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; padding-top:10px; border-top:1px solid var(--border);">
-            <span style="font-size:0.8rem; color:var(--text-subtle);">Department: ${c.dept}</span>
+          <!-- Attendance stats progress -->
+          <div>
+            <div class="flex justify-between text-[0.8rem] mb-1">
+              <span>Avg Class Attendance</span>
+              <strong class="${avgAttend < 75 ? 'text-brand-accent-ruby' : (avgAttend < 85 ? 'text-brand-accent-amber' : 'text-brand-accent-emerald')}">${avgAttend}%</strong>
+            </div>
+            <div class="h-1.5 bg-brand-bg-tertiary rounded-full overflow-hidden">
+              <div class="h-full bg-brand-accent-cyan" style="width: ${avgAttend}%;"></div>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center mt-auto pt-2.5 border-t border-brand-border">
+            <span class="text-[0.8rem] text-brand-text-subtle">Department: ${c.dept}</span>
             <button class="btn btn-secondary btn-sm syllabus-btn" data-code="${c.code}">Syllabus</button>
           </div>
         </div>
@@ -136,23 +153,23 @@ window.coursesView = (function() {
     const instructorName = instructor ? instructor.name : 'TBD';
 
     const bodyHTML = `
-      <h3 style="font-family: var(--font-display); margin-bottom:8px;">${c.title}</h3>
-      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:20px;">Code: <code>${c.code}</code> | Dept: ${c.dept} | Credits: ${c.credits}</p>
+      <h3 class="font-display text-lg font-bold mb-2">${c.title}</h3>
+      <p class="text-brand-text-muted text-[0.875rem] mb-5">Code: <code>${c.code}</code> | Dept: ${c.dept} | Credits: ${c.credits}</p>
       
-      <h4 style="margin-bottom:10px;">Course Description</h4>
-      <p style="color:var(--text-main); font-size:0.9rem; line-height:1.6; margin-bottom:20px;">
+      <h4 class="mb-2.5 text-base font-semibold">Course Description</h4>
+      <p class="text-brand-text-main text-[0.9rem] leading-relaxed mb-5">
         This academic course covers modern concepts of ${c.title.toLowerCase()} inside the college syllabus. Students will understand core practices, theoretical bounds, build assignments, and review real-world implementations led by ${instructorName}.
       </p>
 
-      <h4 style="margin-bottom:10px;">Weekly Syllabus Outline</h4>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <div style="padding:10px; background-color:var(--bg-tertiary); border-radius:var(--radius-sm);">
+      <h4 class="mb-2.5 text-base font-semibold">Weekly Syllabus Outline</h4>
+      <div class="flex flex-col gap-2.5">
+        <div class="p-2.5 bg-brand-bg-tertiary rounded-lg border border-brand-border">
           <strong>Weeks 1-4:</strong> Fundamental Theories & Systems Overview.
         </div>
-        <div style="padding:10px; background-color:var(--bg-tertiary); border-radius:var(--radius-sm);">
+        <div class="p-2.5 bg-brand-bg-tertiary rounded-lg border border-brand-border">
           <strong>Weeks 5-8:</strong> Core Architectural Implementations & Lab Projects.
         </div>
-        <div style="padding:10px; background-color:var(--bg-tertiary); border-radius:var(--radius-sm);">
+        <div class="p-2.5 bg-brand-bg-tertiary rounded-lg border border-brand-border">
           <strong>Weeks 9-12:</strong> Advanced Topics, Integrations & Final Seminar Review.
         </div>
       </div>
@@ -251,7 +268,8 @@ window.coursesView = (function() {
 
   return {
     render: render,
-    applyFilters: applyFilters
+    applyFilters: applyFilters,
+    openSyllabusModal: openSyllabusModal
   };
 
 })();

@@ -14,24 +14,24 @@ window.examsView = (function() {
         </div>
       </div>
 
-      <div class="grid-2 animate-fade-in delay-1" style="margin-top: 24px;">
+      <div class="grid-2 animate-fade-in delay-1 mt-6">
         
         <!-- Exam Schedules list -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family: var(--font-display);">Upcoming Exams</h3>
-          <div style="display:flex; flex-direction:column; gap:12px;">
+          <h3 class="mb-4 font-display text-lg font-semibold">Upcoming Exams</h3>
+          <div class="flex flex-col gap-3">
             ${exams.map(ex => {
               const c = courses.find(course => course.code === ex.code);
               return `
-                <div style="padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--bg-tertiary); display:flex; justify-content:space-between; align-items:center;">
+                <div class="p-4 border border-brand-border rounded-xl bg-brand-bg-tertiary flex justify-between items-center transition-all duration-200 hover:translate-x-1 hover:border-brand-primary/30 hover:bg-brand-primary/5">
                   <div>
-                    <code style="color:var(--primary); font-weight:700; font-size:1rem;">${ex.code}</code>
-                    <h4 style="margin:4px 0 2px 0; font-family:var(--font-display);">${ex.name}</h4>
-                    <span style="font-size:0.8rem; color:var(--text-muted);">${ex.date} @ ${ex.time}</span>
+                    <code class="text-brand-primary font-bold text-base">${ex.code}</code>
+                    <h4 class="mt-1 mb-0.5 font-display font-medium">${ex.name}</h4>
+                    <span class="text-xs text-brand-text-muted">${ex.date} @ ${ex.time}</span>
                   </div>
-                  <div style="text-align:right;">
-                    <span class="badge badge-info" style="font-size:0.75rem;">${ex.venue}</span>
-                    <div style="font-size:0.75rem; color:var(--text-subtle); margin-top:4px;">${c ? c.credits : 3} Credits</div>
+                  <div class="text-right">
+                    <span class="badge badge-info text-[0.75rem]">${ex.venue}</span>
+                    <div class="text-[0.75rem] text-brand-text-subtle mt-1">${c ? c.credits : 3} Credits</div>
                   </div>
                 </div>
               `;
@@ -41,8 +41,8 @@ window.examsView = (function() {
 
         <!-- Transcript Workspace Panel -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family: var(--font-display);">Academic Transcript Generator</h3>
-          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Retrieve official term grade reports for enrolled students.</p>
+          <h3 class="mb-4 font-display text-lg font-semibold">Academic Transcript Generator</h3>
+          <p class="text-brand-text-muted text-xs mb-5">Retrieve official term grade reports for enrolled students.</p>
           
           <div class="form-group">
             <label class="form-label">Search Student Profile (Select ID)</label>
@@ -51,7 +51,7 @@ window.examsView = (function() {
             </select>
           </div>
 
-          <div id="transcript-sheet-body" style="padding:16px; border: 1px dashed var(--border); border-radius: var(--radius-md); background:rgba(255,255,255,0.01); margin-top:20px;">
+          <div id="transcript-sheet-body" class="p-4 border border-dashed border-brand-border rounded-xl bg-white/[0.01] mt-5">
             <!-- Loaded dynamically on select -->
           </div>
         </div>
@@ -59,25 +59,25 @@ window.examsView = (function() {
       </div>
 
       <!-- Quick Grade Entry System Card -->
-      <div class="card animate-fade-in delay-2" style="margin-top:24px;">
-        <h3 style="margin-bottom:16px; font-family: var(--font-display);">Interactive Term Grade Entry</h3>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:20px;">Enter raw final assessment scores (0-100) to automate grade and GPA logs.</p>
+      <div class="card animate-fade-in delay-2 mt-6">
+        <h3 class="mb-4 font-display text-lg font-semibold">Interactive Term Grade Entry</h3>
+        <p class="text-brand-text-muted text-sm mb-5">Enter raw final assessment scores (0-100) to automate grade and GPA logs.</p>
         
-        <div class="grid-3" style="grid-template-columns: 1fr 1fr 1fr; align-items:end; margin-bottom: 24px;">
-          <div class="form-group" style="margin-bottom:0;">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end mb-6">
+          <div class="form-group mb-0">
             <label class="form-label">Subject Code</label>
             <select class="form-control" id="grade-course-select">
               ${courses.map(c => `<option value="${c.code}">${c.code} - ${c.title}</option>`).join('')}
             </select>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Selected Student</label>
             <select class="form-control" id="grade-student-select">
               ${students.map(s => `<option value="${s.id}">${s.name}</option>`).join('')}
             </select>
           </div>
-          <div class="form-group" style="margin-bottom:0; display:flex; flex-direction:row; gap:8px;">
-            <div style="flex:1;">
+          <div class="form-group mb-0 flex flex-row gap-2">
+            <div class="flex-1">
               <label class="form-label">Term Score</label>
               <input type="number" class="form-control" id="grade-score" min="0" max="100" value="85">
             </div>
@@ -136,7 +136,7 @@ window.examsView = (function() {
 
     const stu = window.UniversityDB.getStudents().find(s => s.id === studentId);
     if (!stu) {
-      container.innerHTML = `<span style="color:var(--text-muted);">Select a valid student profile ID.</span>`;
+      container.innerHTML = `<span class="text-brand-text-muted">Select a valid student profile ID.</span>`;
       return;
     }
 
@@ -148,29 +148,29 @@ window.examsView = (function() {
     ];
 
     container.innerHTML = `
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-        <span style="font-weight:600; font-family:var(--font-display);">${stu.name}</span>
-        <code style="font-size:0.8rem;">CGPA: ${stu.gpa.toFixed(2)}</code>
+      <div class="flex justify-between items-center mb-3">
+        <span class="font-semibold font-display">${stu.name}</span>
+        <code class="text-xs">CGPA: ${stu.gpa.toFixed(2)}</code>
       </div>
-      <table style="width:100%; border-collapse:collapse; font-size:0.825rem;">
+      <table class="w-full border-collapse text-[0.825rem]">
         <thead>
-          <tr style="border-bottom:1px solid var(--border);">
-            <th style="padding: 6px 0; text-align:left; color:var(--text-muted);">Subject</th>
-            <th style="padding: 6px 0; text-align:center; color:var(--text-muted);">Credits</th>
-            <th style="padding: 6px 0; text-align:right; color:var(--text-muted);">Grade</th>
+          <tr class="border-b border-brand-border">
+            <th class="py-1.5 px-0 text-left text-brand-text-muted bg-transparent border-b-0 uppercase tracking-normal">Subject</th>
+            <th class="py-1.5 px-0 text-center text-brand-text-muted bg-transparent border-b-0 uppercase tracking-normal">Credits</th>
+            <th class="py-1.5 px-0 text-right text-brand-text-muted bg-transparent border-b-0 uppercase tracking-normal">Grade</th>
           </tr>
         </thead>
         <tbody>
           ${grades.map(g => `
-            <tr style="border-bottom:1px dashed var(--border);">
-              <td style="padding:8px 0;"><code>${g.code}</code> - ${g.title}</td>
-              <td style="padding:8px 0; text-align:center;">${g.credits}</td>
-              <td style="padding:8px 0; text-align:right; font-weight:600; color:var(--primary);">${g.grade}</td>
+            <tr class="border-b border-dashed border-brand-border">
+              <td class="py-2 px-0 border-b-0"><code>${g.code}</code> - ${g.title}</td>
+              <td class="py-2 px-0 text-center border-b-0">${g.credits}</td>
+              <td class="py-2 px-0 text-right font-semibold text-brand-primary border-b-0">${g.grade}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
-      <div style="margin-top:16px; text-align:right;">
+      <div class="mt-4 text-right">
         <button class="btn btn-secondary btn-sm" onclick="alert('Sending digital transcript via Secure email...')">Email Transcript PDF</button>
       </div>
     `;

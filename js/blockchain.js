@@ -111,7 +111,7 @@ window.blockchainView = (function() {
           <h1>Blockchain & Web3 Hub</h1>
           <p>Decentralized credential verification, digital certificate minting, on-chain ledger, and student wallet management.</p>
         </div>
-        <div style="display:flex; gap:8px;">
+        <div class="flex gap-2">
           <button class="btn btn-secondary btn-sm" id="btn-verify-cert">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
             Verify Certificate
@@ -124,81 +124,81 @@ window.blockchainView = (function() {
       </div>
 
       <!-- Chain KPI Summary -->
-      <div class="kpi-grid animate-fade-in delay-1" style="margin-top:24px;">
+      <div class="kpi-grid animate-fade-in delay-1 mt-6">
         <div class="card kpi-card">
           <div class="kpi-details">
             <span class="kpi-label">Chain Height</span>
-            <span class="kpi-value" style="color:var(--primary);">#${totalBlocks}</span>
-            <span class="kpi-growth text-accent-emerald">Live • Synced</span>
+            <span class="kpi-value text-brand-primary">#${totalBlocks}</span>
+            <span class="kpi-growth text-brand-accent-emerald">Live • Synced</span>
           </div>
-          <div class="kpi-icon" style="color:var(--primary);">
+          <div class="kpi-icon text-brand-primary">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
           </div>
         </div>
         <div class="card kpi-card">
           <div class="kpi-details">
             <span class="kpi-label">Certificates Issued</span>
-            <span class="kpi-value" style="color:var(--accent-emerald);">${totalCerts}</span>
-            <span class="kpi-growth text-accent-cyan">Immutable Credentials</span>
+            <span class="kpi-value text-brand-accent-emerald">${totalCerts}</span>
+            <span class="kpi-growth text-brand-accent-cyan">Immutable Credentials</span>
           </div>
-          <div class="kpi-icon" style="color:var(--accent-emerald);">
+          <div class="kpi-icon text-brand-accent-emerald">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
           </div>
         </div>
         <div class="card kpi-card">
           <div class="kpi-details">
             <span class="kpi-label">Gas Consumed</span>
-            <span class="kpi-value" style="color:var(--accent-amber);">${(totalGasUsed / 1000).toFixed(1)}K</span>
-            <span class="kpi-growth text-accent-amber">Cumulative Wei</span>
+            <span class="kpi-value text-brand-accent-amber">${(totalGasUsed / 1000).toFixed(1)}K</span>
+            <span class="kpi-growth text-brand-accent-amber">Cumulative Wei</span>
           </div>
-          <div class="kpi-icon" style="color:var(--accent-amber);">
+          <div class="kpi-icon text-brand-accent-amber">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
           </div>
         </div>
         <div class="card kpi-card">
           <div class="kpi-details">
             <span class="kpi-label">Active Wallets</span>
-            <span class="kpi-value" style="color:var(--accent-cyan);">${uniqueWallets}</span>
-            <span class="kpi-growth text-accent-emerald">EduChain Testnet</span>
+            <span class="kpi-value text-brand-accent-cyan">${uniqueWallets}</span>
+            <span class="kpi-growth text-brand-accent-emerald">EduChain Testnet</span>
           </div>
-          <div class="kpi-icon" style="color:var(--accent-cyan);">
+          <div class="kpi-icon text-brand-accent-cyan">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 10H18a2 2 0 100 4h4"/></svg>
           </div>
         </div>
       </div>
 
       <!-- Two Column: Chain Activity Chart + Certificates -->
-      <div class="grid-2 animate-fade-in delay-2" style="margin-top:24px;">
+      <div class="grid-2 animate-fade-in delay-2 mt-6">
 
         <!-- Block Activity Chart -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family:var(--font-display);">Block Activity Timeline</h3>
-          <div class="chart-wrapper" style="height:220px;">
+          <h3 class="mb-4 font-display text-lg font-semibold">Block Activity Timeline</h3>
+          <div class="chart-wrapper h-[220px]">
             <canvas id="chain-activity-chart"></canvas>
           </div>
         </div>
 
         <!-- Issued Certificates List -->
         <div class="card">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-            <h3 style="font-family:var(--font-display);">Minted Credential NFTs</h3>
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-display text-lg font-semibold">Minted Credential NFTs</h3>
             <span class="badge badge-success">${totalCerts} On-Chain</span>
           </div>
-          <div style="display:flex; flex-direction:column; gap:12px; max-height:280px; overflow-y:auto; padding-right:4px;" id="cert-list-container">
+          <div class="flex flex-col gap-3 max-h-[280px] overflow-y-auto pr-1" id="cert-list-container">
             ${CERTIFICATES.map(cert => `
-              <div style="padding:14px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--bg-tertiary); display:flex; justify-content:space-between; align-items:center; gap:12px;">
-                <div style="flex:1; min-width:0;">
-                  <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="${cert.type === 'Degree Certificate' ? 'var(--accent-amber)' : (cert.type === 'Merit Certificate' ? 'var(--accent-ruby)' : 'var(--accent-emerald)')}" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                    <strong style="font-size:0.9rem;">${cert.studentName}</strong>
-                    <span class="badge" style="font-size:0.65rem; background:rgba(99,102,241,0.1); color:var(--primary);">${cert.type}</span>
+              <div class="p-3 border border-brand-border rounded-xl bg-brand-bg-tertiary flex justify-between items-center gap-3 transition-all duration-200 hover:translate-x-1 hover:border-brand-accent-cyan/30">
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center gap-2 mb-1">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="${cert.type === 'Degree Certificate' ? 'var(--color-brand-accent-amber)' : (cert.type === 'Merit Certificate' ? 'var(--color-brand-accent-ruby)' : 'var(--color-brand-accent-emerald)')}" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <strong class="text-sm">${cert.studentName}</strong>
+                    <span class="badge text-[0.65rem] bg-brand-primary/10 text-brand-primary">${cert.type}</span>
                   </div>
-                  <div style="font-size:0.8rem; color:var(--text-muted);">${cert.course}</div>
-                  <code style="font-size:0.65rem; color:var(--text-subtle); word-break:break-all;">${cert.txHash.slice(0, 30)}...</code>
+                  <div class="text-xs text-brand-text-muted">${cert.course}</div>
+                  <code class="text-[0.65rem] text-brand-text-subtle break-all">${cert.txHash.slice(0, 30)}...</code>
                 </div>
-                <div style="text-align:right; flex-shrink:0;">
+                <div class="text-right shrink-0">
                   <span class="badge badge-success" style="font-size:0.7rem;">✓ Verified</span>
-                  <div style="font-size:0.7rem; color:var(--text-subtle); margin-top:4px;">Block #${cert.blockIndex}</div>
+                  <div class="text-[0.7rem] text-brand-text-subtle mt-1">Block #${cert.blockIndex}</div>
                 </div>
               </div>
             `).join('')}
@@ -207,20 +207,20 @@ window.blockchainView = (function() {
       </div>
 
       <!-- Two Column: Block Explorer + Student Wallets -->
-      <div class="grid-2 animate-fade-in delay-3" style="margin-top:24px;">
+      <div class="grid-2 animate-fade-in delay-3 mt-6">
 
         <!-- Block Explorer -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family:var(--font-display);">Block Explorer — On-Chain Ledger</h3>
-          <div style="max-height:380px; overflow-y:auto; padding-right:4px;">
-            <table style="width:100%; border-collapse:collapse;">
+          <h3 class="mb-4 font-display text-lg font-semibold">Block Explorer — On-Chain Ledger</h3>
+          <div class="max-h-[380px] overflow-y-auto pr-1">
+            <table class="w-full border-collapse">
               <thead>
                 <tr>
-                  <th style="padding:10px; font-size:0.75rem;">Block</th>
-                  <th style="padding:10px; font-size:0.75rem;">Type</th>
-                  <th style="padding:10px; font-size:0.75rem;">Hash</th>
-                  <th style="padding:10px; font-size:0.75rem;">Gas</th>
-                  <th style="padding:10px; font-size:0.75rem;">Nonce</th>
+                  <th class="p-2.5 text-[0.75rem]">Block</th>
+                  <th class="p-2.5 text-[0.75rem]">Type</th>
+                  <th class="p-2.5 text-[0.75rem]">Hash</th>
+                  <th class="p-2.5 text-[0.75rem]">Gas</th>
+                  <th class="p-2.5 text-[0.75rem]">Nonce</th>
                 </tr>
               </thead>
               <tbody>
@@ -232,12 +232,12 @@ window.blockchainView = (function() {
                   else if (block.type === 'GENESIS') { typeColor = 'var(--primary)'; typeBadge = 'badge-info'; }
 
                   return `
-                    <tr style="border-bottom:1px solid var(--border); cursor:pointer;" class="block-row" data-idx="${block.index}">
-                      <td style="padding:10px; font-weight:700; color:var(--primary); font-size:0.85rem;">#${block.index}</td>
-                      <td style="padding:10px;"><span class="badge ${typeBadge}" style="font-size:0.7rem;">${block.type.replace('_', ' ')}</span></td>
-                      <td style="padding:10px;"><code style="font-size:0.7rem; color:var(--text-muted);">${block.hash.slice(0, 18)}...</code></td>
-                      <td style="padding:10px; font-size:0.8rem; color:var(--text-muted);">${(block.gasUsed || 0).toLocaleString()}</td>
-                      <td style="padding:10px; font-size:0.8rem; color:var(--text-subtle);">${block.nonce}</td>
+                    <tr class="block-row border-b border-brand-border cursor-pointer hover:bg-white/[0.02] transition-colors" data-idx="${block.index}">
+                      <td class="p-2.5 font-bold text-brand-primary text-sm">#${block.index}</td>
+                      <td class="p-2.5"><span class="badge ${typeBadge} text-[0.7rem]">${block.type.replace('_', ' ')}</span></td>
+                      <td class="p-2.5"><code class="text-[0.7rem] text-brand-text-muted">${block.hash.slice(0, 18)}...</code></td>
+                      <td class="p-2.5 text-xs text-brand-text-muted">${(block.gasUsed || 0).toLocaleString()}</td>
+                      <td class="p-2.5 text-xs text-brand-text-subtle">${block.nonce}</td>
                     </tr>
                   `;
                 }).join('')}
@@ -248,24 +248,24 @@ window.blockchainView = (function() {
 
         <!-- Student Wallets -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family:var(--font-display);">Student Credential Wallets</h3>
-          <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:16px;">Aegis EduChain Testnet — Each student receives a decentralized identity wallet upon enrollment.</p>
-          <div style="display:flex; flex-direction:column; gap:12px; max-height:330px; overflow-y:auto; padding-right:4px;">
+          <h3 class="mb-4 font-display text-lg font-semibold">Student Credential Wallets</h3>
+          <p class="text-brand-text-muted text-xs mb-4">Aegis EduChain Testnet — Each student receives a decentralized identity wallet upon enrollment.</p>
+          <div class="flex flex-col gap-3 max-h-[330px] overflow-y-auto pr-1">
             ${window.UniversityDB.getStudents().map(stu => {
               const w = WALLETS[stu.id];
               if (!w) return '';
               return `
-                <div style="padding:14px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--bg-tertiary); display:flex; justify-content:space-between; align-items:center;">
-                  <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-                    <img src="${stu.avatar}" style="width:32px; height:32px; border-radius:50%; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">
-                    <div style="min-width:0;">
-                      <strong style="font-size:0.875rem;">${stu.name}</strong>
-                      <code style="display:block; font-size:0.65rem; color:var(--text-subtle); word-break:break-all;">${w.address}</code>
+                <div class="p-3 border border-brand-border rounded-xl bg-brand-bg-tertiary flex justify-between items-center transition-all duration-200 hover:bg-white/[0.02]">
+                  <div class="flex items-center gap-3 min-w-0 flex-1">
+                    <img src="${stu.avatar}" class="w-8 h-8 rounded-full object-cover border border-brand-border shrink-0">
+                    <div class="min-w-0">
+                      <strong class="text-sm">${stu.name}</strong>
+                      <code class="block text-[0.65rem] text-brand-text-subtle break-all">${w.address}</code>
                     </div>
                   </div>
-                  <div style="text-align:right; flex-shrink:0; margin-left:12px;">
-                    <div style="font-weight:700; color:var(--accent-cyan); font-size:0.95rem;">${w.balance} ETH</div>
-                    <span style="font-size:0.7rem; color:var(--text-subtle);">${w.certificates} cert(s)</span>
+                  <div class="text-right shrink-0 ml-3">
+                    <div class="font-bold text-brand-accent-cyan text-sm">${w.balance} ETH</div>
+                    <span class="text-[0.7rem] text-brand-text-subtle">${w.certificates} cert(s)</span>
                   </div>
                 </div>
               `;
@@ -275,30 +275,30 @@ window.blockchainView = (function() {
       </div>
 
       <!-- Smart Contract Simulation -->
-      <div class="card animate-fade-in delay-4" style="margin-top:24px;">
-        <h3 style="margin-bottom:8px; font-family:var(--font-display);">Smart Contract — Fee Payment Gateway</h3>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Execute a simulated on-chain fee transaction through the Aegis University smart contract.</p>
-        <div style="display:grid; grid-template-columns: 1fr 1fr 1fr auto; gap:16px; align-items:end;">
-          <div class="form-group" style="margin-bottom:0;">
+      <div class="card animate-fade-in delay-4 mt-6">
+        <h3 class="mb-2 font-display text-lg font-semibold">Smart Contract — Fee Payment Gateway</h3>
+        <p class="text-brand-text-muted text-xs mb-5">Execute a simulated on-chain fee transaction through the Aegis University smart contract.</p>
+        <div class="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_auto] gap-4 items-end">
+          <div class="form-group mb-0">
             <label class="form-label">Student Wallet</label>
             <select class="form-control" id="sc-student-select">
               ${window.UniversityDB.getStudents().map(s => `<option value="${s.id}">${s.name} (${s.id})</option>`).join('')}
             </select>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Amount (ETH)</label>
             <input type="number" class="form-control" id="sc-amount" value="0.5" min="0.01" max="10" step="0.01">
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Gas Limit</label>
             <input type="number" class="form-control" id="sc-gas" value="21000" min="21000" max="100000">
           </div>
-          <button class="btn btn-primary" id="btn-execute-sc" style="height:42px;">
+          <button class="btn btn-primary h-[42px]" id="btn-execute-sc">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             Execute
           </button>
         </div>
-        <div id="sc-receipt" style="margin-top:16px;"></div>
+        <div id="sc-receipt" class="mt-4"></div>
       </div>
     `;
 
@@ -377,25 +377,25 @@ window.blockchainView = (function() {
     const dataStr = JSON.stringify(block.data, null, 2);
 
     const bodyHTML = `
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; font-size:0.875rem; margin-bottom:20px;">
-        <div><span style="color:var(--text-muted);">Block Index:</span> <strong style="color:var(--primary);">#${block.index}</strong></div>
-        <div><span style="color:var(--text-muted);">Block Type:</span> <strong>${block.type}</strong></div>
-        <div><span style="color:var(--text-muted);">Timestamp:</span> <strong>${block.timestamp}</strong></div>
-        <div><span style="color:var(--text-muted);">Nonce:</span> <strong>${block.nonce}</strong></div>
-        <div><span style="color:var(--text-muted);">Gas Used:</span> <strong>${(block.gasUsed || 0).toLocaleString()} Wei</strong></div>
-        <div><span style="color:var(--text-muted);">Status:</span> <span class="badge badge-success">Confirmed</span></div>
+      <div class="grid grid-cols-2 gap-3 md:gap-x-6 text-sm mb-5">
+        <div><span class="text-brand-text-muted">Block Index:</span> <strong class="text-brand-primary">#${block.index}</strong></div>
+        <div><span class="text-brand-text-muted">Block Type:</span> <strong>${block.type}</strong></div>
+        <div><span class="text-brand-text-muted">Timestamp:</span> <strong>${block.timestamp}</strong></div>
+        <div><span class="text-brand-text-muted">Nonce:</span> <strong>${block.nonce}</strong></div>
+        <div><span class="text-brand-text-muted">Gas Used:</span> <strong>${(block.gasUsed || 0).toLocaleString()} Wei</strong></div>
+        <div><span class="text-brand-text-muted">Status:</span> <span class="badge badge-success">Confirmed</span></div>
       </div>
-      <div style="margin-bottom:16px;">
-        <span style="color:var(--text-muted); font-size:0.85rem;">Block Hash:</span>
-        <code style="display:block; margin-top:4px; padding:10px; background:var(--bg-tertiary); border-radius:var(--radius-sm); font-size:0.75rem; word-break:break-all; color:var(--accent-cyan);">${block.hash}</code>
+      <div class="mb-4">
+        <span class="text-brand-text-muted text-xs">Block Hash:</span>
+        <code class="block mt-1 p-2.5 bg-brand-bg-tertiary rounded-lg text-xs break-all text-brand-accent-cyan">${block.hash}</code>
       </div>
-      <div style="margin-bottom:16px;">
-        <span style="color:var(--text-muted); font-size:0.85rem;">Previous Hash:</span>
-        <code style="display:block; margin-top:4px; padding:10px; background:var(--bg-tertiary); border-radius:var(--radius-sm); font-size:0.75rem; word-break:break-all; color:var(--text-subtle);">${block.prevHash}</code>
+      <div class="mb-4">
+        <span class="text-brand-text-muted text-xs">Previous Hash:</span>
+        <code class="block mt-1 p-2.5 bg-brand-bg-tertiary rounded-lg text-xs break-all text-brand-text-subtle">${block.prevHash}</code>
       </div>
       <div>
-        <span style="color:var(--text-muted); font-size:0.85rem;">Block Data Payload:</span>
-        <pre style="margin-top:4px; padding:12px; background:var(--bg-tertiary); border-radius:var(--radius-sm); font-size:0.75rem; color:var(--accent-emerald); overflow-x:auto; white-space:pre-wrap;">${dataStr}</pre>
+        <span class="text-brand-text-muted text-xs">Block Data Payload:</span>
+        <pre class="mt-1 p-3 bg-brand-bg-tertiary rounded-lg text-xs text-brand-accent-emerald overflow-x-auto whitespace-pre-wrap">${dataStr}</pre>
       </div>
     `;
 
@@ -411,7 +411,7 @@ window.blockchainView = (function() {
     const courseOpts = courses.map(c => `<option value="${c.code} - ${c.title}">${c.code} - ${c.title}</option>`).join('');
 
     const bodyHTML = `
-      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:20px;">Mint a new verifiable credential NFT to the Aegis EduChain. This certificate becomes permanently immutable once confirmed.</p>
+      <p class="text-brand-text-muted text-sm mb-5">Mint a new verifiable credential NFT to the Aegis EduChain. This certificate becomes permanently immutable once confirmed.</p>
       <div class="form-group">
         <label class="form-label">Student</label>
         <select class="form-control" id="mint-student">${stuOpts}</select>
@@ -504,12 +504,12 @@ window.blockchainView = (function() {
   // ─── VERIFY CERTIFICATE MODAL ────────────────────────────────────
   function openVerifyModal() {
     const bodyHTML = `
-      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:20px;">Enter a transaction hash or student ID to verify the authenticity of a certificate on the Aegis EduChain.</p>
+      <p class="text-brand-text-muted text-sm mb-5">Enter a transaction hash or student ID to verify the authenticity of a certificate on the Aegis EduChain.</p>
       <div class="form-group">
         <label class="form-label">Transaction Hash or Student ID</label>
         <input type="text" class="form-control" id="verify-input" placeholder="e.g. 0x... or STU001">
       </div>
-      <div id="verify-result" style="margin-top:16px;"></div>
+      <div id="verify-result" class="mt-4"></div>
     `;
 
     const footerHTML = `
@@ -526,7 +526,7 @@ window.blockchainView = (function() {
       const input = document.getElementById('verify-input').value.trim();
       const resultDiv = document.getElementById('verify-result');
       if (!input) {
-        resultDiv.innerHTML = '<p style="color:var(--accent-ruby);">Please enter a hash or student ID.</p>';
+        resultDiv.innerHTML = '<p class="text-brand-accent-ruby">Please enter a hash or student ID.</p>';
         return;
       }
 
@@ -538,32 +538,32 @@ window.blockchainView = (function() {
 
       if (found.length === 0) {
         resultDiv.innerHTML = `
-          <div style="padding:16px; border:1px solid rgba(244,63,94,0.3); border-radius:var(--radius-md); background:rgba(244,63,94,0.05);">
-            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--accent-ruby)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-              <strong style="color:var(--accent-ruby);">Not Found</strong>
+          <div class="p-4 border border-brand-accent-ruby/30 rounded-xl bg-brand-accent-ruby/5">
+            <div class="flex items-center gap-2 mb-2">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--color-brand-accent-ruby)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <strong class="text-brand-accent-ruby">Not Found</strong>
             </div>
-            <p style="font-size:0.85rem; color:var(--text-muted);">No matching certificates found on the Aegis EduChain for this query. The credential may be invalid or not yet minted.</p>
+            <p class="text-xs text-brand-text-muted">No matching certificates found on the Aegis EduChain for this query. The credential may be invalid or not yet minted.</p>
           </div>
         `;
         return;
       }
 
       resultDiv.innerHTML = found.map(cert => `
-        <div style="padding:16px; border:1px solid rgba(16,185,129,0.3); border-radius:var(--radius-md); background:rgba(16,185,129,0.05); margin-bottom:12px;">
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--accent-emerald)" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            <strong style="color:var(--accent-emerald);">✓ Verified on Blockchain</strong>
+        <div class="p-4 border border-brand-accent-emerald/30 rounded-xl bg-brand-accent-emerald/5 mb-3">
+          <div class="flex items-center gap-2 mb-2">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--color-brand-accent-emerald)" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <strong class="text-brand-accent-emerald">✓ Verified on Blockchain</strong>
           </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.85rem;">
-            <div><span style="color:var(--text-muted);">Student:</span> <strong>${cert.studentName}</strong></div>
-            <div><span style="color:var(--text-muted);">Type:</span> <strong>${cert.type}</strong></div>
-            <div><span style="color:var(--text-muted);">Course:</span> <strong>${cert.course}</strong></div>
-            <div><span style="color:var(--text-muted);">Grade:</span> <strong>${cert.grade}</strong></div>
-            <div><span style="color:var(--text-muted);">Issue Date:</span> <strong>${cert.issueDate}</strong></div>
-            <div><span style="color:var(--text-muted);">Block:</span> <strong style="color:var(--primary);">#${cert.blockIndex}</strong></div>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <div><span class="text-brand-text-muted">Student:</span> <strong>${cert.studentName}</strong></div>
+            <div><span class="text-brand-text-muted">Type:</span> <strong>${cert.type}</strong></div>
+            <div><span class="text-brand-text-muted">Course:</span> <strong>${cert.course}</strong></div>
+            <div><span class="text-brand-text-muted">Grade:</span> <strong>${cert.grade}</strong></div>
+            <div><span class="text-brand-text-muted">Issue Date:</span> <strong>${cert.issueDate}</strong></div>
+            <div><span class="text-brand-text-muted">Block:</span> <strong class="text-brand-primary">#${cert.blockIndex}</strong></div>
           </div>
-          <code style="display:block; margin-top:10px; font-size:0.7rem; color:var(--accent-cyan); word-break:break-all;">${cert.txHash}</code>
+          <code class="block mt-2.5 text-[0.7rem] text-brand-accent-cyan break-all">${cert.txHash}</code>
         </div>
       `).join('');
     });
@@ -578,15 +578,15 @@ window.blockchainView = (function() {
 
     const stu = window.UniversityDB.getStudents().find(s => s.id === studentId);
     if (!stu || isNaN(amount) || amount <= 0) {
-      receiptDiv.innerHTML = '<p style="color:var(--accent-ruby);">Invalid transaction parameters.</p>';
+      receiptDiv.innerHTML = '<p class="text-brand-accent-ruby">Invalid transaction parameters.</p>';
       return;
     }
 
     // Show loading state
     receiptDiv.innerHTML = `
-      <div style="padding:16px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--bg-tertiary); text-align:center;">
-        <div class="animate-pulse-glow" style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--primary); margin-right:8px;"></div>
-        <span style="color:var(--text-muted);">Broadcasting transaction to EduChain network...</span>
+      <div class="p-4 border border-brand-border rounded-xl bg-brand-bg-tertiary text-center">
+        <div class="animate-pulse-glow inline-block w-3 h-3 rounded-full bg-brand-primary mr-2"></div>
+        <span class="text-brand-text-muted">Broadcasting transaction to EduChain network...</span>
       </div>
     `;
 
@@ -624,27 +624,28 @@ window.blockchainView = (function() {
       }
 
       receiptDiv.innerHTML = `
-        <div style="padding:20px; border:1px solid rgba(16,185,129,0.3); border-radius:var(--radius-md); background:rgba(16,185,129,0.05);">
-          <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--accent-emerald)" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
-            <strong style="color:var(--accent-emerald); font-size:1.05rem;">Transaction Confirmed ✓</strong>
+        <div class="p-5 border border-brand-accent-emerald/30 rounded-xl bg-brand-accent-emerald/5">
+          <div class="flex items-center gap-2 mb-4">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="var(--color-brand-accent-emerald)" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+            <strong class="text-brand-accent-emerald text-base font-semibold">Transaction Confirmed ✓</strong>
           </div>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:0.85rem;">
-            <div><span style="color:var(--text-muted);">From:</span> <strong>${stu.name}</strong></div>
-            <div><span style="color:var(--text-muted);">To:</span> <strong>Aegis University Treasury</strong></div>
-            <div><span style="color:var(--text-muted);">Amount:</span> <strong style="color:var(--accent-cyan);">${amount} ETH</strong> <span style="color:var(--text-subtle);">(~$${usdEquiv})</span></div>
-            <div><span style="color:var(--text-muted);">Gas Used:</span> <strong>${gas.toLocaleString()} Wei</strong></div>
-            <div><span style="color:var(--text-muted);">Block:</span> <strong style="color:var(--primary);">#${block.index}</strong></div>
-            <div><span style="color:var(--text-muted);">Status:</span> <span class="badge badge-success">Finalized</span></div>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div><span class="text-brand-text-muted">From:</span> <strong>${stu.name}</strong></div>
+            <div><span class="text-brand-text-muted">To:</span> <strong>Aegis University Treasury</strong></div>
+            <div><span class="text-brand-text-muted">Amount:</span> <strong class="text-brand-accent-cyan">${amount} ETH</strong> <span class="text-brand-text-subtle">(~$${usdEquiv})</span></div>
+            <div><span class="text-brand-text-muted">Gas Used:</span> <strong>${gas.toLocaleString()} Wei</strong></div>
+            <div><span class="text-brand-text-muted">Block:</span> <strong class="text-brand-primary">#${block.index}</strong></div>
+            <div><span class="text-brand-text-muted">Status:</span> <span class="badge badge-success">Finalized</span></div>
           </div>
-          <code style="display:block; margin-top:12px; padding:10px; background:var(--bg-primary); border-radius:var(--radius-sm); font-size:0.7rem; word-break:break-all; color:var(--accent-cyan);">TX: ${txHash}</code>
+          <code class="block mt-3 p-2.5 bg-brand-bg-primary rounded-lg text-[0.7rem] break-all text-brand-accent-cyan">TX: ${txHash}</code>
         </div>
       `;
     }, 1500);
   }
 
   return {
-    render: render
+    render: render,
+    openMintModal: openMintModal
   };
 
 })();

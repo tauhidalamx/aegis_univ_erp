@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-app
+  labels:
+    app: aegis-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: aegis-app
+  template:
+    metadata:
+      labels:
+        app: aegis-app
+    spec:
+      containers:
+        - name: aegis-container
+          image: aegis-app:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5001
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "5001"
+            - name: DATABASE_PATH
+              value: "/app/uploads/database.sqlite"
+          volumeMounts:
+            - name: aegis-storage
+              mountPath: /app/uploads
+          readinessProbe:
+            httpGet:
+              path: /api/posts
+              port: 5001
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5001
+            initialDelaySeconds: 15
+            periodSeconds: 20
+      volumes:
+        - name: aegis-storage
+          persistentVolumeClaim:
+            claimName: aegis-pvc

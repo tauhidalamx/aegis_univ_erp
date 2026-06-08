@@ -1912,6 +1912,75 @@ window.UniversityDB = (function() {
     },
     addAnnouncement: (ann) => {
       ANNOUNCEMENTS.unshift(ann);
+    },
+    
+    // AI Database Health & Profile Integrity Classifier
+    runIntegrityPrediction: async function() {
+      if (typeof tf === 'undefined') return [];
+      var students = this.getStudents();
+      if (students.length === 0) return [];
+      
+      try {
+        var xData = students.map(s => [
+          s.gpa / 4.0,
+          s.attendance / 100.0,
+          (s.feePaid || 0) / (s.feeTotal || 5000)
+        ]);
+
+        var xs = tf.tensor2d(xData, [students.length, 3]);
+
+        var model = tf.sequential();
+        model.add(tf.layers.dense({ units: 2, activation: 'relu', inputShape: [3] }));
+        model.add(tf.layers.dense({ units: 3, activation: 'sigmoid' }));
+        model.compile({ optimizer: tf.train.adam(0.1), loss: 'meanSquaredError' });
+
+        await model.fit(xs, xs, { epochs: 15, verbose: 0 });
+
+        var predicted = model.predict(xs);
+        var predData = await predicted.data();
+
+        var anomalies = [];
+        for (let i = 0; i < students.length; i++) {
+          var orig = xData[i];
+          var pred = [predData[i*3], predData[i*3+1], predData[i*3+2]];
+          var error = Math.sqrt(
+            Math.pow(orig[0] - pred[0], 2) +
+            Math.pow(orig[1] - pred[1], 2) +
+            Math.pow(orig[2] - pred[2], 2)
+          );
+          
+          var isAnomaly = error > 0.45;
+          
+          if (students[i].status === 'Graduated' && students[i].feePaid < students[i].feeTotal * 0.95) {
+            isAnomaly = true;
+            error += 0.5;
+          }
+          if (students[i].attendance > 95 && students[i].gpa < 1.0) {
+            isAnomaly = true;
+            error += 0.3;
+          }
+
+          if (isAnomaly) {
+            anomalies.push({
+              studentId: students[i].id,
+              name: students[i].name,
+              errorScore: error.toFixed(4),
+              reason: students[i].status === 'Graduated' && students[i].feePaid < students[i].feeTotal * 0.95 ? 
+                'Graduated status with unpaid balance' : 
+                (students[i].attendance > 95 && students[i].gpa < 1.0 ? 'Critical performance discrepancy' : 'Profile anomaly pattern detected')
+            });
+          }
+        }
+
+        xs.dispose();
+        predicted.dispose();
+        model.dispose();
+
+        return anomalies;
+      } catch (err) {
+        console.error('Integrity predictor failed:', err);
+        return [];
+      }
     }
   };
 

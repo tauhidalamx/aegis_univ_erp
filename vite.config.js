@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import fs from 'fs';
+import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   build: {
@@ -8,10 +9,20 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         auth: resolve(__dirname, 'auth.html'),
+        forum: resolve(__dirname, 'forum.html'),
+      },
+    },
+  },
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5001',
+        changeOrigin: true,
       },
     },
   },
   plugins: [
+    tailwindcss(),
     {
       name: 'copy-authentication-txt',
       closeBundle() {

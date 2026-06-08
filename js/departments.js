@@ -12,25 +12,29 @@ window.departmentsView = (function() {
         </div>
       </div>
 
-      <div class="grid-3 animate-fade-in delay-1" style="margin-top: 24px;">
-        ${depts.map(d => {
+      <div class="grid-3 animate-fade-in delay-1 mt-6">
+         ${depts.map(d => {
           const budgetFormatted = d.budget.toLocaleString();
-          return `
-            <div class="card" style="border-top: 4px solid ${d.color}; display:flex; flex-direction:column; gap:16px;">
-              <div>
-                <span class="badge" style="background-color: var(--bg-tertiary); color: var(--text-main); font-weight:700;">${d.code}</span>
-                <h3 style="margin-top:10px; font-family: var(--font-display); font-size:1.2rem; line-height:1.3; min-height:46px;">${d.name}</h3>
-              </div>
+          const students = window.UniversityDB.getStudents().filter(s => s.dept === d.code);
+          const avgAttend = students.length > 0 ? Math.round(students.reduce((acc, curr) => acc + (curr.attendance || 0), 0) / students.length) : 90;
 
-              <div style="font-size:0.875rem; color:var(--text-muted); display:flex; flex-direction:column; gap:6px; padding:12px; background:rgba(255,255,255,0.01); border-radius:var(--radius-md);">
+          return `
+            <div class="card flex flex-col gap-4" style="border-top: 4px solid ${d.color};">
+              <div>
+                <span class="badge bg-brand-bg-tertiary text-brand-text-main font-bold">${d.code}</span>
+                <h3 class="mt-2.5 font-display text-lg leading-snug min-h-[46px] font-semibold">${d.name}</h3>
+              </div>
+ 
+              <div class="text-sm text-brand-text-muted flex flex-col gap-1.5 p-3 bg-white/[0.01] rounded-xl">
                 <div><strong>HOD:</strong> ${d.hod}</div>
                 <div><strong>Faculty Members:</strong> ${d.facultyCount} Professors</div>
                 <div><strong>Enrolled Students:</strong> ${d.studentCount} Majors</div>
                 <div><strong>Allocated Budget:</strong> $${budgetFormatted}</div>
+                <div><strong>Average Attendance:</strong> <span class="font-bold ${avgAttend < 75 ? 'text-brand-accent-ruby' : (avgAttend < 85 ? 'text-brand-accent-amber' : 'text-brand-accent-emerald')}">${avgAttend}%</span></div>
               </div>
-
-              <div style="display:flex; gap:8px; margin-top:auto;">
-                <button class="btn btn-secondary btn-sm edit-dept-btn" style="width:100%;" data-code="${d.code}">Manage Resources</button>
+ 
+              <div class="flex gap-2 mt-auto">
+                <button class="btn btn-secondary btn-sm edit-dept-btn w-full" data-code="${d.code}">Manage Resources</button>
               </div>
             </div>
           `;
@@ -52,8 +56,8 @@ window.departmentsView = (function() {
     if (!d) return;
 
     const bodyHTML = `
-      <h3 style="font-family:var(--font-display); margin-bottom:8px;">${d.name} (${d.code})</h3>
-      <p style="color:var(--text-muted); font-size:0.875rem; margin-bottom:20px;">Academic Deanery | Head of Department: <strong>${d.hod}</strong></p>
+      <h3 class="font-display mb-2 text-lg font-semibold">${d.name} (${d.code})</h3>
+      <p class="text-brand-text-muted text-sm mb-5">Academic Deanery | Head of Department: <strong>${d.hod}</strong></p>
       
       <div class="form-group">
         <label class="form-label">Head of Department (HOD)</label>

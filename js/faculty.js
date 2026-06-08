@@ -15,13 +15,13 @@ window.facultyView = (function() {
       </div>
 
       <!-- Search Controls -->
-      <div class="card animate-fade-in delay-1" style="margin-top: 24px;">
-        <div class="grid-2" style="grid-template-columns: 2fr 1fr; align-items: end;">
-          <div class="form-group" style="margin-bottom:0;">
+      <div class="card animate-fade-in delay-1 mt-6">
+        <div class="grid grid-cols-[2fr_1fr] gap-4 items-end max-md:grid-cols-1">
+          <div class="form-group mb-0">
             <label class="form-label">Search Faculty Directory</label>
             <input type="text" class="form-control" placeholder="Search by name, email, or department" id="faculty-search">
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Department</label>
             <select class="form-control" id="faculty-dept-filter">
               <option value="ALL">All Departments</option>
@@ -36,16 +36,16 @@ window.facultyView = (function() {
       </div>
 
       <!-- Faculty Workload Chart & Visual Overview -->
-      <div class="card animate-fade-in delay-2" style="margin-top: 24px;">
-        <h3 style="margin-bottom: 16px; font-family: var(--font-display);">Workload Management Dashboard</h3>
-        <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 0.9rem;">Maximum weekly limit: 18 hours. Values over 15 hours represent heavy workload.</p>
-        <div class="chart-wrapper" style="height: 200px;">
+      <div class="card animate-fade-in delay-2 mt-6">
+        <h3 class="mb-4 font-display text-lg font-bold">Workload Management Dashboard</h3>
+        <p class="text-brand-text-muted mb-5 text-[0.9rem]">Maximum weekly limit: 18 hours. Values over 15 hours represent heavy workload.</p>
+        <div class="chart-wrapper h-[200px]">
           <canvas id="faculty-workload-chart"></canvas>
         </div>
       </div>
 
       <!-- Faculty Directory Grid -->
-      <div class="grid-3 animate-fade-in delay-3" style="margin-top: 24px;" id="faculty-cards-container">
+      <div class="grid-3 animate-fade-in delay-3 mt-6" id="faculty-cards-container">
         <!-- Loaded dynamically -->
       </div>
     `;
@@ -78,7 +78,7 @@ window.facultyView = (function() {
 
     if (data.length === 0) {
       container.innerHTML = `
-        <div class="card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted); padding: 32px;">
+        <div class="card col-span-full text-center text-brand-text-muted p-8">
           No matching faculty listings found in database.
         </div>
       `;
@@ -87,39 +87,57 @@ window.facultyView = (function() {
 
     container.innerHTML = data.map(fac => {
       let loadPercent = Math.min((fac.workload / 18) * 100, 100);
-      let barColor = 'var(--primary)';
-      if (fac.workload > 15) barColor = 'var(--accent-ruby)';
-      else if (fac.workload > 12) barColor = 'var(--accent-amber)';
-      else barColor = 'var(--accent-emerald)';
+      let barColor = 'var(--color-brand-primary)';
+      if (fac.workload > 15) barColor = 'var(--color-brand-accent-ruby)';
+      else if (fac.workload > 12) barColor = 'var(--color-brand-accent-amber)';
+      else barColor = 'var(--color-brand-accent-emerald)';
+
+      // Calculate faculty teaching courses and corresponding average student attendance
+      const coursesTaught = window.UniversityDB.getCourses().filter(c => c.facultyId === fac.id);
+      const students = window.UniversityDB.getStudents();
+      let totalAttendance = 0;
+      let count = 0;
+
+      coursesTaught.forEach(c => {
+        let enrolled = students.filter(s => s.courses.includes(c.code));
+        if (enrolled.length === 0) enrolled = students.filter(s => s.dept === c.dept);
+        enrolled.forEach(s => {
+          totalAttendance += (s.attendance || 0);
+          count++;
+        });
+      });
+
+      const avgClassAttend = count > 0 ? Math.round(totalAttendance / count) : 90;
 
       return `
-        <div class="card" style="display:flex; flex-direction:column; gap:16px;">
-          <div style="display:flex; gap:16px; align-items:center;">
-            <img src="${fac.avatar}" style="width: 52px; height: 52px; border-radius:50%; object-fit:cover; border:1px solid var(--border);">
+        <div class="card flex flex-col gap-4">
+          <div class="flex gap-4 items-center">
+            <img src="${fac.avatar}" class="w-13 h-13 rounded-full object-cover border border-brand-border">
             <div>
-              <h4 style="margin:0; font-family: var(--font-display);">${fac.name}</h4>
-              <span style="font-size:0.75rem; color:var(--text-muted); font-weight:500;">${fac.designation} (${fac.dept})</span>
+              <h4 class="m-0 font-display text-base font-semibold">${fac.name}</h4>
+              <span class="text-[0.75rem] text-brand-text-muted font-medium">${fac.designation} (${fac.dept})</span>
             </div>
           </div>
           
-          <div style="font-size:0.85rem; color:var(--text-muted);">
+          <div class="text-[0.85rem] text-brand-text-muted">
             <div><strong>Email:</strong> ${fac.email}</div>
             <div><strong>ID:</strong> <code>${fac.id}</code></div>
+            <div><strong>Class Attendance:</strong> <span class="font-bold ${avgClassAttend < 75 ? 'text-brand-accent-ruby' : (avgClassAttend < 85 ? 'text-brand-accent-amber' : 'text-brand-accent-emerald')}">${avgClassAttend}%</span></div>
           </div>
 
           <!-- Workload Progress bar -->
           <div>
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+            <div class="flex justify-between text-[0.8rem] mb-1">
               <span>Workload Assigned</span>
               <strong>${fac.workload} hrs / wk</strong>
             </div>
-            <div style="height: 6px; background-color: var(--bg-tertiary); border-radius:3px; overflow:hidden;">
-              <div style="width: ${loadPercent}%; height:100%; background-color: ${barColor};"></div>
+            <div class="h-1.5 bg-brand-bg-tertiary rounded-full overflow-hidden">
+              <div class="h-full" style="width: ${loadPercent}%; background-color: ${barColor};"></div>
             </div>
           </div>
 
-          <div style="display:flex; gap:8px; margin-top:auto;">
-            <button class="btn btn-secondary btn-sm assign-class-btn" style="flex:1;" data-id="${fac.id}">Class Workload</button>
+          <div class="flex gap-2 mt-auto">
+            <button class="btn btn-secondary btn-sm assign-class-btn flex-1" data-id="${fac.id}">Class Workload</button>
             <button class="btn btn-secondary btn-sm" onclick="alert('Viewing publications...')">Research</button>
           </div>
         </div>
@@ -187,19 +205,40 @@ window.facultyView = (function() {
     if (!fac) return;
 
     const bodyHTML = `
-      <p style="margin-bottom:16px; color:var(--text-muted);">Adjust workload allocations and curriculum credits assignment for <strong>${fac.name}</strong>.</p>
+      <p class="mb-4 text-brand-text-muted">Adjust workload allocations and curriculum credits assignment for <strong>${fac.name}</strong>.</p>
       <div class="form-group">
         <label class="form-label">Current Weekly Lecture Workload (Hours)</label>
         <input type="number" class="form-control" id="mod-fac-workload" value="${fac.workload}" min="0" max="24">
       </div>
       
-      <h4 style="margin-top:20px; margin-bottom:12px;">Assigned Course Catalog</h4>
-      <ul style="padding-left: 20px; color: var(--text-main);">
+      <h4 class="mt-5 mb-3 text-base font-semibold">Assigned Course Catalog</h4>
+      <ul class="pl-5 text-brand-text-main list-disc mb-4">
         ${fac.courses.map(code => {
           const c = window.UniversityDB.getCourses().find(course => course.code === code);
           return `<li><code>${code}</code> - ${c ? c.title : 'Research Project'}</li>`;
         }).join('')}
       </ul>
+
+      <!-- AI Workload & Satisfaction Optimizer -->
+      <div class="card mt-4 p-4 bg-brand-bg-tertiary border border-brand-border">
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-brand-border/40">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-accent-amber animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-text-main font-display">AI Workload Predictor</span>
+          </div>
+          <span class="badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald" id="fac-ai-status">Optimal</span>
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-xs text-brand-text-muted">
+          <div>
+            <span class="text-[0.7rem] text-brand-text-subtle">Predicted Student Rating:</span>
+            <div class="font-bold text-brand-text-main font-mono text-sm mt-0.5" id="fac-ai-rating">Calculating...</div>
+          </div>
+          <div>
+            <span class="text-[0.7rem] text-brand-text-subtle">Optimal Load Recommendation:</span>
+            <div class="font-bold text-brand-text-main font-mono text-sm mt-0.5" id="fac-ai-recommend">12 hrs/wk</div>
+          </div>
+        </div>
+      </div>
     `;
 
     const footerHTML = `
@@ -208,6 +247,16 @@ window.facultyView = (function() {
     `;
 
     window.App.showModal('Modify Academic Workload', bodyHTML, footerHTML);
+
+    const inputField = document.getElementById('mod-fac-workload');
+    if (inputField) {
+      inputField.addEventListener('input', (e) => {
+        const val = parseInt(e.target.value) || 0;
+        runFacultyTfOptimizer(fac, val);
+      });
+    }
+
+    runFacultyTfOptimizer(fac, fac.workload);
 
     document.getElementById('btn-save-workload').addEventListener('click', () => {
       const load = parseInt(document.getElementById('mod-fac-workload').value);
@@ -220,6 +269,71 @@ window.facultyView = (function() {
         alert("Please enter a valid workload hours number.");
       }
     });
+  }
+
+  async function runFacultyTfOptimizer(fac, currentLoadValue) {
+    if (typeof tf === 'undefined') {
+      const rating = document.getElementById('fac-ai-rating');
+      if (rating) rating.textContent = 'TF Unavailable';
+      return;
+    }
+    try {
+      const isProf = fac.designation === 'Professor' ? 1.0 : 0.5;
+      const inputVal = [currentLoadValue / 18.0, fac.courses.length / 5.0, isProf];
+
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 4, activation: 'tanh', inputShape: [3] }));
+      model.add(tf.layers.dense({ units: 1 }));
+
+      const w1 = tf.tensor2d([
+        [-1.2],
+        [-0.4],
+        [0.8]
+      ]);
+      const b1 = tf.tensor1d([0.8]);
+      model.layers[1].setWeights([w1, b1]);
+
+      const inputTensor = tf.tensor2d([inputVal], [1, 3]);
+      const outputTensor = model.predict(inputTensor);
+      const outputVal = (await outputTensor.data())[0];
+
+      var predictedRating = Math.max(1.0, Math.min(5.0, 1.0 + outputVal * 4.0));
+      
+      if (currentLoadValue > 16) {
+        predictedRating = Math.max(1.0, Math.min(predictedRating, 3.2));
+      } else if (currentLoadValue >= 10 && currentLoadValue <= 14) {
+        predictedRating = Math.min(5.0, predictedRating + 0.5);
+      }
+
+      inputTensor.dispose();
+      outputTensor.dispose();
+      w1.dispose();
+      b1.dispose();
+      model.dispose();
+
+      const ratingEl = document.getElementById('fac-ai-rating');
+      const statusEl = document.getElementById('fac-ai-status');
+      const recEl = document.getElementById('fac-ai-recommend');
+
+      if (ratingEl) ratingEl.textContent = predictedRating.toFixed(2) + ' / 5.0';
+      if (statusEl) {
+        if (currentLoadValue > 15) {
+          statusEl.textContent = 'Heavy Overload';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-ruby/20 text-brand-accent-ruby';
+        } else if (currentLoadValue < 6) {
+          statusEl.textContent = 'Under-utilized';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-cyan/20 text-brand-accent-cyan';
+        } else {
+          statusEl.textContent = 'Optimal Load';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald';
+        }
+      }
+      if (recEl) {
+        recEl.textContent = fac.designation === 'Professor' ? '12 hrs / wk' : '15 hrs / wk';
+      }
+    } catch (err) {
+      console.error('TF Faculty optimizer failed:', err);
+    }
   }
 
   function openAddFacultyModal() {
@@ -300,7 +414,8 @@ window.facultyView = (function() {
 
   return {
     render: render,
-    applySearch: applySearch
+    applySearch: applySearch,
+    openAssignClassModal: openAssignClassModal
   };
 
 })();

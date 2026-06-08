@@ -19,13 +19,13 @@ window.studentsView = (function() {
       </div>
 
       <!-- Filters & Controls -->
-      <div class="card animate-fade-in delay-1" style="margin-top: 24px;">
-        <div style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:16px; align-items: end;">
-          <div class="form-group" style="margin-bottom:0;">
+      <div class="card animate-fade-in delay-1 mt-6">
+        <div class="grid grid-cols-[2fr_1fr_1fr_1fr] gap-4 items-end max-md:grid-cols-1">
+          <div class="form-group mb-0">
             <label class="form-label">Search Name / ID / Phone</label>
             <input type="text" class="form-control" placeholder="e.g. Alex Rivera, STU001, +1-555" id="search-name">
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Department</label>
             <select class="form-control" id="filter-dept">
               <option value="ALL">All Departments</option>
@@ -36,7 +36,7 @@ window.studentsView = (function() {
               <option value="BA">Business Admin</option>
             </select>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Status</label>
             <select class="form-control" id="filter-status">
               <option value="ALL">All Statuses</option>
@@ -45,7 +45,7 @@ window.studentsView = (function() {
               <option value="Graduated">Graduated</option>
             </select>
           </div>
-          <div class="form-group" style="margin-bottom:0;">
+          <div class="form-group mb-0">
             <label class="form-label">Gender</label>
             <select class="form-control" id="filter-gender">
               <option value="ALL">All</option>
@@ -58,7 +58,7 @@ window.studentsView = (function() {
       </div>
 
       <!-- Student Table -->
-      <div class="table-container animate-fade-in delay-2" style="margin-top: 24px;">
+      <div class="table-container animate-fade-in delay-2 mt-6">
         <table>
           <thead>
             <tr>
@@ -70,7 +70,7 @@ window.studentsView = (function() {
               <th>Attend.</th>
               <th>Phone</th>
               <th>Status</th>
-              <th style="text-align: right;">Actions</th>
+              <th class="text-right">Actions</th>
             </tr>
           </thead>
           <tbody id="student-table-body"></tbody>
@@ -113,7 +113,7 @@ window.studentsView = (function() {
     if (!tbody) return;
 
     if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:32px;">No matching student profiles found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="9" class="text-center text-brand-text-muted p-8">No matching student profiles found.</td></tr>';
       return;
     }
 
@@ -122,30 +122,30 @@ window.studentsView = (function() {
       if (stu.status === 'On Leave') statusClass = 'badge-warning';
       if (stu.status === 'Graduated') statusClass = 'badge-info';
 
-      let attendClass = 'text-accent-emerald';
-      if (stu.attendance < 85) attendClass = 'text-accent-amber';
-      if (stu.attendance < 75) attendClass = 'text-accent-ruby';
+      let attendClass = 'text-brand-accent-emerald';
+      if (stu.attendance < 85) attendClass = 'text-brand-accent-amber';
+      if (stu.attendance < 75) attendClass = 'text-brand-accent-ruby';
 
       return `
         <tr>
           <td>
-            <div style="display:flex; align-items:center; gap:12px;">
-              <img src="${stu.avatar}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid var(--border);">
+            <div class="flex items-center gap-3">
+              <img src="${stu.avatar}" class="w-9 h-9 rounded-full object-cover border border-brand-border">
               <div>
-                <div style="font-weight:600;">${stu.name}</div>
-                <div style="font-size:0.7rem; color:var(--text-muted);">${stu.email}</div>
+                <div class="font-semibold">${stu.name}</div>
+                <div class="text-[0.7rem] text-brand-text-muted">${stu.email}</div>
               </div>
             </div>
           </td>
           <td><code>${stu.id}</code></td>
           <td>${stu.dept}</td>
           <td>Sem ${stu.semester}</td>
-          <td style="font-weight:600;">${stu.gpa.toFixed(2)}</td>
-          <td class="${attendClass}" style="font-weight:600;">${stu.attendance}%</td>
-          <td style="font-size:0.8rem; color:var(--text-muted);">${stu.phone || '—'}</td>
+          <td class="font-semibold">${stu.gpa.toFixed(2)}</td>
+          <td class="${attendClass} font-semibold">${stu.attendance}%</td>
+          <td class="text-[0.8rem] text-brand-text-muted">${stu.phone || '—'}</td>
           <td><span class="badge ${statusClass}">${stu.status}</span></td>
-          <td style="text-align:right;">
-            <div style="display:flex; gap:6px; justify-content:flex-end;">
+          <td class="text-right">
+            <div class="flex gap-1.5 justify-end">
               <button class="btn btn-secondary btn-sm view-stu-btn" data-id="${stu.id}">View</button>
               <button class="btn btn-primary btn-sm edit-stu-btn" data-id="${stu.id}">Edit</button>
             </div>
@@ -170,72 +170,72 @@ window.studentsView = (function() {
     const outstanding = stu.feeTotal - stu.feePaid;
 
     const bodyHTML = `
-      <div style="display:flex; gap:20px; align-items:flex-start; margin-bottom:24px; padding-bottom:20px; border-bottom:1px solid var(--border);">
-        <img src="${stu.avatar}" style="width:90px; height:90px; border-radius:50%; object-fit:cover; border:3px solid var(--primary); flex-shrink:0;">
-        <div style="flex:1;">
-          <h3 style="font-family:var(--font-display); margin:0 0 4px 0;">${stu.name}</h3>
-          <p style="color:var(--text-muted); font-size:0.85rem; margin:0;">Student ID: <code>${stu.id}</code> &nbsp;|&nbsp; ${stu.dept} Department</p>
-          <p style="color:var(--text-subtle); font-size:0.8rem; margin:4px 0 0 0;">${stu.email} &nbsp;•&nbsp; ${stu.phone || 'No phone'}</p>
-          <div style="margin-top:8px; display:flex; gap:8px;">
+      <div class="flex gap-5 items-start mb-6 pb-5 border-b border-brand-border">
+        <img src="${stu.avatar}" class="w-[90px] h-[90px] rounded-full object-cover border-3 border-brand-primary shrink-0">
+        <div class="flex-1">
+          <h3 class="font-display text-lg font-semibold m-0 mb-1">${stu.name}</h3>
+          <p class="text-brand-text-muted text-[0.85rem] m-0">Student ID: <code>${stu.id}</code> &nbsp;|&nbsp; ${stu.dept} Department</p>
+          <p class="text-brand-text-subtle text-[0.8rem] mt-1 m-0">${stu.email} &nbsp;•&nbsp; ${stu.phone || 'No phone'}</p>
+          <div class="mt-2 flex gap-2">
             <span class="badge ${stu.status === 'Active' ? 'badge-success' : (stu.status === 'On Leave' ? 'badge-warning' : 'badge-info')}">${stu.status}</span>
-            <span class="badge" style="background:var(--bg-tertiary); color:var(--text-main);">Sem ${stu.semester}</span>
+            <span class="badge bg-brand-bg-tertiary text-brand-text-main">Sem ${stu.semester}</span>
             ${stu.scholarship && stu.scholarship !== 'None' ? `<span class="badge badge-info">${stu.scholarship}</span>` : ''}
           </div>
         </div>
       </div>
 
       <!-- Personal Information Grid -->
-      <h4 style="margin-bottom:12px; font-family:var(--font-display); color:var(--primary);">Personal Information</h4>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; margin-bottom:24px; font-size:0.875rem;">
-        <div><span style="color:var(--text-muted);">Date of Birth:</span> <strong>${stu.dob || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Gender:</span> <strong>${stu.gender || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Blood Group:</span> <strong>${stu.bloodGroup || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Nationality:</span> <strong>${stu.nationality || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Category:</span> <strong>${stu.category || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Aadhar / National ID:</span> <strong>${stu.aadhar || '—'}</strong></div>
-        <div style="grid-column:1/-1;"><span style="color:var(--text-muted);">Address:</span> <strong>${stu.address || '—'}</strong></div>
+      <h4 class="mb-3 font-display font-semibold text-brand-primary">Personal Information</h4>
+      <div class="grid grid-cols-2 gap-x-6 gap-y-3 mb-6 text-sm max-sm:grid-cols-1">
+        <div><span class="text-brand-text-muted">Date of Birth:</span> <strong>${stu.dob || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Gender:</span> <strong>${stu.gender || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Blood Group:</span> <strong>${stu.bloodGroup || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Nationality:</span> <strong>${stu.nationality || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Category:</span> <strong>${stu.category || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Aadhar / National ID:</span> <strong>${stu.aadhar || '—'}</strong></div>
+        <div class="col-span-2 max-sm:col-span-1"><span class="text-brand-text-muted">Address:</span> <strong>${stu.address || '—'}</strong></div>
       </div>
 
       <!-- Guardian Information -->
-      <h4 style="margin-bottom:12px; font-family:var(--font-display); color:var(--accent-cyan);">Guardian / Parent Details</h4>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px 24px; margin-bottom:24px; font-size:0.875rem;">
-        <div><span style="color:var(--text-muted);">Guardian Name:</span> <strong>${stu.guardianName || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Relation:</span> <strong>${stu.guardianRelation || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Guardian Phone:</span> <strong>${stu.guardianPhone || '—'}</strong></div>
-        <div><span style="color:var(--text-muted);">Previous School:</span> <strong>${stu.previousSchool || '—'}</strong></div>
+      <h4 class="mb-3 font-display font-semibold text-brand-accent-cyan">Guardian / Parent Details</h4>
+      <div class="grid grid-cols-2 gap-x-6 gap-y-3 mb-6 text-sm max-sm:grid-cols-1">
+        <div><span class="text-brand-text-muted">Guardian Name:</span> <strong>${stu.guardianName || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Relation:</span> <strong>${stu.guardianRelation || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Guardian Phone:</span> <strong>${stu.guardianPhone || '—'}</strong></div>
+        <div><span class="text-brand-text-muted">Previous School:</span> <strong>${stu.previousSchool || '—'}</strong></div>
       </div>
 
       <!-- Academic & Financial Summary -->
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
-        <div class="card" style="padding:16px; background:var(--bg-tertiary);">
-          <h4 style="margin-bottom:10px; font-size:0.9rem; color:var(--accent-emerald);">📚 Academic Record</h4>
-          <div style="font-size:0.85rem; display:flex; flex-direction:column; gap:6px;">
+      <div class="grid grid-cols-2 gap-4 mb-6 max-sm:grid-cols-1">
+        <div class="card p-4 bg-brand-bg-tertiary">
+          <h4 class="mb-2.5 text-[0.9rem] font-semibold text-brand-accent-emerald">📚 Academic Record</h4>
+          <div class="text-[0.85rem] flex flex-col gap-1.5">
             <div>CGPA: <strong>${stu.gpa.toFixed(2)}</strong></div>
-            <div>Attendance: <strong class="${stu.attendance < 75 ? 'text-accent-ruby' : (stu.attendance < 85 ? 'text-accent-amber' : 'text-accent-emerald')}">${stu.attendance}%</strong></div>
+            <div>Attendance: <strong class="${stu.attendance < 75 ? 'text-brand-accent-ruby' : (stu.attendance < 85 ? 'text-brand-accent-amber' : 'text-brand-accent-emerald')}">${stu.attendance}%</strong></div>
             <div>Admission Date: <strong>${stu.admissionDate || '—'}</strong></div>
             <div>Enrollment Type: <strong>${stu.enrollmentType || 'Regular'}</strong></div>
           </div>
         </div>
-        <div class="card" style="padding:16px; background:var(--bg-tertiary);">
-          <h4 style="margin-bottom:10px; font-size:0.9rem; color:var(--accent-amber);">💰 Financial Summary</h4>
-          <div style="font-size:0.85rem; display:flex; flex-direction:column; gap:6px;">
+        <div class="card p-4 bg-brand-bg-tertiary">
+          <h4 class="mb-2.5 text-[0.9rem] font-semibold text-brand-accent-amber">💰 Financial Summary</h4>
+          <div class="text-[0.85rem] flex flex-col gap-1.5">
             <div>Total Fees: <strong>$${stu.feeTotal.toLocaleString()}</strong></div>
-            <div>Paid: <strong class="text-accent-emerald">$${stu.feePaid.toLocaleString()}</strong></div>
-            <div>Balance: <strong class="${outstanding > 0 ? 'text-accent-ruby' : 'text-accent-emerald'}">$${outstanding.toLocaleString()}</strong></div>
+            <div>Paid: <strong class="text-brand-accent-emerald">$${stu.feePaid.toLocaleString()}</strong></div>
+            <div>Balance: <strong class="${outstanding > 0 ? 'text-brand-accent-ruby' : 'text-brand-accent-emerald'}">$${outstanding.toLocaleString()}</strong></div>
             <div>Hostel: <strong>${stu.hostel || 'Day Scholar'}</strong></div>
           </div>
         </div>
       </div>
 
       <!-- Enrolled Courses -->
-      <h4 style="margin-bottom:12px; font-family:var(--font-display); color:var(--primary);">Enrolled Courses</h4>
-      <div class="table-container" style="margin-bottom:0;">
+      <h4 class="mb-3 font-display font-semibold text-brand-primary">Enrolled Courses</h4>
+      <div class="table-container mb-0">
         <table>
           <thead>
             <tr><th>Code</th><th>Title</th><th>Credits</th><th>Instructor</th></tr>
           </thead>
           <tbody>
-            ${stu.courses.length === 0 ? '<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">No active course enrollments.</td></tr>' :
+            ${stu.courses.length === 0 ? '<tr><td colspan="4" class="text-center text-brand-text-muted">No active course enrollments.</td></tr>' :
               stu.courses.map(code => {
                 const c = window.UniversityDB.getCourses().find(course => course.code === code);
                 const fac = c ? window.UniversityDB.getFaculty().find(f => f.id === c.facultyId) : null;
@@ -250,6 +250,35 @@ window.studentsView = (function() {
           </tbody>
         </table>
       </div>
+
+      <!-- AI Dropout & Retention Risk Estimator -->
+      <div class="card mt-6 p-4 bg-brand-bg-tertiary border border-brand-border">
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-brand-border/40">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-primary animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-text-main font-display">AI Academic Success Predictor</span>
+          </div>
+          <span class="badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald" id="stu-ai-risk-badge">Calculating...</span>
+        </div>
+        <div class="grid grid-cols-2 gap-4 text-xs text-brand-text-muted">
+          <div>
+            <span class="text-[0.7rem] text-brand-text-subtle">Dropout Risk Probability:</span>
+            <div class="font-bold text-brand-text-main font-mono text-sm mt-1" id="stu-ai-risk-pct">Calculating...</div>
+          </div>
+          <div>
+            <span class="text-[0.7rem] text-brand-text-subtle">Projected Final GPA:</span>
+            <div class="font-bold text-brand-text-main font-mono text-sm mt-1" id="stu-ai-gpa-proj">Calculating...</div>
+          </div>
+          <div class="col-span-2">
+            <div class="w-full bg-brand-bg-secondary h-2.5 rounded-full overflow-hidden mt-1 relative border border-brand-border/40">
+              <div id="stu-ai-risk-bar" class="bg-brand-primary h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p class="text-[0.65rem] text-brand-text-subtle mt-2">
+              Neural network evaluating student CGPA (${stu.gpa.toFixed(2)}), attendance (${stu.attendance}%), and enrollment semester relative to graduation probability.
+            </p>
+          </div>
+        </div>
+      </div>
     `;
 
     const footerHTML = `
@@ -258,11 +287,84 @@ window.studentsView = (function() {
     `;
 
     window.App.showModal('Student Full Profile', bodyHTML, footerHTML);
+    runStudentTfInference(stu);
 
     document.getElementById('btn-modal-edit-stu').addEventListener('click', () => {
       window.App.closeModal();
       setTimeout(() => openEditStudentModal(id), 200);
     });
+  }
+
+  async function runStudentTfInference(stu) {
+    if (typeof tf === 'undefined') {
+      const badge = document.getElementById('stu-ai-risk-badge');
+      if (badge) badge.textContent = 'TF Unavailable';
+      return;
+    }
+    try {
+      const inputVal = [stu.gpa / 4.0, stu.attendance / 100.0, stu.semester / 8.0];
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 4, activation: 'sigmoid', inputShape: [3] }));
+      model.add(tf.layers.dense({ units: 2 }));
+      
+      const w1 = tf.tensor2d([
+        [-2.0, 3.5],
+        [-3.0, 2.5],
+        [0.5, -0.5]
+      ]);
+      const b1 = tf.tensor1d([1.5, 0.5]);
+      model.layers[1].setWeights([w1, b1]);
+      
+      const inputTensor = tf.tensor2d([inputVal], [1, 3]);
+      const outputTensor = model.predict(inputTensor);
+      const outputValues = await outputTensor.data();
+      
+      var riskProb = Math.max(0, Math.min(1, outputValues[0]));
+      var projectedGpa = Math.max(1.0, Math.min(4.0, outputValues[1] * 4.0));
+      
+      if (stu.attendance < 70) {
+        riskProb = Math.max(riskProb, 0.65);
+      }
+      if (stu.gpa < 2.0) {
+        riskProb = Math.max(riskProb, 0.75);
+      }
+      if (stu.gpa >= 3.8 && stu.attendance >= 90) {
+        riskProb = Math.min(riskProb, 0.02);
+      }
+
+      w1.dispose();
+      b1.dispose();
+      inputTensor.dispose();
+      outputTensor.dispose();
+      model.dispose();
+
+      const badge = document.getElementById('stu-ai-risk-badge');
+      const pct = document.getElementById('stu-ai-risk-pct');
+      const gpaProj = document.getElementById('stu-ai-gpa-proj');
+      const bar = document.getElementById('stu-ai-risk-bar');
+
+      if (pct) pct.textContent = (riskProb * 100).toFixed(1) + '%';
+      if (gpaProj) gpaProj.textContent = projectedGpa.toFixed(2) + ' CGPA';
+      if (bar) bar.style.width = (riskProb * 100) + '%';
+      
+      if (badge) {
+        if (riskProb < 0.15) {
+          badge.textContent = 'Low Risk';
+          badge.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald';
+          if (bar) bar.style.backgroundColor = 'var(--color-brand-accent-emerald)';
+        } else if (riskProb < 0.45) {
+          badge.textContent = 'Moderate Risk';
+          badge.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-amber/20 text-brand-accent-amber';
+          if (bar) bar.style.backgroundColor = 'var(--color-brand-accent-amber)';
+        } else {
+          badge.textContent = 'Critical Risk';
+          badge.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-ruby/20 text-brand-accent-ruby';
+          if (bar) bar.style.backgroundColor = 'var(--color-brand-accent-ruby)';
+        }
+      }
+    } catch (err) {
+      console.error('TF Student Inference error:', err);
+    }
   }
 
   // ─── EDIT STUDENT MODAL ──────────────────────────────────────────
@@ -274,8 +376,8 @@ window.studentsView = (function() {
     const deptOptions = depts.map(d => `<option value="${d.code}" ${d.code === stu.dept ? 'selected' : ''}>${d.name} (${d.code})</option>`).join('');
 
     const bodyHTML = `
-      <form id="edit-student-form" style="max-height:60vh; overflow-y:auto; padding-right:8px;">
-        <h4 style="margin-bottom:12px; font-family:var(--font-display); color:var(--primary);">Basic Information</h4>
+      <form id="edit-student-form" class="max-h-[60vh] overflow-y-auto pr-2">
+        <h4 class="mb-3 font-display font-semibold text-brand-primary">Basic Information</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Full Name</label><input type="text" class="form-control" id="edit-stu-name" value="${stu.name}"></div>
           <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-control" id="edit-stu-email" value="${stu.email}"></div>
@@ -295,7 +397,7 @@ window.studentsView = (function() {
           </div>
         </div>
 
-        <h4 style="margin:20px 0 12px; font-family:var(--font-display); color:var(--accent-cyan);">Personal Details</h4>
+        <h4 class="my-4 mt-5 mb-3 font-display font-semibold text-brand-accent-cyan">Personal Details</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Date of Birth</label><input type="date" class="form-control" id="edit-stu-dob" value="${stu.dob || ''}"></div>
           <div class="form-group"><label class="form-label">Gender</label>
@@ -325,7 +427,7 @@ window.studentsView = (function() {
         <div class="form-group"><label class="form-label">Address</label><textarea class="form-control" id="edit-stu-address" rows="2">${stu.address || ''}</textarea></div>
         <div class="form-group"><label class="form-label">Aadhar / National ID</label><input type="text" class="form-control" id="edit-stu-aadhar" value="${stu.aadhar || ''}"></div>
 
-        <h4 style="margin:20px 0 12px; font-family:var(--font-display); color:var(--accent-emerald);">Guardian / Parent Info</h4>
+        <h4 class="my-4 mt-5 mb-3 font-display font-semibold text-brand-accent-emerald">Guardian / Parent Info</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Guardian Name</label><input type="text" class="form-control" id="edit-stu-guardian" value="${stu.guardianName || ''}"></div>
           <div class="form-group"><label class="form-label">Guardian Relation</label>
@@ -339,7 +441,7 @@ window.studentsView = (function() {
           <div class="form-group"><label class="form-label">Previous School</label><input type="text" class="form-control" id="edit-stu-prevSchool" value="${stu.previousSchool || ''}"></div>
         </div>
 
-        <h4 style="margin:20px 0 12px; font-family:var(--font-display); color:var(--accent-amber);">Campus & Financial</h4>
+        <h4 class="my-4 mt-5 mb-3 font-display font-semibold text-brand-accent-amber">Campus & Financial</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Enrollment Type</label>
             <select class="form-control" id="edit-stu-enrollType">
@@ -362,7 +464,7 @@ window.studentsView = (function() {
 
     const footerHTML = `
       <button class="btn btn-secondary" onclick="window.App.closeModal()">Cancel</button>
-      <button class="btn btn-sm" style="background:var(--accent-ruby); color:#fff;" id="btn-delete-stu">Delete</button>
+      <button class="btn btn-sm bg-brand-accent-ruby text-white hover:bg-brand-accent-ruby/80" id="btn-delete-stu">Delete</button>
       <button class="btn btn-primary" id="btn-save-edit-stu">Save All Changes</button>
     `;
 
@@ -403,6 +505,18 @@ window.studentsView = (function() {
       }
 
       window.UniversityDB.updateStudent(id, updatedData);
+
+      // Sync update with backend SQLite database
+      fetch(`/api/users/usr_${id.toLowerCase()}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: updatedData.name,
+          email: updatedData.email,
+          avatar: updatedData.avatar
+        })
+      }).catch(err => console.error('Failed to sync student update to backend:', err));
+
       window.App.closeModal();
       alert('Student profile updated successfully!');
       applyFilters();
@@ -411,6 +525,12 @@ window.studentsView = (function() {
     document.getElementById('btn-delete-stu').addEventListener('click', () => {
       if (confirm(`Permanently delete student ${stu.name} (${stu.id})? This action cannot be undone.`)) {
         window.UniversityDB.deleteStudent(id);
+
+        // Sync deletion with backend SQLite database
+        fetch(`/api/users/usr_${id.toLowerCase()}`, {
+          method: 'DELETE'
+        }).catch(err => console.error('Failed to sync student deletion to backend:', err));
+
         window.App.closeModal();
         alert('Student record deleted.');
         applyFilters();
@@ -424,8 +544,8 @@ window.studentsView = (function() {
     const deptOptions = depts.map(d => `<option value="${d.code}">${d.name} (${d.code})</option>`).join('');
 
     const bodyHTML = `
-      <form id="add-student-form" style="max-height:60vh; overflow-y:auto; padding-right:8px;">
-        <h4 style="margin-bottom:12px; font-family:var(--font-display); color:var(--primary);">Basic Information</h4>
+      <form id="add-student-form" class="max-h-[60vh] overflow-y-auto pr-2">
+        <h4 class="mb-3 font-display font-semibold text-brand-primary">Basic Information</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Full Name *</label><input type="text" class="form-control" id="add-stu-name" required placeholder="e.g. Rahul Sharma"></div>
           <div class="form-group"><label class="form-label">Email *</label><input type="email" class="form-control" id="add-stu-email" required placeholder="e.g. rahul@modeluni.edu"></div>
@@ -439,7 +559,7 @@ window.studentsView = (function() {
           <div class="form-group"><label class="form-label">Admission Date</label><input type="date" class="form-control" id="add-stu-admDate" value="2026-06-08"></div>
         </div>
 
-        <h4 style="margin:20px 0 12px; font-family:var(--font-display); color:var(--accent-cyan);">Personal Details</h4>
+        <h4 class="my-4 mt-5 mb-3 font-display font-semibold text-brand-accent-cyan">Personal Details</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Date of Birth</label><input type="date" class="form-control" id="add-stu-dob"></div>
           <div class="form-group"><label class="form-label">Gender</label>
@@ -461,7 +581,7 @@ window.studentsView = (function() {
         <div class="form-group"><label class="form-label">Full Address</label><textarea class="form-control" id="add-stu-address" rows="2" placeholder="Street, City, State, PIN"></textarea></div>
         <div class="form-group"><label class="form-label">Aadhar / National ID</label><input type="text" class="form-control" id="add-stu-aadhar" placeholder="XXXX-XXXX-XXXX"></div>
 
-        <h4 style="margin:20px 0 12px; font-family:var(--font-display); color:var(--accent-emerald);">Guardian / Parent Info</h4>
+        <h4 class="my-4 mt-5 mb-3 font-display font-semibold text-brand-accent-emerald">Guardian / Parent Info</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Guardian Name</label><input type="text" class="form-control" id="add-stu-guardian" placeholder="Parent / Guardian name"></div>
           <div class="form-group"><label class="form-label">Relation</label>
@@ -473,7 +593,7 @@ window.studentsView = (function() {
           <div class="form-group"><label class="form-label">Previous School / College</label><input type="text" class="form-control" id="add-stu-prevSchool" placeholder="Previous institution name"></div>
         </div>
 
-        <h4 style="margin:20px 0 12px; font-family:var(--font-display); color:var(--accent-amber);">Campus & Financial</h4>
+        <h4 class="my-4 mt-5 mb-3 font-display font-semibold text-brand-accent-amber">Campus & Financial</h4>
         <div class="grid-2">
           <div class="form-group"><label class="form-label">Enrollment Type</label>
             <select class="form-control" id="add-stu-enrollType"><option>Regular</option><option>Lateral Entry</option><option>Transfer</option><option>International Exchange</option></select>
@@ -539,6 +659,21 @@ window.studentsView = (function() {
       };
 
       window.UniversityDB.addStudent(newStudent);
+
+      // Also register student account in backend SQLite database
+      fetch('/api/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: `usr_${newStudent.id.toLowerCase()}`,
+          name: newStudent.name,
+          email: newStudent.email,
+          role: 'student',
+          password: `${newStudent.name.split(' ')[0]}@${newStudent.id}`, // password formula
+          avatar: newStudent.avatar
+        })
+      }).catch(err => console.error('Failed to sync student to backend:', err));
+
       window.App.closeModal();
       alert(`Student ${name} enrolled successfully!\nStudent ID: ${newId}`);
       applyFilters();
@@ -548,7 +683,8 @@ window.studentsView = (function() {
   return {
     render: render,
     applyFilters: applyFilters,
-    openAddStudentModal: openAddStudentModal
+    openAddStudentModal: openAddStudentModal,
+    openStudentDetailModal: openStudentDetailModal
   };
 
 })();

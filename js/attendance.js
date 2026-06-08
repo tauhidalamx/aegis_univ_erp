@@ -13,31 +13,31 @@ window.attendanceView = (function() {
         </div>
       </div>
 
-      <div class="grid-2 animate-fade-in delay-1" style="margin-top: 24px;">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 animate-fade-in delay-1">
         
         <!-- Attendance Sheet Panel -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family: var(--font-display);">Register Attendance</h3>
+          <h3 class="mb-4 font-display text-lg font-bold">Register Attendance</h3>
           
-          <div class="grid-2" style="grid-template-columns: 1.5fr 1fr; gap:16px; margin-bottom: 20px;">
-            <div class="form-group" style="margin-bottom:0;">
+          <div class="grid grid-cols-[1.5fr_1fr] gap-4 mb-5 max-sm:grid-cols-1">
+            <div class="form-group mb-0">
               <label class="form-label">Select Course</label>
               <select class="form-control" id="attendance-course-select">
                 ${courseOptions}
               </select>
             </div>
-            <div class="form-group" style="margin-bottom:0;">
+            <div class="form-group mb-0">
               <label class="form-label">Session Date</label>
               <input type="date" class="form-control" id="attendance-date" value="2026-06-08">
             </div>
           </div>
 
-          <div style="max-height: 380px; overflow-y:auto; border: 1px solid var(--border); border-radius: var(--radius-md); background-color: var(--bg-primary); padding: 12px; margin-bottom: 20px;">
-            <table style="width:100%; border-collapse:collapse;">
+          <div class="max-h-[380px] overflow-y-auto border border-brand-border rounded-xl bg-brand-bg-primary p-3 mb-5">
+            <table class="w-full border-collapse">
               <thead>
                 <tr>
-                  <th style="padding: 10px; font-size:0.75rem;">Student Name</th>
-                  <th style="padding: 10px; font-size:0.75rem; text-align:center;">Mark Attendance</th>
+                  <th class="p-2.5 text-[0.75rem]">Student Name</th>
+                  <th class="p-2.5 text-[0.75rem] text-center">Mark Attendance</th>
                 </tr>
               </thead>
               <tbody id="attendance-student-list">
@@ -46,51 +46,51 @@ window.attendanceView = (function() {
             </table>
           </div>
 
-          <button class="btn btn-primary" id="btn-save-attendance" style="width:100%;">Commit Session Attendance</button>
+          <button class="btn btn-primary w-full" id="btn-save-attendance">Commit Session Attendance</button>
         </div>
 
         <!-- Weekly Timetable Grid -->
         <div class="card">
-          <h3 style="margin-bottom:16px; font-family: var(--font-display);">Campus Master Schedule</h3>
-          <p style="color:var(--text-muted); font-size: 0.85rem; margin-bottom:16px;">Standard working hours block (Monday - Friday).</p>
+          <h3 class="mb-4 font-display text-lg font-bold">Campus Master Schedule</h3>
+          <p class="text-brand-text-muted text-[0.85rem] mb-4">Standard working hours block (Monday - Friday).</p>
           
-          <div style="display:flex; flex-direction:column; gap:12px;">
-            <div style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); background: rgba(99, 102, 241, 0.04); display:flex; justify-content:space-between; align-items:center;">
+          <div class="flex flex-col gap-3">
+            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center bg-brand-primary/5">
               <div>
-                <strong style="color: var(--primary);">Monday (09:00 AM - 11:00 AM)</strong>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">CS101 - Intro Programming (Hall A)</div>
+                <strong class="text-brand-primary">Monday (09:00 AM - 11:00 AM)</strong>
+                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">CS101 - Intro Programming (Hall A)</div>
               </div>
               <span class="badge badge-info">Active</span>
             </div>
             
-            <div style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); display:flex; justify-content:space-between; align-items:center;">
+            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
               <div>
-                <strong style="color: var(--accent-cyan);">Tuesday (11:30 AM - 01:30 PM)</strong>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">EE201 - Signals and Systems (Hall B)</div>
+                <strong class="text-brand-accent-cyan">Tuesday (11:30 AM - 01:30 PM)</strong>
+                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">EE201 - Signals and Systems (Hall B)</div>
               </div>
               <span class="badge badge-info">Active</span>
             </div>
 
-            <div style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); display:flex; justify-content:space-between; align-items:center;">
+            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
               <div>
-                <strong style="color: var(--accent-amber);">Wednesday (02:00 PM - 04:00 PM)</strong>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">ME102 - Engineering Thermodynamics (Hall C)</div>
+                <strong class="text-brand-accent-amber">Wednesday (02:00 PM - 04:00 PM)</strong>
+                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">ME102 - Engineering Thermodynamics (Hall C)</div>
               </div>
               <span class="badge badge-info">Active</span>
             </div>
 
-            <div style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); display:flex; justify-content:space-between; align-items:center;">
+            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
               <div>
-                <strong style="color: var(--primary);">Thursday (09:00 AM - 11:00 AM)</strong>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">CS202 - Data Structures (Lab 3)</div>
+                <strong class="text-brand-primary">Thursday (09:00 AM - 11:00 AM)</strong>
+                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">CS202 - Data Structures (Lab 3)</div>
               </div>
               <span class="badge badge-info">Active</span>
             </div>
 
-            <div style="padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-md); display:flex; justify-content:space-between; align-items:center;">
+            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
               <div>
-                <strong style="color: var(--accent-emerald);">Friday (10:00 AM - 12:00 PM)</strong>
-                <div style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;">BI101 - Biotechnology Basics (BI Lab)</div>
+                <strong class="text-brand-accent-emerald">Friday (10:00 AM - 12:00 PM)</strong>
+                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">BI101 - Biotechnology Basics (BI Lab)</div>
               </div>
               <span class="badge badge-info">Active</span>
             </div>
@@ -156,24 +156,24 @@ window.attendanceView = (function() {
     if (enrolledStudents.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="2" style="text-align:center; color:var(--text-muted); padding:16px;">No students enrolled in this department section.</td>
+          <td colspan="2" class="text-center text-brand-text-muted p-4">No students enrolled in this department section.</td>
         </tr>
       `;
       return;
     }
 
     tbody.innerHTML = enrolledStudents.map(s => `
-      <tr style="border-bottom: 1px solid var(--border);">
-        <td style="padding: 10px; font-size:0.875rem;">
-          <div style="display:flex; align-items:center; gap:8px;">
-            <img src="${s.avatar}" style="width:28px; height:28px; border-radius:50%; object-fit:cover;">
+      <tr class="border-b border-brand-border">
+        <td class="p-2.5 text-sm">
+          <div class="flex items-center gap-2">
+            <img src="${s.avatar}" class="w-7 h-7 rounded-full object-cover">
             <div>
-              <strong>${s.name}</strong> <code style="font-size:0.7rem;">${s.id}</code>
+              <strong>${s.name}</strong> <code class="text-[0.7rem]">${s.id}</code>
             </div>
           </div>
         </td>
-        <td style="padding: 10px; text-align:center;">
-          <input type="checkbox" class="attendance-checkbox" data-id="${s.id}" checked style="width:16px; height:16px; cursor:pointer; accent-color: var(--primary);">
+        <td class="p-2.5 text-center">
+          <input type="checkbox" class="attendance-checkbox w-4 h-4 cursor-pointer accent-brand-primary" data-id="${s.id}" checked>
         </td>
       </tr>
     `).join('');

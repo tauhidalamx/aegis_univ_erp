@@ -1,0 +1,10 @@
+node_modules
+dist
+database.sqlite
+uploads
+.git
+.gitignore
+Dockerfile
+k8s
+.dockerignore
+npm-debug.log
