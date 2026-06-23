@@ -304,3 +304,11 @@
 [2026-06-21T12:17:42.453Z] [Kafka Event - user-events]: {"type":"login","email":"superadmin@aegis.demo","name":"Global Super Admin","timestamp":"2026-06-21T12:17:42.436Z"}
 [2026-06-22T00:38:15.181Z] [Local Stream - user-events]: {"type":"login","email":"superadmin@aegis.demo","name":"Global Super Admin","timestamp":"2026-06-22T00:38:15.181Z"}
 [2026-06-22T00:38:15.198Z] [Kafka Event - user-events]: {"type":"login","email":"superadmin@aegis.demo","name":"Global Super Admin","timestamp":"2026-06-22T00:38:15.181Z"}
+[2026-06-23T17:00:30.218Z] [Local Stream - user-events]: {"type":"login","email":"superadmin@aegis.demo","name":"Global Super Admin","timestamp":"2026-06-23T17:00:30.218Z"}
+[2026-06-23T17:00:30.276Z] [Kafka Event - user-events]: {"type":"login","email":"superadmin@aegis.demo","name":"Global Super Admin","timestamp":"2026-06-23T17:00:30.218Z"}
+[2026-06-23T17:05:18.623Z] [Local Stream - user-events]: {"type":"login","email":"admin@aegis.demo","name":"Platform Admin","timestamp":"2026-06-23T17:05:18.623Z"}
+[2026-06-23T17:05:18.633Z] [Kafka Event - user-events]: {"type":"login","email":"admin@aegis.demo","name":"Platform Admin","timestamp":"2026-06-23T17:05:18.623Z"}
+[2026-06-23T17:06:50.983Z] [Local Stream - user-events]: {"type":"login","email":"deptadmin@aegis.demo","name":"Department Admin","timestamp":"2026-06-23T17:06:50.983Z"}
+[2026-06-23T17:06:50.996Z] [Kafka Event - user-events]: {"type":"login","email":"deptadmin@aegis.demo","name":"Department Admin","timestamp":"2026-06-23T17:06:50.983Z"}
+[2026-06-23T17:08:03.813Z] [Local Stream - user-events]: {"type":"login","email":"dean@aegis.demo","name":"Dean of Faculty","timestamp":"2026-06-23T17:08:03.813Z"}
+[2026-06-23T17:08:03.823Z] [Kafka Event - user-events]: {"type":"login","email":"dean@aegis.demo","name":"Dean of Faculty","timestamp":"2026-06-23T17:08:03.813Z"}

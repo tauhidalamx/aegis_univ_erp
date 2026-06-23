@@ -223,6 +223,34 @@ const getVisibleAppsForRole = (role) => {
   return apps.map(appName => allApps[appName]).filter(Boolean);
 };
 
+const getErpHomeForRole = (role) => {
+  if (!role) return '/';
+  if (role === 'superadmin' || role === 'platformadmin' || role === 'admin') {
+    return '/erp/admin';
+  }
+  const homes = {
+    registrar: '/erp/registrar',
+    dean: '/erp/dean',
+    hod: '/erp/hod',
+    faculty: '/faculty/home',
+    student: '/student/home',
+    parent: '/parent/dashboard',
+    alumni: '/alumni/home',
+    recruiter: '/recruiter/dashboard',
+    sports_director: '/sports/director',
+    coach: '/sports/coach',
+    athlete: '/sports/athlete',
+    sports_parent: '/sports/parent',
+    library_admin: '/library',
+    hostel_admin: '/hostel',
+    transport_admin: '/transport',
+    auditor: '/reports',
+    compliance_officer: '/compliance'
+  };
+  return homes[role] || '/';
+};
+
+
 const iconMap = {
   Dashboard: LayoutDashboard,
   Students: GraduationCap,
@@ -562,6 +590,25 @@ function LayoutContent({ children, collapsed, setCollapsed, user, displayRole, h
                 
                 {erpExpanded && (
                   <div className="flex flex-col gap-1 pl-2 border-l border-brand-border/40 ml-5 mt-1 transition-all">
+                    {(() => {
+                      const erpHome = getErpHomeForRole(user?.role);
+                      if (!isRouteAllowed(user?.role, erpHome)) return null;
+                      const isActive = pathname === erpHome;
+                      return (
+                        <Link 
+                          href={erpHome}
+                          className={`flex items-center gap-2.5 p-2 rounded-lg transition-all cursor-pointer text-xs ${
+                            isActive 
+                              ? 'bg-brand-primary/20 text-brand-text-main font-semibold' 
+                              : 'text-brand-text-muted hover:text-brand-text-main hover:bg-white/[0.02]'
+                          }`}
+                          title="Dashboard Index"
+                        >
+                          {renderIcon('Dashboard')}
+                          <span className="truncate">Dashboard Index</span>
+                        </Link>
+                      );
+                    })()}
                     {erpLinks.filter(link => isRouteAllowed(user?.role, link.href)).map((subLink) => {
                       const isActive = pathname === subLink.href || pathname.startsWith(subLink.href + '/');
                       
