@@ -18,6 +18,24 @@ window.departmentsView = (function() {
           const students = window.UniversityDB.getStudents().filter(s => s.dept === d.code);
           const avgAttend = students.length > 0 ? Math.round(students.reduce((acc, curr) => acc + (curr.attendance || 0), 0) / students.length) : 90;
 
+          // AI Department Resource Efficiency Rating
+          let efficiencyPct = 82;
+          if (typeof tf !== 'undefined') {
+            try {
+              const x = tf.tensor2d([[d.budget / 500000.0, d.facultyCount / 10.0, d.studentCount / 20.0]]);
+              const w = tf.tensor2d([[-0.5], [1.2], [0.8]]);
+              const y = tf.matMul(x, w);
+              const val = y.dataSync()[0];
+              efficiencyPct = Math.round(Math.max(50, Math.min(99, 75 + val * 10)));
+              
+              x.dispose();
+              w.dispose();
+              y.dispose();
+            } catch (e) {
+              console.warn(e);
+            }
+          }
+
           return `
             <div class="card flex flex-col gap-4" style="border-top: 4px solid ${d.color};">
               <div>
@@ -31,10 +49,11 @@ window.departmentsView = (function() {
                 <div><strong>Enrolled Students:</strong> ${d.studentCount} Majors</div>
                 <div><strong>Allocated Budget:</strong> $${budgetFormatted}</div>
                 <div><strong>Average Attendance:</strong> <span class="font-bold ${avgAttend < 75 ? 'text-brand-accent-ruby' : (avgAttend < 85 ? 'text-brand-accent-amber' : 'text-brand-accent-emerald')}">${avgAttend}%</span></div>
+                <div><strong>AI Budget Efficiency:</strong> <span class="font-bold text-brand-primary font-mono">${efficiencyPct}%</span></div>
               </div>
  
               <div class="flex gap-2 mt-auto">
-                <button class="btn btn-secondary btn-sm edit-dept-btn w-full" data-code="${d.code}">Manage Resources</button>
+                <button class="btn btn-secondary btn-sm edit-dept-btn w-full font-medium" data-code="${d.code}">Manage Resources</button>
               </div>
             </div>
           `;

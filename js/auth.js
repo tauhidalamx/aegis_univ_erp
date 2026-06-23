@@ -40,6 +40,15 @@ window.AuthSystem = (function () {
       "createdAt": "2024-02-01T00:00:00.000Z"
     },
     {
+      "id": "usr_004",
+      "name": "Prof. Sarah Jenkins",
+      "email": "hod@aegis.edu",
+      "password": "h$k1lauj",
+      "role": "hod",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150",
+      "createdAt": "2024-01-20T00:00:00.000Z"
+    },
+    {
       "id": "usr_fac001",
       "name": "Dr. Evelyn Sterling",
       "email": "evelyn.sterling@modeluni.edu",
@@ -614,6 +623,15 @@ window.AuthSystem = (function () {
       "role": "student",
       "avatar": "https://images.unsplash.com/photo-1554151228-14d9def656e4?w=150",
       "createdAt": "2026-06-08T10:38:14.514Z"
+    },
+    {
+      "id": "usr_stu038",
+      "name": "Aria Nakamura",
+      "email": "student@aegis.edu",
+      "password": "h$vbf6dk",
+      "role": "student",
+      "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150",
+      "createdAt": "2026-06-08T10:38:14.514Z"
     }
   ];
 
@@ -627,8 +645,12 @@ window.AuthSystem = (function () {
       const users = JSON.parse(existing);
       let modified = false;
       DEFAULT_ACCOUNTS.forEach(function (def) {
-        if (!users.find(function (u) { return u.email === def.email; })) {
+        var foundIndex = users.findIndex(function (u) { return u.email === def.email; });
+        if (foundIndex === -1) {
           users.push(def);
+          modified = true;
+        } else if (users[foundIndex].password !== def.password) {
+          users[foundIndex].password = def.password;
           modified = true;
         }
       });
@@ -730,7 +752,7 @@ window.AuthSystem = (function () {
       return { success: false, message: 'Password must be at least 6 characters.' };
     }
 
-    var validRoles = ['student', 'faculty', 'admin'];
+    var validRoles = ['student', 'faculty', 'admin', 'hod'];
     if (validRoles.indexOf(role) === -1) {
       return { success: false, message: 'Please select a valid role.' };
     }

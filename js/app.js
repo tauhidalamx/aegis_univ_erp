@@ -127,13 +127,22 @@
       container.innerHTML = '<div class="loading-spinner">Loading view...</div>';
       this.currentView = viewName;
 
+      // Update sidebar active link highlight
+      const navLinks = document.querySelectorAll('.nav-link');
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-view') === viewName) {
+          link.classList.add('active');
+        }
+      });
+
       const viewModule = window[viewName + 'View'];
       if (viewModule && typeof viewModule.render === 'function') {
         container.innerHTML = '';
         const viewEl = document.createElement('div');
         viewEl.className = 'page-transition';
-        viewModule.render(viewEl);
         container.appendChild(viewEl);
+        viewModule.render(viewEl);
       } else {
         // Fallback for settings or missing views
         container.innerHTML = `
@@ -144,7 +153,7 @@
             </div>
           </div>
           <div class="card animate-fade-in mt-6">
-            <h3 class="mb-4">System Configuration Panel</h3>
+            <h3 class="mb-4 font-display font-bold">System Configuration Panel</h3>
             <p class="text-brand-text-muted mb-6">Manage application settings, custom credentials, user privileges, and system API configuration integrations.</p>
 
             <div class="grid-2">
@@ -172,9 +181,59 @@
                 </select>
               </div>
             </div>
-            <button class="btn btn-primary mt-4" onclick="alert('Configuration parameters persisted successfully!')">Save Preferences</button>
+            <button class="btn btn-primary mt-4 cursor-pointer" onclick="alert('Configuration parameters persisted successfully!')">Save Preferences</button>
+          </div>
+
+          <!-- Database AI Auditor Panel -->
+          <div class="card animate-fade-in mt-6 border border-brand-border bg-brand-bg-tertiary/20">
+            <div class="flex justify-between items-center mb-4">
+              <div>
+                <h3 class="m-0 font-display text-lg font-bold">Database AI Integrity Auditor</h3>
+                <p class="text-brand-text-muted text-[0.8rem] mt-1">Run the autoencoder model over student profiles to detect logical record inconsistencies or anomalous values.</p>
+              </div>
+              <button class="btn btn-primary btn-sm cursor-pointer" id="btn-run-integrity">Scan Database</button>
+            </div>
+            
+            <div id="integrity-results-container" class="flex flex-col gap-3">
+              <div class="text-brand-text-subtle text-xs py-2">Click Scan Database to run the in-browser anomaly detection neural network.</div>
+            </div>
           </div>
         `;
+
+        const runBtn = container.querySelector('#btn-run-integrity');
+        if (runBtn) {
+          runBtn.addEventListener('click', async () => {
+            const resultsContainer = container.querySelector('#integrity-results-container');
+            if (resultsContainer) {
+              resultsContainer.innerHTML = '<div class="text-xs text-brand-primary">Auditing database records via TensorFlow...</div>';
+            }
+            
+            if (window.UniversityDB && typeof window.UniversityDB.runIntegrityPrediction === 'function') {
+              const anomalies = await window.UniversityDB.runIntegrityPrediction();
+              if (resultsContainer) {
+                if (anomalies.length === 0) {
+                  resultsContainer.innerHTML = `
+                    <div class="p-4 rounded-xl bg-brand-accent-emerald/10 border border-brand-accent-emerald/20 text-brand-accent-emerald text-xs font-semibold">
+                      ✓ No profile data anomalies or integrity issues identified.
+                    </div>
+                  `;
+                } else {
+                  resultsContainer.innerHTML = anomalies.map(a => `
+                    <div class="p-3.5 rounded-xl bg-brand-accent-ruby/5 border border-brand-accent-ruby/20 flex justify-between items-center text-xs">
+                      <div>
+                        <strong class="text-brand-text-main">${a.name} (${a.studentId})</strong>
+                        <div class="text-brand-accent-ruby mt-1">${a.reason}</div>
+                      </div>
+                      <div class="text-right font-mono text-[0.65rem] text-brand-text-subtle">
+                        Deviation: ${a.errorScore}
+                      </div>
+                    </div>
+                  `).join('');
+                }
+              }
+            }
+          });
+        }
       }
     },
 
@@ -510,9 +569,13 @@
     }
   };
 
-  // Launch application on DOMContentLoaded
-  document.addEventListener('DOMContentLoaded', () => {
+  // Safe launch check to prevent race conditions
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+      window.App.init();
+    });
+  } else {
     window.App.init();
-  });
+  }
 
 })();

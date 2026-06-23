@@ -724,8 +724,29 @@ html, body {
   flex-shrink: 0;
 }
 .auth-demo-info .demo-cred .role-badge.admin   { background: rgba(99,102,241,0.15); color: var(--primary, #6366f1); }
+.auth-demo-info .demo-cred .role-badge.hod     { background: rgba(245,158,11,0.15); color: var(--accent-amber, #f59e0b); }
 .auth-demo-info .demo-cred .role-badge.faculty { background: rgba(6,182,212,0.15); color: var(--accent-cyan, #06b6d4); }
 .auth-demo-info .demo-cred .role-badge.student { background: rgba(16,185,129,0.15); color: var(--accent-emerald, #10b981); }
+
+/* Scrollable credentials container */
+.demo-creds-list {
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+.demo-creds-list::-webkit-scrollbar {
+  width: 4px;
+}
+.demo-creds-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.demo-creds-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+.demo-creds-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
 
 /* ---------- Footer ---------- */
 .auth-footer {
@@ -852,3 +873,122 @@ html, body {
 .auth-input-group select:focus ~ .select-arrow {
   color: var(--primary, #6366f1);
 }
+
+/* ===================================================================
+   SYSTEM BOOT LOADER TERMINAL STYLE OVERLAYS
+   =================================================================== */
+.system-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(5, 11, 24, 0.94);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: authPageFadeIn 0.3s ease-out;
+}
+
+.system-loader-card {
+  width: 100%;
+  max-width: 620px;
+  background: rgba(18, 24, 41, 0.85);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(99, 102, 241, 0.2);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.system-loader-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #06b6d4, #6366f1, #06b6d4);
+  border-radius: 3px 3px 0 0;
+}
+
+.loader-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 16px;
+}
+
+.loader-log-box {
+  background: rgba(5, 11, 24, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 14px;
+  padding: 20px;
+  height: 220px;
+  overflow-y: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 0.825rem;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Custom scrollbar for log box */
+.loader-log-box::-webkit-scrollbar {
+  width: 6px;
+}
+.loader-log-box::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+.loader-log-box::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.35);
+  border-radius: 3px;
+}
+.loader-log-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.6);
+}
+
+.log-line {
+  color: #94a3b8;
+  animation: logLineFadeIn 0.2s ease-out forwards;
+  word-break: break-all;
+}
+
+.log-prompt {
+  color: #06b6d4;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+@keyframes logLineFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.loader-progress-container {
+  width: 100%;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.loader-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #6366f1, #06b6d4);
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.6);
+  border-radius: 4px;
+  transition: width 0.2s cubic-bezier(0.1, 0.8, 0.25, 1);
+}
+
+.loader-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 16px;
+}
+

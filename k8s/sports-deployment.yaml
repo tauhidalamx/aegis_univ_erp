@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aegis-sports-service
+  namespace: aegis-prod
+  labels:
+    app: aegis-sports
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: aegis-sports
+  template:
+    metadata:
+      labels:
+        app: aegis-sports
+    spec:
+      containers:
+        - name: sports-container
+          image: aegis-sports:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5000
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "5000"
+            - name: DATABASE_PATH
+              value: "/app/uploads/database.sqlite"
+            - name: KAFKA_BROKERS
+              value: "kafka:9092"
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "1Gi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+          readinessProbe:
+            httpGet:
+              path: /api/sports/summary
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          volumeMounts:
+            - name: sports-storage
+              mountPath: /app/uploads
+      volumes:
+        - name: sports-storage
+          persistentVolumeClaim:
+            claimName: aegis-sports-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aegis-sports-service
+  namespace: aegis-prod
+spec:
+  selector:
+    app: aegis-sports
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP

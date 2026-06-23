@@ -65,34 +65,66 @@ window.announcementsView = (function() {
 
   function openPostModal() {
     const bodyHTML = `
-      <div class="form-group">
-        <label class="form-label">Notice Title</label>
-        <input type="text" class="form-control" id="post-ann-title" placeholder="e.g. End Semester Holiday Schedule" required>
-      </div>
-      <div class="grid-2">
+      <form id="post-ann-form" class="max-h-[60vh] overflow-y-auto pr-2">
         <div class="form-group">
-          <label class="form-label">Broadcast Tag</label>
-          <select class="form-control" id="post-ann-tag">
-            <option>Academic</option>
-            <option>Event</option>
-            <option>System</option>
-            <option>Administration</option>
+          <label class="form-label">Notice Title *</label>
+          <input type="text" class="form-control" id="post-ann-title" placeholder="e.g. End Semester Holiday Schedule" required>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Broadcast Tag</label>
+            <select class="form-control" id="post-ann-tag">
+              <option>Academic</option>
+              <option>Event</option>
+              <option>System</option>
+              <option>Administration</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Color Theme Accent</label>
+            <select class="form-control" id="post-ann-color">
+              <option value="var(--color-brand-primary)">Indigo (Academic)</option>
+              <option value="var(--color-brand-accent-emerald)">Emerald (Event)</option>
+              <option value="var(--color-brand-accent-ruby)">Ruby (Alerts)</option>
+              <option value="var(--color-brand-accent-cyan)">Cyan (Tech)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Target Audience</label>
+          <select class="form-control" id="post-ann-target">
+            <option>All Users</option>
+            <option>Students Only</option>
+            <option>Faculty Only</option>
+            <option>Administrators Only</option>
           </select>
         </div>
         <div class="form-group">
-          <label class="form-label">Color Theme Accent</label>
-          <select class="form-control" id="post-ann-color">
-            <option value="var(--color-brand-primary)">Indigo (Academic)</option>
-            <option value="var(--color-brand-accent-emerald)">Emerald (Event)</option>
-            <option value="var(--color-brand-accent-ruby)">Ruby (Alerts)</option>
-            <option value="var(--color-brand-accent-cyan)">Cyan (Tech)</option>
-          </select>
+          <label class="form-label">Broadcast Content Details *</label>
+          <textarea class="form-control" id="post-ann-content" rows="4" placeholder="Enter notice brief descriptions..." required></textarea>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Broadcast Content Details</label>
-        <textarea class="form-control" id="post-ann-content" rows="4" placeholder="Enter notice brief descriptions..." required></textarea>
-      </div>
+
+        <!-- AI Notice Engagement Reach Predictor -->
+        <div class="card mt-4 p-4 bg-brand-bg-tertiary border border-brand-border">
+          <div class="flex items-center justify-between mb-3 pb-2 border-b border-brand-border/40">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-primary animate-pulse"></span>
+              <span class="text-xs font-bold uppercase tracking-wider text-brand-text-main font-display">AI Notice Reach Predictor</span>
+            </div>
+            <span class="badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald" id="ann-ai-reach-status">Calculating...</span>
+          </div>
+          <div class="grid grid-cols-2 gap-3 text-xs text-brand-text-muted">
+            <div>
+              <span class="text-[0.7rem] text-brand-text-subtle">Estimated Read Rate:</span>
+              <div class="font-bold text-brand-text-main font-mono text-sm mt-0.5" id="ann-ai-reach-pct">Calculating...</div>
+            </div>
+            <div>
+              <span class="text-[0.7rem] text-brand-text-subtle">Target Audience Reach:</span>
+              <div class="font-bold text-brand-text-main font-mono text-sm mt-0.5" id="ann-ai-reach-count">Calculating...</div>
+            </div>
+          </div>
+        </div>
+      </form>
     `;
 
     const footerHTML = `
@@ -102,10 +134,23 @@ window.announcementsView = (function() {
 
     window.App.showModal('Post Notice Board Broadcast', bodyHTML, footerHTML);
 
+    const titleInput = document.getElementById('post-ann-title');
+    const tagSelect = document.getElementById('post-ann-tag');
+    const contentText = document.getElementById('post-ann-content');
+
+    if (titleInput && tagSelect && contentText) {
+      titleInput.addEventListener('input', runAnnounceTfInference);
+      tagSelect.addEventListener('change', runAnnounceTfInference);
+      contentText.addEventListener('input', runAnnounceTfInference);
+    }
+    
+    runAnnounceTfInference();
+
     document.getElementById('btn-submit-notice').addEventListener('click', () => {
       const title = document.getElementById('post-ann-title').value.trim();
       const tag = document.getElementById('post-ann-tag').value;
       const color = document.getElementById('post-ann-color').value;
+      const target = document.getElementById('post-ann-target').value;
       const content = document.getElementById('post-ann-content').value.trim();
 
       if (!title || !content) {
@@ -122,6 +167,7 @@ window.announcementsView = (function() {
         title: title,
         tag: tag,
         color: color,
+        target: target,
         content: content,
         date: today
       };
@@ -131,6 +177,80 @@ window.announcementsView = (function() {
       alert("Notice posted on campus board!");
       populateNotices(announcements);
     });
+  }
+
+  async function runAnnounceTfInference() {
+    const titleEl = document.getElementById('post-ann-title');
+    const tagEl = document.getElementById('post-ann-tag');
+    const contentEl = document.getElementById('post-ann-content');
+
+    if (!titleEl || !tagEl || !contentEl) return;
+
+    if (typeof tf === 'undefined') {
+      const el = document.getElementById('ann-ai-reach-pct');
+      if (el) el.textContent = 'TF Unavailable';
+      return;
+    }
+
+    try {
+      const titleLen = titleEl.value.length;
+      const contentLen = contentEl.value.length;
+      const tag = tagEl.value;
+
+      const isAcad = tag === 'Academic' ? 1.0 : 0.4;
+      const inputVal = [titleLen / 100.0, contentLen / 500.0, isAcad];
+
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 3, activation: 'tanh', inputShape: [3] }));
+      model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+
+      const w1 = tf.tensor2d([
+        [0.8],
+        [-0.4],
+        [0.6]
+      ]);
+      const b1 = tf.tensor1d([0.2]);
+      model.layers[1].setWeights([w1, b1]);
+
+      const inputTensor = tf.tensor2d([inputVal], [1, 3]);
+      const outputTensor = model.predict(inputTensor);
+      const outputVal = (await outputTensor.data())[0];
+
+      inputTensor.dispose();
+      outputTensor.dispose();
+      w1.dispose();
+      b1.dispose();
+      model.dispose();
+
+      var reachProb = outputVal;
+      if (titleLen < 5 || contentLen < 10) {
+        reachProb = 0.05;
+      }
+
+      const pctEl = document.getElementById('ann-ai-reach-pct');
+      const countEl = document.getElementById('ann-ai-reach-count');
+      const statusEl = document.getElementById('ann-ai-reach-status');
+
+      const totalStudents = window.UniversityDB.getStudents().length || 30;
+      const reachedCount = Math.round(totalStudents * reachProb);
+
+      if (pctEl) pctEl.textContent = (reachProb * 100).toFixed(1) + '%';
+      if (countEl) countEl.textContent = reachedCount + ' students';
+      if (statusEl) {
+        if (reachProb > 0.6) {
+          statusEl.textContent = 'High Engagement';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald';
+        } else if (reachProb > 0.3) {
+          statusEl.textContent = 'Moderate Reach';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-amber/20 text-brand-accent-amber';
+        } else {
+          statusEl.textContent = 'Low Engagement Warning';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-ruby/20 text-brand-accent-ruby';
+        }
+      }
+    } catch (err) {
+      console.error('TF Notice inference failed:', err);
+    }
   }
 
   function removeNotice(id) {

@@ -6,38 +6,38 @@ window.attendanceView = (function() {
     const courseOptions = courses.map(c => `<option value="${c.code}">${c.code} - ${c.title}</option>`).join('');
 
     container.innerHTML = `
-      <div class="page-header animate-fade-in">
+      <div class="page-header animate-fade-in flex items-center justify-between border-b border-brand-border/30 pb-4 mb-6">
         <div>
-          <h1>Attendance & Weekly Schedule</h1>
-          <p>Mark class attendances, view department timetables, and monitor student academic participation.</p>
+          <h1 class="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-white via-slate-100 to-brand-primary bg-clip-text text-transparent">Attendance & Weekly Schedule</h1>
+          <p class="text-sm text-brand-text-muted mt-1">Mark daily student attendances, view department timetables, and monitor academic participation metrics.</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 animate-fade-in delay-1">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 animate-fade-in delay-1">
         
         <!-- Attendance Sheet Panel -->
-        <div class="card">
-          <h3 class="mb-4 font-display text-lg font-bold">Register Attendance</h3>
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-4 font-display text-lg font-bold text-white">Register Session Attendance</h3>
           
-          <div class="grid grid-cols-[1.5fr_1fr] gap-4 mb-5 max-sm:grid-cols-1">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
             <div class="form-group mb-0">
-              <label class="form-label">Select Course</label>
-              <select class="form-control" id="attendance-course-select">
+              <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Select Course Section</label>
+              <select class="form-control mt-1 w-full" id="attendance-course-select">
                 ${courseOptions}
               </select>
             </div>
             <div class="form-group mb-0">
-              <label class="form-label">Session Date</label>
-              <input type="date" class="form-control" id="attendance-date" value="2026-06-08">
+              <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Session Date</label>
+              <input type="date" class="form-control mt-1 w-full" id="attendance-date" value="2026-06-08">
             </div>
           </div>
 
-          <div class="max-h-[380px] overflow-y-auto border border-brand-border rounded-xl bg-brand-bg-primary p-3 mb-5">
+          <div class="max-h-[380px] overflow-y-auto border border-brand-border/50 rounded-xl bg-brand-bg-primary/50 p-3 mb-5">
             <table class="w-full border-collapse">
               <thead>
                 <tr>
-                  <th class="p-2.5 text-[0.75rem]">Student Name</th>
-                  <th class="p-2.5 text-[0.75rem] text-center">Mark Attendance</th>
+                  <th class="p-2.5 text-[0.75rem] border-b border-brand-border/50">Student Profile</th>
+                  <th class="p-2.5 text-[0.75rem] text-center border-b border-brand-border/50">Mark Present</th>
                 </tr>
               </thead>
               <tbody id="attendance-student-list">
@@ -50,53 +50,83 @@ window.attendanceView = (function() {
         </div>
 
         <!-- Weekly Timetable Grid -->
-        <div class="card">
-          <h3 class="mb-4 font-display text-lg font-bold">Campus Master Schedule</h3>
-          <p class="text-brand-text-muted text-[0.85rem] mb-4">Standard working hours block (Monday - Friday).</p>
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-4 font-display text-lg font-bold text-white">Campus Timetable Schedule</h3>
+          <p class="text-brand-text-muted text-[0.85rem] mb-4">Standard academic calendar slots (Monday - Friday).</p>
           
           <div class="flex flex-col gap-3">
-            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center bg-brand-primary/5">
+            <div class="p-3.5 border border-brand-border/60 rounded-xl flex justify-between items-center bg-brand-primary/5 transition-all duration-200 hover:border-brand-primary/45">
               <div>
-                <strong class="text-brand-primary">Monday (09:00 AM - 11:00 AM)</strong>
-                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">CS101 - Intro Programming (Hall A)</div>
+                <strong class="text-brand-primary font-semibold text-xs uppercase tracking-wider">Monday (09:00 AM - 11:00 AM)</strong>
+                <div class="text-sm font-medium text-white mt-1">CS101 - Intro Programming (Hall A)</div>
               </div>
-              <span class="badge badge-info">Active</span>
+              <span class="badge badge-success text-[0.75rem]">Active</span>
             </div>
             
-            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
+            <div class="p-3.5 border border-brand-border/60 rounded-xl flex justify-between items-center transition-all duration-200 hover:border-brand-accent-cyan/45">
               <div>
-                <strong class="text-brand-accent-cyan">Tuesday (11:30 AM - 01:30 PM)</strong>
-                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">EE201 - Signals and Systems (Hall B)</div>
+                <strong class="text-brand-accent-cyan font-semibold text-xs uppercase tracking-wider">Tuesday (11:30 AM - 01:30 PM)</strong>
+                <div class="text-sm font-medium text-white mt-1">EE201 - Signals and Systems (Hall B)</div>
               </div>
-              <span class="badge badge-info">Active</span>
+              <span class="badge badge-success text-[0.75rem]">Active</span>
             </div>
 
-            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
+            <div class="p-3.5 border border-brand-border/60 rounded-xl flex justify-between items-center transition-all duration-200 hover:border-brand-accent-amber/45">
               <div>
-                <strong class="text-brand-accent-amber">Wednesday (02:00 PM - 04:00 PM)</strong>
-                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">ME102 - Engineering Thermodynamics (Hall C)</div>
+                <strong class="text-brand-accent-amber font-semibold text-xs uppercase tracking-wider">Wednesday (02:00 PM - 04:00 PM)</strong>
+                <div class="text-sm font-medium text-white mt-1">ME102 - Engineering Thermodynamics (Hall C)</div>
               </div>
-              <span class="badge badge-info">Active</span>
+              <span class="badge badge-success text-[0.75rem]">Active</span>
             </div>
 
-            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
+            <div class="p-3.5 border border-brand-border/60 rounded-xl flex justify-between items-center transition-all duration-200 hover:border-brand-primary/45">
               <div>
-                <strong class="text-brand-primary">Thursday (09:00 AM - 11:00 AM)</strong>
-                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">CS202 - Data Structures (Lab 3)</div>
+                <strong class="text-brand-primary font-semibold text-xs uppercase tracking-wider">Thursday (09:00 AM - 11:00 AM)</strong>
+                <div class="text-sm font-medium text-white mt-1">CS202 - Data Structures (Lab 3)</div>
               </div>
-              <span class="badge badge-info">Active</span>
+              <span class="badge badge-success text-[0.75rem]">Active</span>
             </div>
 
-            <div class="p-3 border border-brand-border rounded-xl flex justify-between items-center">
+            <div class="p-3.5 border border-brand-border/60 rounded-xl flex justify-between items-center transition-all duration-200 hover:border-brand-accent-emerald/45">
               <div>
-                <strong class="text-brand-accent-emerald">Friday (10:00 AM - 12:00 PM)</strong>
-                <div class="text-[0.8rem] text-brand-text-muted mt-0.5">BI101 - Biotechnology Basics (BI Lab)</div>
+                <strong class="text-brand-accent-emerald font-semibold text-xs uppercase tracking-wider">Friday (10:00 AM - 12:00 PM)</strong>
+                <div class="text-sm font-medium text-white mt-1">BI101 - Biotechnology Basics (BI Lab)</div>
               </div>
-              <span class="badge badge-info">Active</span>
+              <span class="badge badge-success text-[0.75rem]">Active</span>
             </div>
           </div>
         </div>
 
+      </div>
+
+      <!-- AI Attendance Forecast Panel -->
+      <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl mt-6 animate-fade-in delay-2">
+        <h3 class="mb-4 font-display text-lg font-bold text-white">AI Attendance & Class Participation Forecast</h3>
+        <p class="text-brand-text-muted text-[0.85rem] mb-4 font-normal">Predicting class participation probabilities using a dynamic TensorFlow.js neural network trained on weekly history logs.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2 chart-wrapper h-[220px]">
+            <canvas id="attendance-forecast-chart"></canvas>
+          </div>
+          <div class="flex flex-col gap-4 p-5 rounded-xl border border-brand-border/60 bg-brand-bg-tertiary/50">
+            <h4 class="text-xs font-semibold uppercase tracking-wider text-white font-display pb-2 border-b border-brand-border/40">Projection Summary</h4>
+            <div class="text-xs text-brand-text-muted flex flex-col gap-3">
+              <div class="flex justify-between items-center">
+                <span>Predicted Weekly Peak:</span>
+                <strong class="text-brand-accent-emerald font-mono text-sm" id="attend-ai-peak">Calculating...</strong>
+              </div>
+              <div class="flex justify-between items-center">
+                <span>Predicted Weekly Dip:</span>
+                <strong class="text-brand-accent-ruby font-mono text-sm" id="attend-ai-dip">Calculating...</strong>
+              </div>
+              <div class="flex justify-between border-t border-brand-border/30 pt-3 items-center">
+                <span>Average Attendance Projection:</span>
+                <strong class="text-brand-primary font-mono text-base font-bold" id="attend-ai-avg">Calculating...</strong>
+              </div>
+            </div>
+            <button class="btn btn-secondary btn-sm mt-auto w-full font-bold" id="btn-recalc-attend-ai">Re-run AI Projection</button>
+          </div>
+        </div>
       </div>
     `;
 
@@ -108,6 +138,18 @@ window.attendanceView = (function() {
       // Initial load
       loadStudentsForCourse(courseSelect.value);
     }
+
+    const recalcBtn = container.querySelector('#btn-recalc-attend-ai');
+    if (recalcBtn) {
+      recalcBtn.addEventListener('click', () => {
+        runAttendanceTfTraining(container);
+      });
+    }
+
+    // Run initial ML projection
+    setTimeout(() => {
+      runAttendanceTfTraining(container);
+    }, 200);
 
     document.getElementById('btn-save-attendance').addEventListener('click', () => {
       const selectedCourse = courseSelect.value;
@@ -177,6 +219,107 @@ window.attendanceView = (function() {
         </td>
       </tr>
     `).join('');
+  }
+
+  let attendanceChart = null;
+
+  async function runAttendanceTfTraining(container) {
+    const peakEl = container.querySelector('#attend-ai-peak');
+    const dipEl = container.querySelector('#attend-ai-dip');
+    const avgEl = container.querySelector('#attend-ai-avg');
+    const recalcBtn = container.querySelector('#btn-recalc-attend-ai');
+
+    if (typeof tf === 'undefined') {
+      if (avgEl) avgEl.textContent = 'TF Unavailable';
+      return;
+    }
+
+    if (recalcBtn) {
+      recalcBtn.disabled = true;
+      recalcBtn.textContent = 'Projecting...';
+    }
+
+    try {
+      const xVal = [0, 1, 2, 3, 4, 5, 6, 7];
+      const yVal = [0.88, 0.92, 0.94, 0.85, 0.78, 0.89, 0.91, 0.95];
+
+      const xs = tf.tensor2d(xVal.map(x => x / 7), [8, 1]);
+      const ys = tf.tensor2d(yVal, [8, 1]);
+
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 2, activation: 'tanh', inputShape: [1] }));
+      model.add(tf.layers.dense({ units: 1 }));
+      
+      model.compile({ optimizer: tf.train.adam(0.1), loss: 'meanSquaredError' });
+      await model.fit(xs, ys, { epochs: 20, verbose: 0 });
+
+      const predictX = [8, 9, 10, 11, 12];
+      const predictTensor = tf.tensor2d(predictX.map(x => x / 7), [5, 1]);
+      const predictOutput = model.predict(predictTensor);
+      const outputData = await predictOutput.data();
+
+      xs.dispose();
+      ys.dispose();
+      predictTensor.dispose();
+      predictOutput.dispose();
+      model.dispose();
+
+      const projectedY = Array.from(outputData).map(val => Math.round(Math.max(0.4, Math.min(1.0, val)) * 100));
+
+      const avg = Math.round(projectedY.reduce((a,b) => a+b, 0) / projectedY.length);
+      const max = Math.max(...projectedY);
+      const min = Math.min(...projectedY);
+
+      if (peakEl) peakEl.textContent = max + '%';
+      if (dipEl) dipEl.textContent = min + '%';
+      if (avgEl) avgEl.textContent = avg + '%';
+
+      const ctx = container.querySelector('#attendance-forecast-chart');
+      if (ctx) {
+        if (attendanceChart) attendanceChart.destroy();
+        attendanceChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+            datasets: [{
+              label: 'Projected Attendance Rate (%)',
+              data: projectedY,
+              borderColor: '#10b981',
+              backgroundColor: 'rgba(16, 185, 129, 0.1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              y: {
+                grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                ticks: { color: '#94a3b8' },
+                min: 40,
+                max: 100
+              },
+              x: {
+                grid: { display: false },
+                ticks: { color: '#94a3b8' }
+              }
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.error('TF Attendance Projection failed:', err);
+    } finally {
+      if (recalcBtn) {
+        recalcBtn.disabled = false;
+        recalcBtn.textContent = 'Re-run AI Projection';
+      }
+    }
   }
 
   return {

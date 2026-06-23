@@ -21,70 +21,70 @@ window.financeView = (function() {
     const overdueCount = students.filter(s => (s.feeTotal - s.feePaid) > 2000).length;
 
     container.innerHTML = `
-      <div class="page-header animate-fade-in">
+      <div class="page-header animate-fade-in flex items-center justify-between border-b border-brand-border/30 pb-4 mb-6">
         <div>
-          <h1>Finance & Collections</h1>
-          <p>Track scholarship distribution, audit recent transactions, check student balances, and issue invoices.</p>
+          <h1 class="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-white via-slate-100 to-brand-primary bg-clip-text text-transparent">Finance & Collections</h1>
+          <p class="text-sm text-brand-text-muted mt-1">Track scholarship distribution, audit ledger transactions, check student account balances, and execute invoice logs.</p>
         </div>
         <button class="btn btn-primary" id="btn-collect-payment">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="12" y1="1" x2="12" y2="23"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-          Record Fee payment
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="12" y1="1" x2="12" y2="23"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          <span>Record Fee Payment</span>
         </button>
       </div>
 
       <!-- Financial KPI Metrics -->
-      <div class="kpi-grid animate-fade-in delay-1 mt-6">
+      <div class="kpi-grid animate-fade-in delay-1">
         
-        <div class="card kpi-card">
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-accent-emerald/30">
           <div class="kpi-details">
-            <span class="kpi-label">Cumulative Collections</span>
-            <span class="kpi-value">$${collected.toLocaleString()}</span>
-            <span class="kpi-growth text-brand-accent-emerald">Audited Fiscal Year</span>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Cumulative Collections</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">$${collected.toLocaleString()}</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-emerald font-semibold mt-2.5">Audited Fiscal Year</span>
           </div>
-          <div class="kpi-icon text-brand-accent-emerald">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-emerald transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
         </div>
 
-        <div class="card kpi-card">
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-accent-ruby/30">
           <div class="kpi-details">
-            <span class="kpi-label">Outstanding Receivables</span>
-            <span class="kpi-value">$${totalDue.toLocaleString()}</span>
-            <span class="kpi-growth text-brand-accent-ruby">Pending Invoices</span>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Outstanding Balance</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">$${totalDue.toLocaleString()}</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-ruby font-semibold mt-2.5">Pending Invoices</span>
           </div>
-          <div class="kpi-icon text-brand-accent-ruby">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-ruby transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
         </div>
 
-        <div class="card kpi-card">
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-accent-amber/30">
           <div class="kpi-details">
-            <span class="kpi-label">Overdue Accounts</span>
-            <span class="kpi-value">${overdueCount} Students</span>
-            <span class="kpi-growth text-brand-accent-amber">Balances > $2,000</span>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Overdue Accounts</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">${overdueCount} Accounts</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-amber font-semibold mt-2.5">Balances > $2,000</span>
           </div>
-          <div class="kpi-icon text-brand-accent-amber">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-amber transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           </div>
         </div>
 
       </div>
 
       <!-- Main Ledger Tables -->
-      <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 animate-fade-in delay-2 mt-6">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-6 mt-6 animate-fade-in delay-2">
         
         <!-- Student Balances Ledger -->
-        <div class="card">
-          <h3 class="mb-4 font-display text-lg font-semibold">Student Accounts Balance Sheet</h3>
-          <div class="table-container max-h-[420px] overflow-y-auto">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-4 font-display text-lg font-bold text-white">Student Accounts Balance Sheet</h3>
+          <div class="table-container max-h-[420px] overflow-y-auto border border-brand-border/50">
             <table>
               <thead>
                 <tr>
-                  <th>Student ID</th>
-                  <th>Name</th>
-                  <th>Total Due</th>
-                  <th>Paid</th>
-                  <th>Status</th>
+                  <th class="p-4">Student ID</th>
+                  <th class="p-4">Name</th>
+                  <th class="p-4">Total Due</th>
+                  <th class="p-4">Paid</th>
+                  <th class="p-4">Status</th>
                 </tr>
               </thead>
               <tbody id="finance-balances-body">
@@ -95,17 +95,17 @@ window.financeView = (function() {
         </div>
 
         <!-- Recent Transactions Audit -->
-        <div class="card">
-          <h3 class="mb-4 font-display text-lg font-semibold">Recent Audit Receipts</h3>
-          <div class="flex flex-col gap-4 max-h-[420px] overflow-y-auto pr-1">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-4 font-display text-lg font-bold text-white">Recent Audit Receipts</h3>
+          <div class="flex flex-col gap-3.5 max-h-[420px] overflow-y-auto pr-1">
             ${transactions.map(txn => `
-              <div class="p-3 border border-brand-border rounded-xl bg-brand-bg-tertiary flex justify-between items-center transition-all duration-200 hover:translate-x-1 hover:border-brand-accent-emerald/30 hover:bg-brand-bg-tertiary/60">
+              <div class="p-3.5 border border-brand-border/60 rounded-xl bg-brand-bg-tertiary/40 flex justify-between items-center transition-all duration-200 hover:translate-x-1 hover:border-brand-accent-emerald/30 hover:bg-brand-bg-tertiary/60">
                 <div>
-                  <strong class="text-brand-accent-emerald text-base">+$${txn.amount}</strong>
-                  <div class="text-[0.8rem] font-semibold mt-0.5">${txn.studentName}</div>
-                  <span class="text-xs text-brand-text-subtle">${txn.date} via ${txn.method}</span>
+                  <strong class="text-brand-accent-emerald text-sm font-bold">+$${txn.amount.toLocaleString()}</strong>
+                  <div class="text-xs text-white font-medium mt-1">${txn.studentName}</div>
+                  <span class="text-[0.7rem] text-brand-text-subtle mt-0.5 block">${txn.date} via ${txn.method}</span>
                 </div>
-                <code class="text-xs bg-white/[0.03] px-2 py-1 rounded">${txn.txId}</code>
+                <code class="text-[0.7rem] bg-white/[0.04] px-2 py-1 rounded font-mono text-brand-text-muted">${txn.txId}</code>
               </div>
             `).join('')}
           </div>
@@ -114,23 +114,23 @@ window.financeView = (function() {
       </div>
 
       <!-- AI Collections Forecast Section -->
-      <div class="card animate-fade-in delay-3 mt-6">
-        <div class="flex justify-between items-center border-b border-brand-border pb-4 mb-5">
+      <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl animate-fade-in delay-3 mt-6">
+        <div class="flex justify-between items-center border-b border-brand-border/30 pb-4 mb-5">
           <div>
-            <h3 class="font-display flex items-center gap-2 m-0 text-lg font-bold">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--color-brand-accent-emerald)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              AI Fee Collections Forecasting
+            <h3 class="font-display flex items-center gap-2 m-0 text-lg font-bold text-white">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--color-brand-accent-emerald)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              AI Revenue & Collections Forecasting
             </h3>
-            <p class="text-[0.85rem] text-brand-text-muted mt-1 m-0">Train an in-browser neural network on historical fee collection trends using TensorFlow.js.</p>
+            <p class="text-[0.85rem] text-brand-text-muted mt-1 m-0">Regression modeling on historical collections registry using TensorFlow.js optimizer weights.</p>
           </div>
-          <span class="badge bg-brand-accent-emerald/10 text-brand-accent-emerald font-semibold">Powered by TensorFlow.js</span>
+          <span class="badge bg-brand-accent-emerald/10 border-brand-accent-emerald/20 text-brand-accent-emerald font-semibold text-xs py-1 px-3">TensorFlow.js Engine</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
           <!-- Controls Panel -->
-          <div class="flex flex-col gap-5 border-r border-brand-border pr-8 max-md:border-r-0 max-md:pr-0">
+          <div class="flex flex-col gap-5 border-r border-brand-border/30 pr-8 max-md:border-r-0 max-md:pr-0">
             <div>
-              <label class="block text-[0.825rem] text-brand-text-subtle mb-2">Optimizer Learning Rate</label>
+              <label class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wider mb-2 pl-0.5">Optimizer Learning Rate</label>
               <select id="tf-finance-lr" class="w-full bg-brand-bg-secondary border border-brand-border text-brand-text-main p-2 rounded-lg outline-none">
                 <option value="0.01">0.01 (Slow & Stable)</option>
                 <option value="0.05" selected>0.05 (Default)</option>
@@ -139,13 +139,13 @@ window.financeView = (function() {
             </div>
 
             <div>
-              <label class="block text-[0.825rem] text-brand-text-subtle mb-2">Training Epochs</label>
-              <input type="range" id="tf-finance-epochs" min="50" max="300" step="50" value="150" class="w-full accent-brand-accent-emerald">
-              <span id="tf-finance-epochs-val" class="text-[0.8rem] text-brand-text-muted float-right mt-1">150 epochs</span>
+              <label class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wider mb-2 pl-0.5">Training Epochs</label>
+              <input type="range" id="tf-finance-epochs" min="50" max="300" step="50" value="150" class="w-full accent-brand-accent-emerald cursor-pointer">
+              <span id="tf-finance-epochs-val" class="text-[0.8rem] text-brand-text-muted float-right mt-1 font-mono">150 epochs</span>
             </div>
 
             <div>
-              <label class="block text-[0.825rem] text-brand-text-subtle mb-2">Forecast Horizon</label>
+              <label class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wider mb-2 pl-0.5">Forecast Horizon</label>
               <select id="tf-finance-horizon" class="w-full bg-brand-bg-secondary border border-brand-border text-brand-text-main p-2 rounded-lg outline-none">
                 <option value="1">1 Term (2026-B)</option>
                 <option value="2" selected>2 Terms (2026-B & 2027-A)</option>
@@ -153,16 +153,16 @@ window.financeView = (function() {
               </select>
             </div>
 
-            <button class="btn btn-primary w-full justify-center flex items-center gap-2" id="tf-finance-train-btn" style="background-color: var(--color-brand-accent-emerald); box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              Run Revenue Projection
+            <button class="btn btn-primary w-full justify-center flex items-center gap-2" id="tf-finance-train-btn" style="background-color: var(--color-brand-accent-emerald); box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Run Revenue Projection</span>
             </button>
 
             <!-- Live Status -->
-            <div id="tf-finance-status-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border" style="display:none;">
+            <div id="tf-finance-status-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border/40" style="display:none;">
               <div class="flex justify-between text-[0.8rem] mb-1.5">
                 <span class="text-brand-text-subtle">Epoch:</span>
-                <span id="tf-finance-epoch-disp" class="font-semibold text-brand-text-main">0/150</span>
+                <span id="tf-finance-epoch-disp" class="font-semibold text-brand-text-main font-mono">0/150</span>
               </div>
               <div class="flex justify-between text-[0.8rem] mb-3">
                 <span class="text-brand-text-subtle">Training Loss:</span>
@@ -174,17 +174,17 @@ window.financeView = (function() {
               </div>
             </div>
             
-            <div id="tf-finance-metrics-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border text-[0.825rem] leading-normal">
-              <div class="text-brand-text-main font-semibold mb-1">Last Projection Metrics:</div>
-              <div>Status: <span id="tf-finance-status-text" class="text-brand-accent-cyan font-bold">Untrained</span></div>
-              <div>Equation Fit: <span id="tf-finance-equation-fit" class="text-brand-text-muted">y = mx + c</span></div>
+            <div id="tf-finance-metrics-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border/40 text-[0.825rem] leading-normal flex flex-col gap-1.5">
+              <div class="text-brand-text-main font-bold">Projection Diagnostics:</div>
+              <div>Status: <span id="tf-finance-status-text" class="text-brand-accent-cyan font-bold uppercase">Untrained</span></div>
+              <div>Gradient Fit: <span id="tf-finance-equation-fit" class="text-brand-text-muted font-mono">y = mx + c</span></div>
             </div>
           </div>
 
           <!-- Forecast Chart -->
           <div class="flex flex-col h-[350px]">
             <div class="flex justify-between mb-3 items-center">
-              <h4 class="text-[0.95rem] font-semibold text-brand-text-main m-0">Revenue Projection Curve</h4>
+              <h4 class="text-sm font-semibold text-white m-0">Revenue Projection Curve</h4>
               <span id="tf-finance-projection-hint" class="text-[0.75rem] text-brand-text-muted">Historical fee revenues vs Model Fit</span>
             </div>
             <div class="chart-wrapper flex-1">
@@ -265,100 +265,121 @@ window.financeView = (function() {
     const studentTxns = transactions.filter(tx => tx.studentId === student.id);
 
     container.innerHTML = `
-      <div class="page-header animate-fade-in">
+      <div class="page-header animate-fade-in flex items-center justify-between border-b border-brand-border/30 pb-4 mb-6">
         <div>
-          <h1>My Student Fee Statement</h1>
-          <p>Verify outstanding tuition dues, download invoices, and execute simulated payments.</p>
+          <h1 class="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-white via-slate-100 to-brand-primary bg-clip-text text-transparent">Student Statement</h1>
+          <p class="text-sm text-brand-text-muted mt-1">Verify outstanding tuition balances, audit history logs, and process simulated payments.</p>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 animate-fade-in delay-1">
         <!-- Personal Info & Dues Summary -->
-        <div class="card flex flex-col gap-5">
-          <div class="flex items-center gap-4 border-b border-brand-border pb-4">
-            <img src="${student.avatar}" class="w-16 h-16 rounded-full object-cover border border-brand-border">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex flex-col gap-5">
+          <div class="flex items-center gap-4 border-b border-brand-border/30 pb-4">
+            <img src="${student.avatar}" class="w-16 h-16 rounded-full object-cover border border-brand-border/60">
             <div>
-              <h3 class="m-0 font-display text-lg font-bold">${student.name}</h3>
+              <h3 class="m-0 font-display text-lg font-bold text-white">${student.name}</h3>
               <span class="text-xs text-brand-text-muted">Student ID: <code>${student.id}</code> | Dept: ${student.dept}</span>
             </div>
           </div>
           
-          <div class="flex flex-col gap-3 text-sm">
+          <div class="flex flex-col gap-3.5 text-xs">
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle">Registration Semester:</span>
-              <strong class="text-brand-text-main">Semester ${student.semester}</strong>
+              <span class="text-brand-text-muted font-medium">Registration Semester:</span>
+              <strong class="text-white">Semester ${student.semester}</strong>
             </div>
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle">Academic Scholarship:</span>
+              <span class="text-brand-text-muted font-medium">Academic Scholarship:</span>
               <strong class="text-brand-accent-cyan">${student.scholarship || 'None'}</strong>
             </div>
-            <div class="flex justify-between border-t border-brand-border/40 pt-3">
-              <span class="text-brand-text-subtle">Total Semester Tuition Fee:</span>
-              <strong class="text-brand-text-main">$${student.feeTotal.toLocaleString()}</strong>
+            <div class="flex justify-between border-t border-brand-border/30 pt-3">
+              <span class="text-brand-text-muted font-medium">Total Semester Tuition Fee:</span>
+              <strong class="text-white font-mono">$${student.feeTotal.toLocaleString()}</strong>
             </div>
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle text-brand-accent-emerald">Total Fee Paid:</span>
-              <strong class="text-brand-accent-emerald">$${student.feePaid.toLocaleString()}</strong>
+              <span class="text-brand-text-muted font-medium text-brand-accent-emerald">Total Fee Paid:</span>
+              <strong class="text-brand-accent-emerald font-mono">$${student.feePaid.toLocaleString()}</strong>
             </div>
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle text-brand-accent-ruby">Outstanding Balance:</span>
-              <strong class="text-brand-accent-ruby">$${outstanding.toLocaleString()}</strong>
+              <span class="text-brand-text-muted font-medium text-brand-accent-ruby">Outstanding Balance:</span>
+              <strong class="text-brand-accent-ruby font-mono">$${outstanding.toLocaleString()}</strong>
             </div>
           </div>
 
           <!-- Progress bar -->
           <div class="mt-2">
-            <div class="flex justify-between text-xs font-semibold mb-1">
-              <span class="text-brand-text-subtle">Tuition Clearance Progress</span>
-              <span class="text-brand-text-main">${fillPercentage.toFixed(1)}%</span>
+            <div class="flex justify-between text-xs font-semibold mb-1.5">
+              <span class="text-brand-text-muted uppercase tracking-wider">Tuition Clearance Progress</span>
+              <span class="text-white font-mono">${fillPercentage.toFixed(1)}%</span>
             </div>
-            <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border">
+            <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border/40">
               <div class="bg-gradient-to-r from-brand-accent-emerald to-brand-primary h-full rounded-full" style="width: ${fillPercentage}%"></div>
             </div>
           </div>
         </div>
 
         <!-- Simulated Payment Portal -->
-        <div class="card">
-          <h3 class="mb-4 font-display text-base font-bold m-0 border-b border-brand-border pb-3">Pay Tuition Online</h3>
-          <p class="text-xs text-brand-text-muted mb-4">Execute a simulated billing payment to clear your outstanding student dues.</p>
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-4 font-display text-base font-bold m-0 border-b border-brand-border/30 pb-3 text-white">Online Payment Gateway</h3>
+          <p class="text-xs text-brand-text-muted mb-4 font-normal">Process a simulated credit transfer to clear outstanding university dues.</p>
           
           <div class="flex flex-col gap-4">
             <div class="form-group">
-              <label class="form-label">Payment Amount ($)</label>
-              <input type="number" id="stu-pay-amount" class="form-control" min="1" max="${outstanding}" value="${Math.min(outstanding, 1000)}" ${outstanding === 0 ? 'disabled' : ''}>
+              <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Payment Amount ($)</label>
+              <input type="number" id="stu-pay-amount" class="form-control mt-1 w-full" min="1" max="${outstanding}" value="${Math.min(outstanding, 1000)}" ${outstanding === 0 ? 'disabled' : ''}>
             </div>
             <div class="form-group">
-              <label class="form-label">Select Payment Gateway</label>
-              <select id="stu-pay-method" class="form-control" ${outstanding === 0 ? 'disabled' : ''}>
+              <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Select Gateway</label>
+              <select id="stu-pay-method" class="form-control mt-1 w-full" ${outstanding === 0 ? 'disabled' : ''}>
                 <option>Stripe Card</option>
                 <option>PayPal</option>
                 <option>Bank Direct Transfer</option>
               </select>
             </div>
             <button class="btn btn-primary w-full justify-center flex items-center gap-2 mt-2" id="btn-stu-pay" ${outstanding === 0 ? 'disabled' : ''}>
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="12" y1="1" x2="12" y2="23"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-              ${outstanding === 0 ? 'Tuition Balance Cleared' : 'Process Payment'}
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"/><line x1="12" y1="1" x2="12" y2="23"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              <span>${outstanding === 0 ? 'Statement Cleared' : 'Process Payment'}</span>
             </button>
           </div>
         </div>
       </div>
 
+      <!-- AI Tuition Default Risk Estimator -->
+      <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl mt-6 animate-fade-in delay-2">
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-brand-border/30">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-accent-amber animate-pulse"></span>
+            <span class="text-xs font-bold uppercase tracking-wider text-white font-display">AI Payment Delay Predictor</span>
+          </div>
+          <span class="badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald animate-fade-in" id="finance-ai-delay-status">Low Risk</span>
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-xs text-brand-text-muted">
+          <div>
+            <span class="text-[0.7rem] text-brand-text-subtle">Predicted Delay Probability:</span>
+            <div class="font-bold text-white font-mono text-sm mt-0.5 animate-fade-in" id="finance-ai-delay-pct">Calculating...</div>
+          </div>
+          <div>
+            <span class="text-[0.7rem] text-brand-text-subtle">Projected Clearance Date:</span>
+            <div class="font-bold text-white font-mono text-sm mt-0.5 animate-fade-in" id="finance-ai-clearance-date">Semester end</div>
+          </div>
+        </div>
+      </div>
+
       <!-- Personal Receipts / Transaction History -->
-      <div class="card mt-6 animate-fade-in delay-2">
-        <h3 class="mb-4 font-display text-base font-bold m-0 border-b border-brand-border pb-3">My Billing Transaction History</h3>
+      <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl mt-6 animate-fade-in delay-2">
+        <h3 class="mb-4 font-display text-base font-bold m-0 border-b border-brand-border/30 pb-3 text-white">Statement Transaction Ledger</h3>
         
-        <div class="flex flex-col gap-3 max-h-[300px] overflow-y-auto pr-1">
+        <div class="flex flex-col gap-3.5 max-h-[300px] overflow-y-auto pr-1">
           ${studentTxns.length === 0 ? `
             <div class="text-center py-6 text-brand-text-muted text-xs">No prior transaction receipts found.</div>
           ` : studentTxns.map(txn => `
-            <div class="p-3 border border-brand-border rounded-xl bg-brand-bg-tertiary flex justify-between items-center transition-all duration-200 hover:translate-x-1 hover:border-brand-accent-emerald/30 hover:bg-brand-bg-tertiary/60">
+            <div class="p-3.5 border border-brand-border/60 rounded-xl bg-brand-bg-tertiary/40 flex justify-between items-center transition-all duration-200 hover:translate-x-1 hover:border-brand-accent-emerald/30 hover:bg-brand-bg-tertiary/60">
               <div>
-                <strong class="text-brand-accent-emerald text-base">+$${txn.amount}</strong>
-                <span class="text-xs text-brand-text-subtle ml-3">${txn.date} via ${txn.method}</span>
+                <strong class="text-brand-accent-emerald text-sm font-bold">+$${txn.amount.toLocaleString()}</strong>
+                <span class="text-xs text-brand-text-muted ml-3">${txn.date} via ${txn.method}</span>
               </div>
-              <div class="flex items-center gap-2">
-                <code class="text-xs bg-white/[0.03] px-2 py-1 rounded">${txn.txId}</code>
+              <div class="flex items-center gap-3">
+                <code class="text-[0.7rem] bg-white/[0.04] px-2 py-1 rounded font-mono text-brand-text-muted">${txn.txId}</code>
                 <span class="badge badge-success text-[0.65rem] py-0.5">Success</span>
               </div>
             </div>
@@ -366,6 +387,8 @@ window.financeView = (function() {
         </div>
       </div>
     `;
+
+    runFinanceTfInference(student, outstanding);
 
     // Bind Payment Button
     const payBtn = container.querySelector('#btn-stu-pay');
@@ -669,6 +692,67 @@ window.financeView = (function() {
         trainBtn.disabled = false;
         trainBtn.innerText = 'Run Revenue Projection';
       }
+    }
+  }
+
+  async function runFinanceTfInference(student, outstanding) {
+    if (typeof tf === 'undefined') {
+      const el = document.getElementById('finance-ai-delay-pct');
+      if (el) el.textContent = 'TF Unavailable';
+      return;
+    }
+    try {
+      const inputVal = [outstanding / (student.feeTotal || 5000), student.gpa / 4.0, student.attendance / 100.0];
+
+      const model = tf.sequential();
+      model.add(tf.layers.dense({ units: 3, activation: 'tanh', inputShape: [3] }));
+      model.add(tf.layers.dense({ units: 1, activation: 'sigmoid' }));
+
+      const w1 = tf.tensor2d([
+        [1.5],
+        [-0.5],
+        [-0.8]
+      ]);
+      const b1 = tf.tensor1d([0.1]);
+      model.layers[1].setWeights([w1, b1]);
+
+      const inputTensor = tf.tensor2d([inputVal], [1, 3]);
+      const outputTensor = model.predict(inputTensor);
+      const outputVal = (await outputTensor.data())[0];
+
+      inputTensor.dispose();
+      outputTensor.dispose();
+      w1.dispose();
+      b1.dispose();
+      model.dispose();
+
+      var delayProb = outputVal;
+      if (outstanding === 0) {
+        delayProb = 0.0;
+      }
+
+      const pctEl = document.getElementById('finance-ai-delay-pct');
+      const statusEl = document.getElementById('finance-ai-delay-status');
+      const dateEl = document.getElementById('finance-ai-clearance-date');
+
+      if (pctEl) pctEl.textContent = (delayProb * 100).toFixed(1) + '%';
+      if (statusEl) {
+        if (delayProb > 0.4) {
+          statusEl.textContent = 'Elevated Default Risk';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-ruby/20 text-brand-accent-ruby';
+          if (dateEl) dateEl.textContent = 'Delayed (> 30 days)';
+        } else if (delayProb > 0.1) {
+          statusEl.textContent = 'Grace Period Predict';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-amber/20 text-brand-accent-amber';
+          if (dateEl) dateEl.textContent = 'Within 15 days';
+        } else {
+          statusEl.textContent = 'Low Risk Statement';
+          statusEl.className = 'badge text-[0.65rem] py-0.5 px-2 font-mono bg-brand-accent-emerald/20 text-brand-accent-emerald';
+          if (dateEl) dateEl.textContent = 'On time';
+        }
+      }
+    } catch (err) {
+      console.error('TF Student finance inference failed:', err);
     }
   }
 

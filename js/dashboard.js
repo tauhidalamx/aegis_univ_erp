@@ -161,92 +161,97 @@ window.dashboardView = (function() {
     const avgAttendance = Math.round(students.reduce((acc, curr) => acc + (curr.attendance || 0), 0) / (students.length || 1));
 
     container.innerHTML = `
-      <div class="page-header animate-fade-in">
+      <div class="page-header animate-fade-in flex items-center justify-between border-b border-brand-border/30 pb-4 mb-6">
         <div>
-          <h1>Administrative Dashboard</h1>
-          <p>Model University overall metrics, trends, and recent campus activities.</p>
+          <h1 class="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-white via-slate-100 to-brand-primary bg-clip-text text-transparent">Administrative Dashboard</h1>
+          <p class="text-sm text-brand-text-muted mt-1">Aegis University key metrics, performance trends, and live system telemetries.</p>
         </div>
-        <div class="btn-group flex gap-2">
-          <button class="btn btn-secondary btn-sm" onclick="alert('Exporting Report...')">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Export Sheet
+        <div class="btn-group flex gap-3">
+          <button class="btn btn-secondary btn-sm flex items-center gap-2" onclick="alert('Exporting Report...')">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Export Registry</span>
           </button>
-          <button class="btn btn-primary btn-sm" id="dashboard-refresh-btn">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-            Reload View
+          <button class="btn btn-primary btn-sm flex items-center gap-2" id="dashboard-refresh-btn">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            <span>Refresh telemetry</span>
           </button>
         </div>
       </div>
 
       <!-- KPI Summary Cards -->
-      <div class="kpi-grid animate-fade-in delay-1 mt-6">
-        <div class="card kpi-card">
+      <div class="kpi-grid animate-fade-in delay-1">
+        <!-- Card 1 -->
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-primary/30">
           <div class="kpi-details">
-            <span class="kpi-label">Active Enrollment</span>
-            <span class="kpi-value">${activeStudents}</span>
-            <span class="kpi-growth text-brand-accent-emerald">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Active Enrollment</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">${activeStudents}</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-emerald font-semibold mt-2.5">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
               +4.8% from last sem
             </span>
           </div>
-          <div class="kpi-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-primary transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
           </div>
         </div>
 
-        <div class="card kpi-card">
+        <!-- Card 2 -->
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-primary/30">
           <div class="kpi-details">
-            <span class="kpi-label">Assigned Faculty</span>
-            <span class="kpi-value">${totalFaculty}</span>
-            <span class="kpi-growth text-brand-accent-cyan">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Assigned Faculty</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">${totalFaculty}</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-cyan font-semibold mt-2.5">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
               100% Retained
             </span>
           </div>
-          <div class="kpi-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-cyan transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
         </div>
 
-        <div class="card kpi-card">
+        <!-- Card 3 -->
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-primary/30">
           <div class="kpi-details">
-            <span class="kpi-label">Active Courses</span>
-            <span class="kpi-value">${activeCourses}</span>
-            <span class="kpi-growth text-brand-accent-emerald">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Active Catalog</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">${activeCourses}</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-emerald font-semibold mt-2.5">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
               +3 New Catalog
             </span>
           </div>
-          <div class="kpi-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-emerald transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z"/></svg>
           </div>
         </div>
 
-        <div class="card kpi-card">
+        <!-- Card 4 -->
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-primary/30">
           <div class="kpi-details">
-            <span class="kpi-label">Average Attendance</span>
-            <span class="kpi-value">${avgAttendance}%</span>
-            <span class="kpi-growth text-brand-accent-emerald">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Average Attendance</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">${avgAttendance}%</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-emerald font-semibold mt-2.5">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
               +1.2% this week
             </span>
           </div>
-          <div class="kpi-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-amber transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
         </div>
 
-        <div class="card kpi-card">
+        <!-- Card 5 -->
+        <div class="card kpi-card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex justify-between items-start transition-all duration-300 hover:border-brand-primary/30">
           <div class="kpi-details">
-            <span class="kpi-label">Term Collection</span>
-            <span class="kpi-value">$${totalRevenue.toLocaleString()}</span>
-            <span class="kpi-growth text-brand-accent-emerald">
-              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+            <span class="kpi-label text-xs font-bold text-brand-text-muted uppercase tracking-wider">Fees Collected</span>
+            <span class="kpi-value text-3xl font-display font-bold text-white mt-2 leading-none">$${totalRevenue.toLocaleString()}</span>
+            <span class="kpi-growth flex items-center gap-1 text-xs text-brand-accent-emerald font-semibold mt-2.5">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
               92.3% Cleared
             </span>
           </div>
-          <div class="kpi-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <div class="kpi-icon w-12 h-12 rounded-xl flex items-center justify-center bg-brand-bg-tertiary/60 border border-brand-border text-brand-accent-cyan transition-transform duration-300 hover:scale-105">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
         </div>
       </div>
@@ -254,82 +259,86 @@ window.dashboardView = (function() {
       <!-- Operations Hub & System Telemetry Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 animate-fade-in delay-2">
         <!-- Telemetry Monitor -->
-        <div class="card">
-          <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
-            <h3 class="font-display text-base font-bold flex items-center gap-2 m-0">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--color-brand-primary)" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              Infrastructure & System Telemetry
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <div class="flex items-center justify-between border-b border-brand-border/30 pb-3 mb-4">
+            <h3 class="font-display text-base font-bold flex items-center gap-2 m-0 text-white">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Infrastructure & Node Telemetry
             </h3>
-            <div class="flex items-center gap-1.5">
+            <div class="flex items-center gap-2 bg-brand-accent-emerald/10 border border-brand-accent-emerald/20 px-2.5 py-1 rounded-full">
               <span class="relative flex h-2 w-2">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-accent-emerald opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-accent-emerald"></span>
               </span>
-              <span class="text-[0.65rem] font-semibold text-brand-accent-emerald">Online</span>
+              <span class="text-[0.65rem] font-bold text-brand-accent-emerald uppercase tracking-wider">Online</span>
             </div>
           </div>
-          <div class="flex flex-col gap-3 text-xs">
+          <div class="flex flex-col gap-4 text-xs">
             <div class="flex justify-between items-center">
-              <span class="text-brand-text-subtle">Simulated CPU Load:</span>
-              <div class="flex items-center gap-3 w-40">
-                <div class="bg-brand-bg-primary h-1.5 rounded-full overflow-hidden flex-1 border border-brand-border">
+              <span class="text-brand-text-muted font-medium">Core CPU utilization:</span>
+              <div class="flex items-center gap-3 w-44">
+                <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden flex-1 border border-brand-border/40">
                   <div id="telemetry-cpu-bar" class="bg-brand-primary h-full rounded-full transition-[width] duration-300" style="width: 24%"></div>
                 </div>
-                <span id="telemetry-cpu-val" class="font-mono font-bold w-10 text-right">24%</span>
+                <span id="telemetry-cpu-val" class="font-mono font-bold w-12 text-right text-brand-text-main">24%</span>
               </div>
             </div>
             <div class="flex justify-between items-center">
-              <span class="text-brand-text-subtle">Memory Allocation:</span>
-              <div class="flex items-center gap-3 w-40">
-                <div class="bg-brand-bg-primary h-1.5 rounded-full overflow-hidden flex-1 border border-brand-border">
+              <span class="text-brand-text-muted font-medium">Memory Allocation:</span>
+              <div class="flex items-center gap-3 w-44">
+                <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden flex-1 border border-brand-border/40">
                   <div id="telemetry-ram-bar" class="bg-brand-accent-cyan h-full rounded-full transition-[width] duration-300" style="width: 64%"></div>
                 </div>
-                <span id="telemetry-ram-val" class="font-mono font-bold text-[0.65rem] w-32 text-right">5.12 GB / 8.00 GB</span>
+                <span id="telemetry-ram-val" class="font-mono font-bold w-12 text-right text-brand-text-main">64%</span>
               </div>
             </div>
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle">Core API Latency:</span>
+              <span class="text-brand-text-muted font-medium">Core API Latency:</span>
               <span id="telemetry-latency-val" class="font-mono font-bold text-brand-accent-emerald">12ms</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle">Local DB Registry:</span>
+              <span class="text-brand-text-muted font-medium">Local Database Engine:</span>
               <span class="font-mono font-bold text-brand-text-main">SQLite 3.45.1 (1.2 MB)</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-brand-text-subtle">EduChain Testnet Node:</span>
+              <span class="text-brand-text-muted font-medium">EduChain Node Node Connection:</span>
               <span class="font-mono font-bold text-brand-accent-cyan">Synced • Block #254</span>
+            </div>
+            <div class="flex justify-between border-t border-brand-border/30 pt-3">
+              <span class="text-brand-text-muted font-medium">AI Telemetry Forecast (1hr):</span>
+              <span id="telemetry-ai-forecast" class="font-mono font-bold text-brand-primary">Stable</span>
             </div>
           </div>
         </div>
 
         <!-- Funding & Budget Allocations -->
-        <div class="card">
-          <h3 class="mb-4 font-display text-base font-bold m-0 border-b border-brand-border pb-3">Funding & Budget Allocations</h3>
-          <div class="flex flex-col gap-3.5 mt-2">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-4 font-display text-base font-bold m-0 border-b border-brand-border/30 pb-3 text-white">Funding & Budget Allocations</h3>
+          <div class="flex flex-col gap-4 mt-2">
             <div>
-              <div class="flex justify-between text-[0.7rem] font-semibold mb-1">
-                <span class="text-brand-text-main">University Core Operating Budget</span>
-                <span class="text-brand-text-muted">$1,450,000 / $1,800,000 (80.5%)</span>
+              <div class="flex justify-between text-[0.7rem] font-bold mb-1.5 uppercase tracking-wider text-brand-text-muted">
+                <span>Core Operating Budget</span>
+                <span class="text-brand-text-main font-mono">$1,450,000 / $1,800,000 (80.5%)</span>
               </div>
-              <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border">
+              <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border/40">
                 <div class="bg-gradient-to-r from-brand-primary to-brand-accent-cyan h-full rounded-full" style="width: 80.5%"></div>
               </div>
             </div>
             <div>
-              <div class="flex justify-between text-[0.7rem] font-semibold mb-1">
-                <span class="text-brand-text-main">Scholarship & Research Allocations</span>
-                <span class="text-brand-text-muted">$85,000 / $120,000 (70.8%)</span>
+              <div class="flex justify-between text-[0.7rem] font-bold mb-1.5 uppercase tracking-wider text-brand-text-muted">
+                <span>Scholarship & Research Allocations</span>
+                <span class="text-brand-text-main font-mono">$85,000 / $120,000 (70.8%)</span>
               </div>
-              <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border">
+              <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border/40">
                 <div class="bg-gradient-to-r from-brand-accent-emerald to-brand-accent-cyan h-full rounded-full" style="width: 70.8%"></div>
               </div>
             </div>
             <div>
-              <div class="flex justify-between text-[0.7rem] font-semibold mb-1">
-                <span class="text-brand-text-main">Fee Invoice Collections Target</span>
-                <span class="text-brand-text-muted">$${totalRevenue.toLocaleString()} / $${(totalRevenue + totalDue).toLocaleString()} (${((totalRevenue / (totalRevenue + totalDue || 1)) * 100).toFixed(1)}%)</span>
+              <div class="flex justify-between text-[0.7rem] font-bold mb-1.5 uppercase tracking-wider text-brand-text-muted">
+                <span>Fee Invoice Collections Target</span>
+                <span class="text-brand-text-main font-mono">$${totalRevenue.toLocaleString()} / $${(totalRevenue + totalDue).toLocaleString()} (${((totalRevenue / (totalRevenue + totalDue || 1)) * 100).toFixed(1)}%)</span>
               </div>
-              <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border">
+              <div class="bg-brand-bg-primary h-2 rounded-full overflow-hidden w-full border border-brand-border/40">
                 <div class="bg-gradient-to-r from-brand-accent-amber to-brand-accent-ruby h-full rounded-full" style="width: ${((totalRevenue / (totalRevenue + totalDue || 1)) * 100).toFixed(1)}%"></div>
               </div>
             </div>
@@ -338,16 +347,16 @@ window.dashboardView = (function() {
       </div>
 
       <!-- Charts Section -->
-      <div class="grid-2 animate-fade-in delay-2 mt-6">
-        <div class="card">
-          <h3 class="mb-5 font-display text-lg font-bold">Enrollment Trends</h3>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 animate-fade-in delay-2">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-5 font-display text-lg font-bold text-white">Enrollment Trends</h3>
           <div class="chart-wrapper">
             <canvas id="enrollment-line-chart"></canvas>
           </div>
         </div>
         
-        <div class="card">
-          <h3 class="mb-5 font-display text-lg font-bold">Department Distribution</h3>
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl">
+          <h3 class="mb-5 font-display text-lg font-bold text-white">Department Distribution</h3>
           <div class="chart-wrapper">
             <canvas id="dept-donut-chart"></canvas>
           </div>
@@ -355,23 +364,23 @@ window.dashboardView = (function() {
       </div>
 
       <!-- AI Prediction Section -->
-      <div class="card animate-fade-in delay-3 mt-6">
-        <div class="flex justify-between items-center border-b border-brand-border pb-4 mb-5">
+      <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl animate-fade-in delay-3 mt-6">
+        <div class="flex justify-between items-center border-b border-brand-border/30 pb-4 mb-5">
           <div>
-            <h3 class="font-display flex items-center gap-2 m-0 text-lg font-bold">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--color-brand-primary)" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <h3 class="font-display flex items-center gap-2 m-0 text-lg font-bold text-white">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--color-brand-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
               AI Enrollment Forecasting
             </h3>
-            <p class="text-[0.85rem] text-brand-text-muted mt-1 m-0">Train an in-browser neural network on historical enrollment trends using TensorFlow.js.</p>
+            <p class="text-[0.85rem] text-brand-text-muted mt-1 m-0">In-browser neural network modeling on historical registration patterns using TensorFlow.js.</p>
           </div>
-          <span class="badge bg-brand-primary/10 text-brand-primary font-semibold">Powered by TensorFlow.js</span>
+          <span class="badge bg-brand-primary/10 border-brand-primary/20 text-brand-primary font-semibold text-xs py-1 px-3">TensorFlow.js Engine</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
           <!-- Controls Panel -->
-          <div class="flex flex-col gap-5 border-r border-brand-border pr-8 max-md:border-r-0 max-md:pr-0">
+          <div class="flex flex-col gap-5 border-r border-brand-border/30 pr-8 max-md:border-r-0 max-md:pr-0">
             <div>
-              <label class="block text-[0.825rem] text-brand-text-subtle mb-2">Optimizer Learning Rate</label>
+              <label class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wider mb-2 pl-0.5">Optimizer Learning Rate</label>
               <select id="tf-lr-select" class="w-full bg-brand-bg-secondary border border-brand-border text-brand-text-main p-2 rounded-lg outline-none">
                 <option value="0.01">0.01 (Slow & Stable)</option>
                 <option value="0.05" selected>0.05 (Default)</option>
@@ -380,13 +389,13 @@ window.dashboardView = (function() {
             </div>
 
             <div>
-              <label class="block text-[0.825rem] text-brand-text-subtle mb-2">Training Epochs</label>
-              <input type="range" id="tf-epochs-range" min="50" max="300" step="50" value="150" class="w-full accent-brand-primary">
-              <span id="tf-epochs-val" class="text-[0.8rem] text-brand-text-muted float-right mt-1">150 epochs</span>
+              <label class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wider mb-2 pl-0.5">Training Epochs</label>
+              <input type="range" id="tf-epochs-range" min="50" max="300" step="50" value="150" class="w-full accent-brand-primary cursor-pointer">
+              <span id="tf-epochs-val" class="text-[0.8rem] text-brand-text-muted float-right mt-1 font-mono">150 epochs</span>
             </div>
 
             <div>
-              <label class="block text-[0.825rem] text-brand-text-subtle mb-2">Forecast Horizon</label>
+              <label class="block text-xs font-semibold text-brand-text-muted uppercase tracking-wider mb-2 pl-0.5">Forecast Horizon</label>
               <select id="tf-horizon-select" class="w-full bg-brand-bg-secondary border border-brand-border text-brand-text-main p-2 rounded-lg outline-none">
                 <option value="1">1 Term (2026-B)</option>
                 <option value="2" selected>2 Terms (2026-B & 2027-A)</option>
@@ -395,15 +404,15 @@ window.dashboardView = (function() {
             </div>
 
             <button class="btn btn-primary w-full justify-center flex items-center gap-2" id="tf-train-btn">
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              Run ML Projection
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <span>Run ML Projection</span>
             </button>
 
             <!-- Live Status -->
-            <div id="tf-status-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border" style="display:none;">
+            <div id="tf-status-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border/40" style="display:none;">
               <div class="flex justify-between text-[0.8rem] mb-1.5">
                 <span class="text-brand-text-subtle">Epoch:</span>
-                <span id="tf-epoch-disp" class="font-semibold text-brand-text-main">0/150</span>
+                <span id="tf-epoch-disp" class="font-semibold text-brand-text-main font-mono">0/150</span>
               </div>
               <div class="flex justify-between text-[0.8rem] mb-3">
                 <span class="text-brand-text-subtle">Training Loss:</span>
@@ -415,18 +424,18 @@ window.dashboardView = (function() {
               </div>
             </div>
             
-            <div id="tf-metrics-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border text-[0.825rem] leading-normal">
-              <div class="text-brand-text-main font-semibold mb-1">Last Projection Metrics:</div>
-              <div>Status: <span id="tf-status-text" class="text-brand-accent-cyan font-bold">Untrained</span></div>
-              <div>Equation Fit: <span id="tf-equation-fit" class="text-brand-text-muted">y = mx + c</span></div>
+            <div id="tf-metrics-card" class="bg-brand-bg-tertiary p-3 rounded-lg border border-brand-border/40 text-[0.825rem] leading-normal flex flex-col gap-1.5">
+              <div class="text-brand-text-main font-bold">Inference Telemetry:</div>
+              <div>Status: <span id="tf-status-text" class="text-brand-accent-cyan font-bold uppercase">Untrained</span></div>
+              <div>Gradient Fit: <span id="tf-equation-fit" class="text-brand-text-muted font-mono">y = mx + c</span></div>
             </div>
           </div>
 
           <!-- Forecast Chart -->
           <div class="flex flex-col h-[350px]">
             <div class="flex justify-between mb-3 items-center">
-              <h4 class="text-[0.95rem] font-semibold text-brand-text-main m-0">Projection Curve</h4>
-              <span id="tf-projection-hint" class="text-[0.75rem] text-brand-text-muted">Historical data points vs Model Fit</span>
+              <h4 class="text-sm font-semibold text-white m-0">Regression Prediction Curve</h4>
+              <span id="tf-projection-hint" class="text-[0.75rem] text-brand-text-muted">In-browser training dataset vs output weights</span>
             </div>
             <div class="chart-wrapper flex-1">
               <canvas id="tf-forecast-chart"></canvas>
@@ -439,18 +448,18 @@ window.dashboardView = (function() {
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-6 animate-fade-in delay-3 mt-6">
         
         <!-- Administrative Task checklist -->
-        <div class="card flex flex-col h-[400px]">
-          <h3 class="mb-3 font-display text-base font-bold m-0 border-b border-brand-border pb-3 shrink-0">Administrative Tasks</h3>
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex flex-col h-[400px]">
+          <h3 class="mb-3 font-display text-base font-bold m-0 border-b border-brand-border/30 pb-3 shrink-0 text-white">Administrative Checklist</h3>
           
           <!-- Add Task Inline Form -->
           <div class="flex gap-1.5 mb-3 shrink-0">
-            <input type="text" id="new-task-input" placeholder="Add task..." class="bg-brand-bg-tertiary border border-brand-border text-brand-text-main px-2.5 py-1.5 rounded-lg text-[0.7rem] outline-none focus:border-brand-primary/40 flex-1">
-            <select id="new-task-priority" class="bg-brand-bg-tertiary border border-brand-border text-brand-text-main px-1.5 py-1.5 rounded-lg text-[0.7rem] outline-none focus:border-brand-primary/40 shrink-0 font-semibold cursor-pointer">
+            <input type="text" id="new-task-input" placeholder="Type task..." class="bg-brand-bg-tertiary border border-brand-border/60 text-brand-text-main px-3 py-1.5 rounded-lg text-xs outline-none focus:border-brand-primary/40 flex-1">
+            <select id="new-task-priority" class="bg-brand-bg-tertiary border border-brand-border/60 text-brand-text-main px-2 py-1.5 rounded-lg text-xs outline-none focus:border-brand-primary/40 shrink-0 font-semibold cursor-pointer">
               <option value="High">High</option>
               <option value="Medium" selected>Medium</option>
               <option value="Low">Low</option>
             </select>
-            <button class="btn btn-primary btn-sm flex items-center justify-center w-8 h-8 rounded-lg shrink-0 p-0 text-base" id="add-task-btn" title="Add Task">+</button>
+            <button class="btn btn-primary btn-sm flex items-center justify-center w-8 h-8 rounded-lg shrink-0 p-0 text-lg font-bold" id="add-task-btn" title="Add Task">+</button>
           </div>
 
           <!-- Tasks List Container -->
@@ -460,29 +469,29 @@ window.dashboardView = (function() {
         </div>
 
         <!-- Academic Event Calendar -->
-        <div class="card flex flex-col h-[400px]">
-          <div class="flex justify-between items-center mb-3 border-b border-brand-border pb-3 shrink-0">
-            <h3 class="font-display text-base font-bold m-0">Academic Event Planner</h3>
-            <button class="btn btn-secondary btn-sm flex items-center gap-1 px-2 py-1" id="toggle-event-form-btn">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex flex-col h-[400px]">
+          <div class="flex justify-between items-center mb-3 border-b border-brand-border/30 pb-3 shrink-0">
+            <h3 class="font-display text-base font-bold m-0 text-white">Academic Calendar</h3>
+            <button class="btn btn-secondary btn-sm flex items-center gap-1.5 px-2.5 py-1" id="toggle-event-form-btn">
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Event
+              <span>Planner</span>
             </button>
           </div>
 
           <!-- Add Event Form Panel (Collapsible) -->
-          <div id="add-event-panel" class="hidden bg-brand-bg-tertiary/40 p-2.5 rounded-xl border border-brand-border mb-3 shrink-0 animate-fade-in">
-            <div class="flex flex-col gap-2">
+          <div id="add-event-panel" class="hidden bg-brand-bg-tertiary/40 p-3 rounded-xl border border-brand-border/40 mb-3 shrink-0 animate-fade-in">
+            <div class="flex flex-col gap-2.5">
               <div class="flex gap-2">
-                <input type="text" id="new-event-title" placeholder="Event Name..." class="bg-brand-bg-tertiary border border-brand-border text-brand-text-main px-2.5 py-1 rounded-lg text-xs outline-none focus:border-brand-primary/40 flex-1">
-                <select id="new-event-type" class="bg-brand-bg-tertiary border border-brand-border text-brand-text-main px-1.5 py-1 rounded-lg text-xs outline-none focus:border-brand-primary/40 shrink-0 font-semibold cursor-pointer">
+                <input type="text" id="new-event-title" placeholder="Event name..." class="bg-brand-bg-tertiary border border-brand-border/60 text-brand-text-main px-2.5 py-1.5 rounded-lg text-xs outline-none focus:border-brand-primary/40 flex-1">
+                <select id="new-event-type" class="bg-brand-bg-tertiary border border-brand-border/60 text-brand-text-main px-1.5 py-1 rounded-lg text-xs outline-none focus:border-brand-primary/40 shrink-0 font-semibold cursor-pointer">
                   <option value="Academic">Academic</option>
                   <option value="Exam">Exam</option>
                   <option value="Holiday">Holiday</option>
                 </select>
               </div>
               <div class="flex gap-2 items-center justify-between">
-                <input type="date" id="new-event-date" class="bg-brand-bg-tertiary border border-brand-border text-brand-text-main px-2 py-1 rounded-lg text-[0.7rem] outline-none focus:border-brand-primary/40 flex-1">
-                <button class="btn btn-primary btn-sm px-3.5 py-1" id="save-event-btn">Save</button>
+                <input type="date" id="new-event-date" class="bg-brand-bg-tertiary border border-brand-border/60 text-brand-text-main px-2.5 py-1 rounded-lg text-xs outline-none focus:border-brand-primary/40 flex-1">
+                <button class="btn btn-primary btn-sm px-4 py-1" id="save-event-btn">Save</button>
               </div>
             </div>
           </div>
@@ -494,13 +503,13 @@ window.dashboardView = (function() {
         </div>
 
         <!-- Notices Board & Log Audit Trail -->
-        <div class="card flex flex-col h-[400px]">
+        <div class="card bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl flex flex-col h-[400px]">
           <!-- Tabs to switch between Notices and Activity logs -->
-          <div class="flex border-b border-brand-border pb-1.5 mb-3 shrink-0 gap-3">
-            <button id="tab-notices" class="bg-transparent border-none text-brand-text-main font-display text-base font-bold pb-1 cursor-pointer border-b-2 border-brand-primary" style="margin-bottom: -7px;">
-              Notices
+          <div class="flex border-b border-brand-border/30 pb-1.5 mb-3 shrink-0 gap-4">
+            <button id="tab-notices" class="bg-transparent border-none text-white font-display text-base font-bold pb-2 cursor-pointer border-b-2 border-brand-primary" style="margin-bottom: -8px;">
+              Notices Desk
             </button>
-            <button id="tab-activities" class="bg-transparent border-none text-brand-text-muted font-display text-base font-semibold pb-1 cursor-pointer border-b-2 border-transparent hover:text-brand-text-main" style="margin-bottom: -7px;">
+            <button id="tab-activities" class="bg-transparent border-none text-brand-text-muted font-display text-base font-semibold pb-2 cursor-pointer border-b-2 border-transparent hover:text-white" style="margin-bottom: -8px;">
               Audit Logs
             </button>
           </div>
@@ -510,27 +519,27 @@ window.dashboardView = (function() {
             ${announcements.slice(0, 3).map(ann => `
               <div class="pl-3 border-l-2" style="border-color: ${ann.color}">
                 <div class="flex justify-between items-center">
-                  <span class="badge bg-brand-bg-tertiary text-brand-text-main text-[0.65rem] px-1.5 py-0.5 rounded">${ann.tag}</span>
-                  <span class="text-[0.65rem] text-brand-text-subtle">${ann.date}</span>
+                  <span class="badge bg-brand-bg-tertiary text-brand-text-main text-[0.65rem] px-2 py-0.5 rounded border border-brand-border/40 font-semibold uppercase tracking-wider">${ann.tag}</span>
+                  <span class="text-[0.65rem] text-brand-text-subtle font-mono">${ann.date}</span>
                 </div>
-                <h4 class="my-1.5 text-xs font-semibold text-brand-text-main">${ann.title}</h4>
-                <p class="text-[0.75rem] text-brand-text-muted leading-relaxed m-0">${ann.content}</p>
+                <h4 class="my-1 text-xs font-bold text-white">${ann.title}</h4>
+                <p class="text-xs text-brand-text-muted leading-relaxed m-0">${ann.content}</p>
               </div>
             `).join('')}
-            <div class="mt-2 text-right">
-              <button class="btn btn-secondary btn-sm w-full" id="view-notices-btn">View All Notices</button>
+            <div class="mt-auto pt-2">
+              <button class="btn btn-secondary btn-sm w-full font-bold" id="view-notices-btn">Open Notice Board</button>
             </div>
           </div>
 
           <!-- Tab Content: Activities -->
           <div id="activities-tab-content" class="hidden flex-1 overflow-y-auto flex flex-col gap-3 pr-1">
             ${activities.map(act => `
-              <div class="flex items-center justify-between pb-2 border-b border-brand-border/60">
+              <div class="flex items-center justify-between pb-2 border-b border-brand-border/40">
                 <div class="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div class="w-1.5 h-1.5 rounded-full bg-brand-accent-cyan shrink-0"></div>
+                  <div class="w-2 h-2 rounded-full bg-brand-accent-cyan shrink-0 animate-pulse"></div>
                   <span class="text-xs text-brand-text-main truncate">${act.text}</span>
                 </div>
-                <span class="text-[0.65rem] text-brand-text-subtle shrink-0 ml-2">${act.time}</span>
+                <span class="text-[0.65rem] text-brand-text-subtle font-mono shrink-0 ml-2">${act.time}</span>
               </div>
             `).join('')}
           </div>
@@ -697,6 +706,41 @@ window.dashboardView = (function() {
         const ramUsed = (8 * ramPercent / 100).toFixed(2);
         ramBar.style.width = `${ramPercent}%`;
         ramVal.innerText = `${ramUsed} GB / 8.00 GB (${ramPercent}%)`;
+
+        let aiLoadText = 'Stable';
+        let aiClass = 'text-brand-primary';
+        if (typeof tf !== 'undefined') {
+          try {
+            const x = tf.tensor2d([[cpu / 100.0, parseFloat(ramPercent) / 100.0, latency / 50.0]]);
+            const w = tf.tensor2d([[1.2], [0.6], [0.4]]);
+            const y = tf.matMul(x, w);
+            const val = y.dataSync()[0];
+            const loadVal = val * 50;
+
+            if (loadVal > 40) {
+              aiLoadText = `Heavy Load (~${Math.round(loadVal)}%)`;
+              aiClass = 'text-brand-accent-ruby font-bold';
+            } else if (loadVal > 25) {
+              aiLoadText = `Elevated (~${Math.round(loadVal)}%)`;
+              aiClass = 'text-brand-accent-amber font-bold';
+            } else {
+              aiLoadText = `Stable (~${Math.round(loadVal)}%)`;
+              aiClass = 'text-brand-accent-emerald font-bold';
+            }
+
+            x.dispose();
+            w.dispose();
+            y.dispose();
+          } catch (e) {
+            console.warn(e);
+          }
+        }
+        
+        const forecastVal = container.querySelector('#telemetry-ai-forecast');
+        if (forecastVal) {
+          forecastVal.innerText = aiLoadText;
+          forecastVal.className = `font-mono ${aiClass}`;
+        }
       } else {
         clearInterval(telemetryInterval);
         telemetryInterval = null;

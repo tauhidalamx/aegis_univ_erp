@@ -52,6 +52,15 @@ const defaultAccounts = [
     "role": "student",
     "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150",
     "createdAt": "2024-02-01T00:00:00.000Z"
+  },
+  {
+    "id": "usr_004",
+    "name": "Prof. Sarah Jenkins",
+    "email": "hod@aegis.edu",
+    "password": _hashPassword("hod123"),
+    "role": "hod",
+    "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150",
+    "createdAt": "2024-01-20T00:00:00.000Z"
   }
 ];
 
@@ -131,6 +140,11 @@ Name: Prof. Marcus Chen
 User ID (Email): faculty@aegis.edu
 Password: faculty123
 
+Role: HOD (Department Head)
+Name: Prof. Sarah Jenkins
+User ID (Email): hod@aegis.edu
+Password: hod123
+
 Role: Student
 Name: Aria Nakamura
 User ID (Email): student@aegis.edu
@@ -178,7 +192,7 @@ if (fs.existsSync(authJsPath)) {
   const startIndex = authJsContent.indexOf(startMarker);
   
   if (startIndex !== -1) {
-    const endMatch = authJsContent.substring(startIndex).match(/\r?\n\];/);
+    const endMatch = authJsContent.substring(startIndex).match(/\r?\n\s*\];/);
     if (endMatch) {
       const endIndex = startIndex + endMatch.index + endMatch[0].length;
       

@@ -5,33 +5,34 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Space Grotesk', var(--font-sans);
 
-  --color-brand-bg-primary: #0a0e1a;
-  --color-brand-bg-secondary: #121829;
-  --color-brand-bg-tertiary: #1b233d;
-  --color-brand-primary: #6366f1;
+  --color-brand-bg-primary: #071126;
+  --color-brand-bg-secondary: #0B1736;
+  --color-brand-bg-tertiary: #102043;
+  --color-brand-primary: #6366F1;
   --color-brand-primary-hover: #4f46e5;
   --color-brand-accent-cyan: #06b6d4;
   --color-brand-accent-emerald: #10b981;
   --color-brand-accent-ruby: #f43f5e;
   --color-brand-accent-amber: #f59e0b;
-  --color-brand-text-main: #f8fafc;
-  --color-brand-text-muted: #94a3b8;
+  --color-brand-text-main: #FFFFFF;
+  --color-brand-text-muted: #94A3B8;
   --color-brand-text-subtle: #64748b;
   --color-brand-border: rgba(255, 255, 255, 0.08);
 }
 
 @import "./components.css";
+@import "./forum.css";
 
 :root {
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-display: 'Space Grotesk', var(--font-sans);
 
   /* Color Palette - Premium Dark Indigo */
-  --bg-primary: #0a0e1a;
-  --bg-secondary: #121829;
-  --bg-tertiary: #1b233d;
+  --bg-primary: #071126;
+  --bg-secondary: #0B1736;
+  --bg-tertiary: #102043;
   
-  --primary: #6366f1;
+  --primary: #6366F1;
   --primary-hover: #4f46e5;
   --primary-glow: rgba(99, 102, 241, 0.15);
   
@@ -40,8 +41,8 @@
   --accent-ruby: #f43f5e;
   --accent-amber: #f59e0b;
 
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
+  --text-main: #FFFFFF;
+  --text-muted: #94A3B8;
   --text-subtle: #64748b;
   
   --border: rgba(255, 255, 255, 0.08);
@@ -54,7 +55,7 @@
   --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   
-  --sidebar-width: 260px;
+  --sidebar-width: 280px;
   --sidebar-collapsed-width: 80px;
   --navbar-height: 70px;
 }
@@ -68,6 +69,13 @@
 body {
   font-family: var(--font-sans);
   background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 45%), 
+    radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.06) 0px, transparent 45%),
+    linear-gradient(rgba(255, 255, 255, 0.003) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.003) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+  background-attachment: fixed;
   color: var(--text-main);
   overflow-x: hidden;
   line-height: 1.5;
@@ -106,19 +114,47 @@ body {
 }
 
 /* Sidebar Collapsed State Transitions & Nested Visibility Rules */
+.sidebar {
+  transition: width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.3s;
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3);
+}
+
 .sidebar.collapsed {
   width: 80px !important;
 }
 
+.sidebar.collapsed .sidebar-logo {
+  justify-content: center;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  gap: 0 !important;
+}
+
 .sidebar.collapsed .sidebar-logo span {
   opacity: 0;
+  width: 0;
+  display: none;
   pointer-events: none;
+}
+
+.sidebar.collapsed .nav-link {
+  justify-content: center;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin: 0 8px;
+  gap: 0 !important;
 }
 
 .sidebar.collapsed .nav-link span {
   opacity: 0;
   width: 0;
   display: none;
+}
+
+.sidebar.collapsed .sidebar-user {
+  justify-content: center;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 .sidebar.collapsed .user-info {
@@ -131,17 +167,109 @@ body {
   margin-left: 80px !important;
 }
 
+.main-wrapper {
+  transition: margin-left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Premium Navigation Links */
+.nav-link {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin: 0 4px;
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0.3);
+  width: 4px;
+  height: 20px;
+  background-color: var(--color-brand-primary);
+  border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.nav-link.active {
+  @apply text-white bg-gradient-to-r from-brand-primary/15 via-brand-primary/5 to-transparent;
+  box-shadow: inset 1px 0 0 rgba(99, 102, 241, 0.1);
+}
+
+.nav-link.active::before {
+  transform: translateY(-50%) scaleY(1);
+  opacity: 1;
+}
+
+.nav-link.active svg {
+  color: var(--color-brand-primary);
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+}
+
 /* Responsive sidebar defaults for small screens */
 @media (max-width: 768px) {
   .sidebar {
     width: 80px !important;
   }
-  .main-wrapper {
+  .main-wrapper, .main-content {
     margin-left: 80px !important;
+    width: calc(100% - 80px) !important;
   }
   .sidebar-logo span, .nav-link span, .user-info {
     opacity: 0;
     width: 0;
     display: none;
+    pointer-events: none;
   }
 }
+
+.sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.main-content {
+  margin-left: 280px;
+  min-height: 100vh;
+  width: calc(100% - 280px);
+  padding: 24px;
+  overflow-x: hidden;
+}
+
+/* Aegis Sports Responsiveness Layout Utilities */
+.sports-sidebar {
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  width: 280px;
+}
+@media (min-width: 768px) {
+  .sports-sidebar {
+    width: 90px;
+  }
+}
+@media (min-width: 1024px) {
+  .sports-sidebar {
+    width: 280px;
+  }
+}
+
+.sports-main-content {
+  transition: margin-left 0.3s ease-in-out;
+  margin-left: 0;
+}
+@media (min-width: 768px) {
+  .sports-main-content {
+    margin-left: 90px;
+  }
+}
+@media (min-width: 1024px) {
+  .sports-main-content {
+    margin-left: 280px;
+  }
+}
+

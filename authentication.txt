@@ -18,10 +18,94 @@ Name: Prof. Marcus Chen
 User ID (Email): faculty@aegis.edu
 Password: faculty123
 
+Role: HOD (Department Head)
+Name: Prof. Sarah Jenkins
+User ID (Email): hod@aegis.edu
+Password: hod123
+
+Role: Placement Officer (TPO)
+Name: Dr. Arthur Pendelton
+User ID (Email): placement@aegis.edu
+Password: placement123
+
 Role: Student
 Name: Aria Nakamura
 User ID (Email): student@aegis.edu
 Password: student123
+
+
+--------------------------------------------------------------------------------
+1b. ENTERPRISE ROLE-BASED DEMO ACCOUNTS
+--------------------------------------------------------------------------------
+Role: Global Super Admin
+Name: Global Super Admin
+User ID (Email): superadmin@aegis.demo
+Password: Demo@123
+
+Role: Platform Admin
+Name: Platform Admin
+User ID (Email): platformadmin@aegis.demo
+Password: Demo@123
+
+Role: University Admin
+Name: University Admin
+User ID (Email): admin@aegis.demo
+Password: Demo@123
+
+Role: Registrar
+Name: Registrar Officer
+User ID (Email): registrar@aegis.demo
+Password: Demo@123
+
+Role: Dean
+Name: Dean of Faculty
+User ID (Email): dean@aegis.demo
+Password: Demo@123
+
+Role: HOD (Department Head)
+Name: Professor Jenkins (HOD)
+User ID (Email): hod@aegis.demo
+Password: Demo@123
+
+Role: Faculty Member
+Name: Professor Sterling (Faculty)
+User ID (Email): faculty@aegis.demo
+Password: Demo@123
+
+Role: Finance Manager
+Name: Finance Manager
+User ID (Email): finance@aegis.demo
+Password: Demo@123
+
+Role: Research Coordinator
+Name: Research Coordinator
+User ID (Email): research@aegis.demo
+Password: Demo@123
+
+Role: Placement Officer
+Name: Placement Officer
+User ID (Email): placement@aegis.demo
+Password: Demo@123
+
+Role: Student
+Name: Alex Rivera (Student)
+User ID (Email): student@aegis.demo
+Password: Demo@123
+
+Role: Parent
+Name: Parent Account
+User ID (Email): parent@aegis.demo
+Password: Demo@123
+
+Role: Alumni
+Name: Alumni Account
+User ID (Email): alumni@aegis.demo
+Password: Demo@123
+
+Role: Recruiter
+Name: Lead Recruiter
+User ID (Email): recruiter@aegis.demo
+Password: Demo@123
 
 
 --------------------------------------------------------------------------------
@@ -164,7 +248,7 @@ Password: Carson@FAC027
 --------------------------------------------------
 
 --------------------------------------------------------------------------------
-3. STUDENT ACCOUNTS (Total: 37)
+3. STUDENT ACCOUNTS (Total: 38)
 --------------------------------------------------------------------------------
 ID: STU001
 Name: Alex Rivera
@@ -350,4 +434,9 @@ ID: STU037
 Name: Natasha Romanoff
 User ID (Email): natasharomanoff@modeluni.edu
 Password: Natasha@STU037
+--------------------------------------------------
+ID: STU038
+Name: Aria Nakamura
+User ID (Email): student@aegis.edu
+Password: Aria@STU038
 --------------------------------------------------

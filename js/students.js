@@ -7,27 +7,71 @@ window.studentsView = (function() {
     containerRef = container;
 
     container.innerHTML = `
-      <div class="page-header animate-fade-in">
+      <div class="page-header animate-fade-in flex items-center justify-between border-b border-brand-border/30 pb-4 mb-6">
         <div>
-          <h1>Student Registry</h1>
-          <p>Complete student lifecycle management — admissions, profiles, academics, and records.</p>
+          <h1 class="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-white via-slate-100 to-brand-primary bg-clip-text text-transparent">Student Registry</h1>
+          <p class="text-sm text-brand-text-muted mt-1">Complete student lifecycle management — admissions, profiles, grades, and records.</p>
         </div>
         <button class="btn btn-primary" id="btn-add-student">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>
-          Enroll Student
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="11" x2="22" y2="11"/><line x1="16" y1="11" x2="19" y2="8"/></svg>
+          <span>Enroll Student</span>
         </button>
       </div>
 
+      <!-- KPI Overview Cards -->
+      <div class="kpi-grid animate-fade-in delay-1 mb-6">
+        <div class="card kpi-card">
+          <div class="kpi-details">
+            <span class="kpi-label">Total Enrolled</span>
+            <span class="kpi-value" id="stu-stat-total">0 Students</span>
+            <span class="kpi-growth text-brand-primary">Active Registry</span>
+          </div>
+          <div class="kpi-icon text-brand-primary">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-details">
+            <span class="kpi-label">Average CGPA</span>
+            <span class="kpi-value" id="stu-stat-cgpa">0.00</span>
+            <span class="kpi-growth text-brand-accent-cyan">Class Standing</span>
+          </div>
+          <div class="kpi-icon text-brand-accent-cyan">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+          </div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-details">
+            <span class="kpi-label">Avg Attendance</span>
+            <span class="kpi-value" id="stu-stat-attendance">0%</span>
+            <span class="kpi-growth text-brand-accent-emerald">Term Present</span>
+          </div>
+          <div class="kpi-icon text-brand-accent-emerald">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+        </div>
+        <div class="card kpi-card">
+          <div class="kpi-details">
+            <span class="kpi-label">Active Ratio</span>
+            <span class="kpi-value" id="stu-stat-active">0 / 0</span>
+            <span class="kpi-growth text-brand-accent-amber">In Good Standing</span>
+          </div>
+          <div class="kpi-icon text-brand-accent-amber">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+        </div>
+      </div>
+
       <!-- Filters & Controls -->
-      <div class="card animate-fade-in delay-1 mt-6">
-        <div class="grid grid-cols-[2fr_1fr_1fr_1fr] gap-4 items-end max-md:grid-cols-1">
+      <div class="card animate-fade-in delay-1 bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           <div class="form-group mb-0">
-            <label class="form-label">Search Name / ID / Phone</label>
-            <input type="text" class="form-control" placeholder="e.g. Alex Rivera, STU001, +1-555" id="search-name">
+            <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Search Name / ID / Phone</label>
+            <input type="text" class="form-control mt-1" placeholder="e.g. Alex Rivera, STU001..." id="search-name">
           </div>
           <div class="form-group mb-0">
-            <label class="form-label">Department</label>
-            <select class="form-control" id="filter-dept">
+            <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Department</label>
+            <select class="form-control mt-1" id="filter-dept">
               <option value="ALL">All Departments</option>
               <option value="CS">Computer Science</option>
               <option value="EE">Electrical Eng</option>
@@ -37,8 +81,8 @@ window.studentsView = (function() {
             </select>
           </div>
           <div class="form-group mb-0">
-            <label class="form-label">Status</label>
-            <select class="form-control" id="filter-status">
+            <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Status</label>
+            <select class="form-control mt-1" id="filter-status">
               <option value="ALL">All Statuses</option>
               <option value="Active">Active</option>
               <option value="On Leave">On Leave</option>
@@ -46,8 +90,8 @@ window.studentsView = (function() {
             </select>
           </div>
           <div class="form-group mb-0">
-            <label class="form-label">Gender</label>
-            <select class="form-control" id="filter-gender">
+            <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Gender</label>
+            <select class="form-control mt-1" id="filter-gender">
               <option value="ALL">All</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -58,19 +102,19 @@ window.studentsView = (function() {
       </div>
 
       <!-- Student Table -->
-      <div class="table-container animate-fade-in delay-2 mt-6">
+      <div class="table-container animate-fade-in delay-2 border border-brand-border/50">
         <table>
           <thead>
             <tr>
-              <th>Student</th>
-              <th>ID</th>
-              <th>Dept</th>
-              <th>Sem</th>
-              <th>GPA</th>
-              <th>Attend.</th>
-              <th>Phone</th>
-              <th>Status</th>
-              <th class="text-right">Actions</th>
+              <th class="p-4">Student</th>
+              <th class="p-4">ID</th>
+              <th class="p-4">Dept</th>
+              <th class="p-4">Sem</th>
+              <th class="p-4">GPA</th>
+              <th class="p-4">Attend.</th>
+              <th class="p-4">Phone</th>
+              <th class="p-4">Status</th>
+              <th class="p-4 text-right">Actions</th>
             </tr>
           </thead>
           <tbody id="student-table-body"></tbody>
@@ -106,6 +150,26 @@ window.studentsView = (function() {
     });
 
     populateTable(filtered);
+    updateOverviewStats(filtered);
+  }
+
+  function updateOverviewStats(data) {
+    const totalEl = document.getElementById('stu-stat-total');
+    const cgpaEl = document.getElementById('stu-stat-cgpa');
+    const attendanceEl = document.getElementById('stu-stat-attendance');
+    const activeEl = document.getElementById('stu-stat-active');
+
+    if (!totalEl) return;
+
+    const totalCount = data.length;
+    const avgCgpa = totalCount > 0 ? (data.reduce((acc, curr) => acc + curr.gpa, 0) / totalCount).toFixed(2) : '0.00';
+    const avgAttendance = totalCount > 0 ? Math.round(data.reduce((acc, curr) => acc + curr.attendance, 0) / totalCount) : 0;
+    const activeCount = data.filter(s => s.status === 'Active').length;
+
+    totalEl.textContent = `${totalCount} Students`;
+    cgpaEl.textContent = avgCgpa;
+    attendanceEl.textContent = `${avgAttendance}%`;
+    activeEl.textContent = `${activeCount} / ${totalCount}`;
   }
 
   function populateTable(data) {
@@ -304,7 +368,7 @@ window.studentsView = (function() {
     try {
       const inputVal = [stu.gpa / 4.0, stu.attendance / 100.0, stu.semester / 8.0];
       const model = tf.sequential();
-      model.add(tf.layers.dense({ units: 4, activation: 'sigmoid', inputShape: [3] }));
+      model.add(tf.layers.dense({ units: 3, activation: 'sigmoid', inputShape: [3] }));
       model.add(tf.layers.dense({ units: 2 }));
       
       const w1 = tf.tensor2d([

@@ -3,27 +3,27 @@ window.facultyView = (function() {
   
   function render(container) {
     container.innerHTML = `
-      <div class="page-header animate-fade-in">
+      <div class="page-header animate-fade-in flex items-center justify-between border-b border-brand-border/30 pb-4 mb-6">
         <div>
-          <h1>Faculty Directory</h1>
-          <p>Manage faculty credentials, academic departments, research specializations, and teaching assignments.</p>
+          <h1 class="text-3xl font-bold font-display tracking-tight bg-gradient-to-r from-white via-slate-100 to-brand-primary bg-clip-text text-transparent">Faculty Directory</h1>
+          <p class="text-sm text-brand-text-muted mt-1">Manage credentials, departments, research specializations, and academic teaching workloads.</p>
         </div>
         <button class="btn btn-primary" id="btn-add-faculty">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="11" x2="22" y2="11"/><line x1="19" y1="8" x2="19" y2="14"/></svg>
-          Add Faculty Member
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="11" x2="22" y2="11"/><line x1="19" y1="8" x2="19" y2="14"/></svg>
+          <span>Enroll Faculty</span>
         </button>
       </div>
 
       <!-- Search Controls -->
-      <div class="card animate-fade-in delay-1 mt-6">
-        <div class="grid grid-cols-[2fr_1fr] gap-4 items-end max-md:grid-cols-1">
-          <div class="form-group mb-0">
-            <label class="form-label">Search Faculty Directory</label>
-            <input type="text" class="form-control" placeholder="Search by name, email, or department" id="faculty-search">
+      <div class="card animate-fade-in delay-1 bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+          <div class="form-group mb-0 md:col-span-2">
+            <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Search Faculty Directory</label>
+            <input type="text" class="form-control mt-1 w-full" placeholder="Search by name, email, or department" id="faculty-search">
           </div>
           <div class="form-group mb-0">
-            <label class="form-label">Department</label>
-            <select class="form-control" id="faculty-dept-filter">
+            <label class="form-label text-xs font-bold text-brand-text-muted uppercase tracking-wider pl-1">Department</label>
+            <select class="form-control mt-1 w-full" id="faculty-dept-filter">
               <option value="ALL">All Departments</option>
               <option value="CS">Computer Science</option>
               <option value="EE">Electrical Engineering</option>
@@ -36,9 +36,9 @@ window.facultyView = (function() {
       </div>
 
       <!-- Faculty Workload Chart & Visual Overview -->
-      <div class="card animate-fade-in delay-2 mt-6">
-        <h3 class="mb-4 font-display text-lg font-bold">Workload Management Dashboard</h3>
-        <p class="text-brand-text-muted mb-5 text-[0.9rem]">Maximum weekly limit: 18 hours. Values over 15 hours represent heavy workload.</p>
+      <div class="card animate-fade-in delay-2 bg-brand-bg-secondary/40 backdrop-blur-md border border-brand-border/50 p-6 rounded-2xl mb-6">
+        <h3 class="mb-2 font-display text-lg font-bold text-white">Workload Management Dashboard</h3>
+        <p class="text-brand-text-muted mb-5 text-[0.85rem]">Maximum weekly teaching limit: 18 hours. Values over 15 hours represent heavy workload.</p>
         <div class="chart-wrapper h-[200px]">
           <canvas id="faculty-workload-chart"></canvas>
         </div>
@@ -282,7 +282,7 @@ window.facultyView = (function() {
       const inputVal = [currentLoadValue / 18.0, fac.courses.length / 5.0, isProf];
 
       const model = tf.sequential();
-      model.add(tf.layers.dense({ units: 4, activation: 'tanh', inputShape: [3] }));
+      model.add(tf.layers.dense({ units: 3, activation: 'tanh', inputShape: [3] }));
       model.add(tf.layers.dense({ units: 1 }));
 
       const w1 = tf.tensor2d([
@@ -338,38 +338,62 @@ window.facultyView = (function() {
 
   function openAddFacultyModal() {
     const bodyHTML = `
-      <div class="form-group">
-        <label class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="add-fac-name" required placeholder="e.g. Dr. Ada Lovelace">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Email Address</label>
-        <input type="email" class="form-control" id="add-fac-email" required placeholder="e.g. ada@modeluni.edu">
-      </div>
-      <div class="grid-2">
+      <form id="add-faculty-form" class="max-h-[60vh] overflow-y-auto pr-2">
         <div class="form-group">
-          <label class="form-label">Department</label>
-          <select class="form-control" id="add-fac-dept">
-            <option value="CS">Computer Science</option>
-            <option value="EE">Electrical Engineering</option>
-            <option value="ME">Mechanical Engineering</option>
-            <option value="BI">Bioinformatics</option>
-            <option value="BA">Business Administration</option>
-          </select>
+          <label class="form-label">Full Name *</label>
+          <input type="text" class="form-control" id="add-fac-name" required placeholder="e.g. Dr. Ada Lovelace">
         </div>
         <div class="form-group">
-          <label class="form-label">Designation</label>
-          <select class="form-control" id="add-fac-designation">
-            <option>Professor</option>
-            <option>Associate Professor</option>
-            <option>Assistant Professor</option>
-          </select>
+          <label class="form-label">Email Address *</label>
+          <input type="email" class="form-control" id="add-fac-email" required placeholder="e.g. ada@modeluni.edu">
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Initial Workload (Hours/Week)</label>
-        <input type="number" class="form-control" id="add-fac-workload" min="0" max="20" value="12">
-      </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Department *</label>
+            <select class="form-control" id="add-fac-dept">
+              <option value="CS">Computer Science</option>
+              <option value="EE">Electrical Engineering</option>
+              <option value="ME">Mechanical Engineering</option>
+              <option value="BI">Bioinformatics</option>
+              <option value="BA">Business Administration</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Designation *</label>
+            <select class="form-control" id="add-fac-designation">
+              <option>Professor</option>
+              <option>Associate Professor</option>
+              <option>Assistant Professor</option>
+              <option>Lecturer</option>
+              <option>Research Fellow</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Initial Workload (Hours/Week)</label>
+            <input type="number" class="form-control" id="add-fac-workload" min="0" max="24" value="12">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="add-fac-phone" placeholder="+1-555-0199">
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Date of Joining</label>
+            <input type="date" class="form-control" id="add-fac-joining" value="2026-06-09">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Profile Image URL</label>
+            <input type="text" class="form-control" id="add-fac-avatar" value="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Academic Biography & Research Brief</label>
+          <textarea class="form-control" id="add-fac-bio" rows="3" placeholder="Brief details about academic background and research focus areas..."></textarea>
+        </div>
+      </form>
     `;
 
     const footerHTML = `
@@ -385,6 +409,10 @@ window.facultyView = (function() {
       const dept = document.getElementById('add-fac-dept').value;
       const designation = document.getElementById('add-fac-designation').value;
       const workload = parseInt(document.getElementById('add-fac-workload').value) || 12;
+      const phone = document.getElementById('add-fac-phone').value.trim();
+      const joining = document.getElementById('add-fac-joining').value;
+      const avatar = document.getElementById('add-fac-avatar').value.trim();
+      const bio = document.getElementById('add-fac-bio').value.trim();
 
       if (!name || !email) {
         alert("Please enter both name and email.");
@@ -402,7 +430,10 @@ window.facultyView = (function() {
         designation: designation,
         workload: workload,
         courses: [],
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150'
+        avatar: avatar || 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150',
+        phone: phone,
+        joiningDate: joining,
+        bio: bio
       };
 
       facultyList.push(newFac);

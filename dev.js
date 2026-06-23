@@ -7,8 +7,8 @@ const server = spawn('node', ['server.js'], {
   stdio: 'inherit'
 });
 
-// Spawn vite dev server via local npx
-const vite = spawn('npx', ['vite'], {
+// Spawn next dev server via local npx on port 3000
+const nextDev = spawn('npx', ['next', 'dev', '-p', '3000', '--webpack'], {
   stdio: 'inherit'
 });
 
@@ -18,7 +18,7 @@ function cleanup() {
   isCleaningUp = true;
   console.log('\nShutting down dev servers...');
   server.kill('SIGINT');
-  vite.kill('SIGINT');
+  nextDev.kill('SIGINT');
   // Wait a moment before exiting to let children clean up
   setTimeout(() => {
     process.exit(0);
@@ -33,9 +33,9 @@ server.on('exit', (code) => {
   }
 });
 
-vite.on('exit', (code) => {
+nextDev.on('exit', (code) => {
   if (!isCleaningUp) {
-    console.log(`Vite dev server exited with code ${code}`);
+    console.log(`Next.js dev server exited with code ${code}`);
     cleanup();
   }
 });

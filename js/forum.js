@@ -2,7 +2,7 @@
    Aegis Connect — Instagram-Style Forum App Logic
    ======================================================================== */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initForum() {
   'use strict';
 
   // 1. Session & Auth Check
@@ -155,9 +155,36 @@ document.addEventListener('DOMContentLoaded', () => {
       allUsers = await res.json();
       populateAssignees();
       populateStories();
+      populateActiveContacts();
     } catch (e) {
       console.error('Error fetching users:', e);
     }
+  }
+
+  function populateActiveContacts() {
+    const listContainer = document.getElementById('active-contacts-list');
+    if (!listContainer) return;
+    listContainer.innerHTML = '';
+    
+    // Pick other users for the sidebar contacts
+    const otherUsers = allUsers.filter(u => u.id !== currentUser.id).slice(0, 8);
+    
+    otherUsers.forEach((user, index) => {
+      const isOnline = index % 3 !== 0; // Simulate some offline users
+      const row = document.createElement('div');
+      row.className = 'contact-row';
+      row.innerHTML = `
+        <div class="contact-row-left">
+          <img src="${user.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150'}" alt="${user.name}">
+          <div class="contact-details">
+            <span>${user.name}</span>
+            <small>${user.role.toUpperCase()}</small>
+          </div>
+        </div>
+        <span class="status-dot ${isOnline ? '' : 'offline'}"></span>
+      `;
+      listContainer.appendChild(row);
+    });
   }
 
   function populateAssignees() {
@@ -766,4 +793,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. Run Initial Feeds
   fetchUsers();
   loadFeed();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initForum);
+} else {
+  initForum();
+}

@@ -19,12 +19,12 @@ spec:
           image: aegis-app:latest
           imagePullPolicy: Never
           ports:
-            - containerPort: 5001
+            - containerPort: 5000
           env:
             - name: NODE_ENV
               value: "production"
             - name: PORT
-              value: "5001"
+              value: "5000"
             - name: DATABASE_PATH
               value: "/app/uploads/database.sqlite"
           volumeMounts:
@@ -33,12 +33,12 @@ spec:
           readinessProbe:
             httpGet:
               path: /api/posts
-              port: 5001
+              port: 5000
             initialDelaySeconds: 5
             periodSeconds: 10
           livenessProbe:
             tcpSocket:
-              port: 5001
+              port: 5000
             initialDelaySeconds: 15
             periodSeconds: 20
       volumes:
